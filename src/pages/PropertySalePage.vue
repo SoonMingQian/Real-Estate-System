@@ -52,7 +52,9 @@
 </template>
 
 <script>
+
 import { houses } from '../temp-data.js';
+import '../../style/property-for-sale.css'
 export default {
     name: "PropertySalePage",
     data() {
@@ -61,4 +63,5 @@ export default {
         }
     }
 }
+
 </script>
