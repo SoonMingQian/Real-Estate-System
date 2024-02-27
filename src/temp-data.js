@@ -5,6 +5,29 @@ import house4 from './assets/house4.jpg'
 import house5 from './assets/house5.jpg'
 import house6 from './assets/house6.jpg'
 
+
+export const savedProperty = [
+  {
+    id: 4,
+      houseName: "Lakeside Lodge",
+      houseAddress: "1010 Lakeview Drive",
+      price: 600000,
+      numOfBedroom: 4,
+      numOfBathroom: 3,
+      sqft: 3500,
+      image: house4,
+  },
+  {
+    id: 6,
+      houseName: "City Loft",
+      houseAddress: "1515 Broadway Avenue",
+      price: 800000,
+      numOfBedroom: 2,
+      numOfBathroom: 2,
+      sqft: 1800,
+      image: house6,
+  }
+]
 export const houses = [
     {
       id: 1,

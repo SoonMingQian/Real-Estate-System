@@ -1,0 +1,91 @@
+.detail-grid-wrap{
+    padding: 50px;
+    padding-top: 50px;
+}
+
+.img{
+    width: 100%;
+    height: 800px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.list{
+    padding-top: 20px;
+    width: 100%;
+}
+
+.left-cont{
+    width: 65%;
+    float: left;
+}
+
+.contact-section{
+    float: right;
+    width: 30%;
+}
+.amentities{
+    display: flex;
+    justify-content: space-between;
+}
+
+.amentity i, h4{
+    font-size: 1.2rem;
+}
+
+
+.action-list-button{
+    float: right;
+    font-size: 1.2rem;
+}
+
+.sticky-side{
+    float: right;
+    padding-right: 10px;
+    border-radius: 12px;
+    border: 1.5px solid;
+    width: 90%;
+}
+
+.agent-info {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    height: 100%; /* Ensure that the container takes up full height */
+}
+
+.name {
+    margin: 0; /* Remove any default margin */
+    padding-top: 80px;
+}
+
+.card-body{
+    padding-top: 80px;
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.email-agent{
+   padding: 20px;
+   border: none;
+   border-radius: 200px;
+}
