@@ -1,14 +1,18 @@
 <template>
+  
   <div class="page-wrap">
+    <NavBar />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import './main.css'
+import NavBar from '@/components/NavBar.vue'
 export default {
   name: 'App',
-  components: {}
+  components: {
+    NavBar,
+  }
 }
 </script>
 

@@ -12,7 +12,7 @@ body {
 }
 
 .grid-wrap{
-    padding: 400px;
+    padding: 20%;
     padding-top: 20px;
 }
 
@@ -27,8 +27,9 @@ body {
 
 
 .img-holder{
-    height: 600px;
+    height: 30%;
 }
+
 .card img {
     width: 100%;
     height: 100%;
