@@ -1,7 +1,7 @@
 <template>
-  
+  <NavBar />
   <div class="page-wrap">
-    <NavBar />
+    
     <router-view></router-view>
   </div>
 </template>

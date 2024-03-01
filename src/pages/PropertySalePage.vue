@@ -1,5 +1,4 @@
 <template>
-    <h1>Property For Sale</h1>
 
     <div class="grid-wrap">
         <div class="house-list" v-for="house in houses" :key="house.id">
