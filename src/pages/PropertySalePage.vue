@@ -2,7 +2,8 @@
 
     <div class="grid-wrap">
         <div class="house-list" v-for="house in houses" :key="house.id">
-            <div class="card">
+            <router-link :to="'/property-for-sale/' + house.id ">
+                <div class="card">
                 <div class="card-banner">
                     <div class="img-holder">
                         <img :src="house.image" alt="{{ house.houseName }}" class="img-cover" />
@@ -13,7 +14,6 @@
                     <div class="name-but">
                         <h3 class="listing-name">
                             {{ house.houseName }}
-
                         </h3>
                         <button class="icon-btn" aria-label="add to favourite">
                             <span class="material-symbols-rounded" aria-hidden="true"><font-awesome-icon
@@ -47,6 +47,9 @@
                     </div>
                 </div>
             </div>
+            </router-link>
+            
+            
         </div>
     </div>
 </template>
