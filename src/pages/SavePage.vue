@@ -1,4 +1,5 @@
 <template>
+    <ProfileNavBar />
     <div class="save-title">
         <h3><font-awesome-icon :icon="['far', 'heart']" /> Shortlisted</h3>
     </div>
@@ -7,7 +8,6 @@
             <div v-if="savedProperty.length > 0">
                 <div class="property-card" v-for="house in savedProperty" :key="house.id">
                     <div class="property-card-content">
-
                         <img :src="house.image" alt="{{ house.houseName }}" class="property-img" />
                         <div class="property-content">
                             <h3 class="p-name">{{ house.houseName }}</h3>
@@ -33,10 +33,14 @@
 </template>
 
 <script>
+import ProfileNavBar from '../components/ProfileNavBar.vue';
 import '../save-page.css'
 import { savedProperty } from '../temp-data';
 export default {
     name: "SavePage",
+    components:{
+        ProfileNavBar,
+    },
     data() {
         return {
             savedProperty,

@@ -5,7 +5,7 @@ import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
 import PropertyRentPage from './pages/PropertyRentPage.vue'
 import PropertyDetailPage from './pages/PropertyDetailPage.vue'
-import SellPropertyPage from './pages/SellPropertyPage.vue'
+import MyPropertyPage from './pages/MyPropertyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 //Font Awesome import
@@ -38,8 +38,8 @@ createApp(App)
         path: '/property-for-sale/:propertyId',
         component: PropertyDetailPage,
     },{
-        path: '/sell-property',
-        component: SellPropertyPage,
+        path: '/my-property',
+        component: MyPropertyPage,
     },{
         path: '/my-profile',
         component: ProfilePage

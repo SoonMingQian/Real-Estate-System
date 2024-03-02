@@ -1,29 +1,28 @@
-*{
-    box-sizing: border-box;
-}
 
+.save-title{
+    padding-top: 50px;
+}
 .save-container{
     max-width: 1200px;
     margin: 0 auto;
+    padding-top: 10px;
 }
 
 .property-card{
     border: 2px;
+    cursor: pointer;
 }
+
 .property-card-content{
     display: flex;
     width: 100%;
     height: 200px;
     overflow: hidden;
     border: 1px solid;
-    border-radius: 2px;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
-.property-card :hover{
-    box-shadow: 2px 2px 4px rgba(0,0,0,0,2);
-    transform: scale(1.01);
-}
 
 .property-img{
     width: 300px;
@@ -35,7 +34,6 @@
 .property-content{
     padding: 20px;
     width: 100%;
-    position: relative;
 }
 
 .p-name, .p-address, .p-price, .p-features{
@@ -46,9 +44,9 @@
     margin-left: 20px;
 }
 .unsaved{
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    position: relative;
+    bottom: 55px;
+    left: 80%;
     padding: 10px 25px;
     background-color: green;
     color: white;
@@ -57,26 +55,26 @@
 }
 
 .status{
-    position: absolute;
-    bottom: 20px;
-    right: 140px;
+    position: relative;
+    bottom: 40px;
+    left: 55%;
     padding: 10px 25px;
     color: black;
 }
 
 .edit-property{
-    position: absolute;
-    bottom: 20px;
-    right: 80px;
+    position: relative;
+    bottom: 40px;
+    left: 60%;
     padding: 10px 25px;
     color: black;
     cursor: pointer;
 }
 
 .delete-property{
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    position: relative;
+    bottom: 40px;
+    left: 65%;
     padding: 10px 25px;
     color: black;
     cursor: pointer;

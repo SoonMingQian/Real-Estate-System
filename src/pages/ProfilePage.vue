@@ -1,4 +1,5 @@
 <template>
+    <ProfileNavBar />
     <div class="my-profile">
         <h1>My Profile</h1>
         <p>First Name: {{ profile.firstName }}</p>
@@ -17,10 +18,12 @@
 </template>
 
 <script>
-
-
+import ProfileNavBar from '../components/ProfileNavBar.vue';
 export default {
     name: "ProfilePage",
+    components:{
+        ProfileNavBar,
+    },
     data() {
         return {
             profile: {
@@ -39,8 +42,8 @@ export default {
 <style scoped>
 .my-profile{
     padding-left: 40%;
-    padding-top: 50px;
-   background-color: white;
+    padding-top: 80px;
+    background-color: white;
 }
 
 .my-profile input{

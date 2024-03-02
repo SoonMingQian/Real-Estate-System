@@ -1,28 +1,30 @@
 <template>
-    <header :class="{ 'scrolled-nav': scrolledNav}">
+    <header :class="{ 'scrolled-nav': scrolledNav }">
         <nav>
             <div class="branding">
                 <img :src="logo" alt="" />
                 <h1>Estate Eagle</h1>
             </div>
             <ul v-show="!mobile" class="navigation">
-            <li><router-link class="link" to="property-for-sale">Buy</router-link></li>
-            <li><router-link class="link" to="property-for-rent">Rent</router-link></li> 
-            <li><router-link class="link" to="sell-property">Sell</router-link></li>
-            <li><router-link class="link" to="">Contact</router-link></li>
-            <li><router-link class="link" to="save"><font-awesome-icon :icon="['far', 'heart']" /></router-link></li>
-            <li><router-link class="link" to="my-profile">My Profile</router-link></li>
+                <li><router-link class="link" to="property-for-sale">Buy</router-link></li>
+                <li><router-link class="link" to="property-for-rent">Rent</router-link></li>
+                <li><router-link class="link" to="sell-property">Sell</router-link></li>
+                <li><router-link class="link" to="">Apartment</router-link></li>
+                <li><router-link class="link" to="my-profile">My Profile</router-link></li>
             </ul>
             <div class="icon">
-               <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars" :class="{'icon-active': mobileNav }"><font-awesome-icon :icon="['fas', 'bars']" /></i> 
+                <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars"
+                    :class="{ 'icon-active': mobileNav }"><font-awesome-icon :icon="['fas', 'bars']" /></i>
             </div>
             <transition name="mobile-nav">
-            <ul v-show="mobileNav" class="dropdown-nav">
-            <li><router-link class="link" to="property-for-sale">Buy</router-link></li>
-            <li><router-link class="link" to="">Rent</router-link></li>
-            <li><router-link class="link" to="">Sell</router-link></li>
-            <li><router-link class="link" to="">Contact</router-link></li>
-            </ul>
+                <ul v-show="mobileNav" class="dropdown-nav">
+                    <li><router-link class="link" to="property-for-sale">Buy</router-link></li>
+                    <li><router-link class="link" to="property-for-rent">Rent</router-link></li>
+                    <li><router-link class="link" to="sell-property">Sell</router-link></li>
+                    <li><router-link class="link" to="my-profile">My Profile</router-link></li>
+                    <li><router-link class="link" to="save">My Profile</router-link></li>
+                    <li><router-link class="link" to="my-property">Rent/Sale List</router-link></li>
+                </ul>
             </transition>
         </nav>
     </header>
@@ -42,28 +44,28 @@ export default {
             windowWidth: null,
         }
     },
-    created(){
+    created() {
         window.addEventListener('resize', this.checkScreen)
         this.checkScreen();
     },
-    mounted(){
+    mounted() {
         window.addEventListener('scroll', this.updateScroll)
     },
-    methods:{
-        toggleMobileNav(){
+    methods: {
+        toggleMobileNav() {
             this.mobileNav = !this.mobileNav;
         },
 
-        updateScroll(){
+        updateScroll() {
             const scrollPosition = window.scrollY
-            if(scrollPosition > 50){
+            if (scrollPosition > 50) {
                 this.scrolledNav = true;
             }
             this.scrolledNav = false
         },
-        checkScreen(){
+        checkScreen() {
             this.windowWidth = window.innerWidth;
-            if(this.windowWidth <= 750){
+            if (this.windowWidth <= 750) {
                 this.mobile = true;
                 return;
             }
@@ -76,20 +78,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 header {
     z-index: 99;
     width: 100%;
     position: fixed;
     transition: .5s ease all;
     background-color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    ;
 
     nav {
         position: relative;
         display: flex;
         flex-direction: row;
-        padding: 12px 0;
+        padding: 19px 0;
         transition: .5s ease all;
         width: 90%;
         margin: 0 auto;
@@ -117,7 +119,7 @@ header {
             font-size: 14px;
             transition: .5s ease all;
             padding-bottom: 4px;
-            border-bottom: 1px solid transparent;
+            border-bottom: 3px solid transparent;
 
             &:hover {
                 color: crimson;
@@ -125,24 +127,29 @@ header {
             }
         }
 
-        .branding{
+        a.router-link-active {
+            color: crimson;
+            border-color: crimson;
+        }
+
+        .branding {
             display: flex;
             align-items: center;
 
-            img{
+            img {
                 width: 50px;
                 transition: .5s ease all;
             }
         }
 
-        .navigation{
+        .navigation {
             display: flex;
             align-items: center;
             flex: 1;
             justify-content: flex-end;
         }
 
-        .icon{
+        .icon {
             display: flex;
             align-items: center;
             position: absolute;
@@ -150,63 +157,65 @@ header {
             right: 24px;
             height: 100%;
 
-            i{
+            i {
                 cursor: pointer;
                 font-size: 24px;
                 transition: .8s ease all;
             }
         }
 
-        .icon-active{
+        .icon-active {
             transform: rotate(180deg);
         }
 
-        .dropdown-nav{
-           display: flex;
-           flex-direction: column;
-           position: fixed;
-           widows: 100%;
-           max-width: 250px;
-           height: 100%;
-           background-color: white;
-           top: 0;
-           left: 0;
-           
-           li{
-            margin-left: 0;
-            .link{
-               color: black; 
+        .dropdown-nav {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            widows: 100%;
+            max-width: 250px;
+            height: 100%;
+            background-color: white;
+            top: 0;
+            left: 0;
+
+            li {
+                margin-left: 0;
+
+                .link {
+                    color: black;
+                }
             }
-           }
         }
+
         .mobile-nav-enter-active,
-        .mobile-nav-leave-active{
+        .mobile-nav-leave-active {
             transition: 1s ease all;
         }
 
         .mobile-nav-enter-from,
-        .mobile-nav-leave-to{
+        .mobile-nav-leave-to {
             transform: translateX(-250px);
         }
 
-        .mobile-nav-enter-to{
+        .mobile-nav-enter-to {
             transform: translateX(0);
         }
     }
 }
 
-.scrolled-nav{
+.scrolled-nav {
     background-color: black;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-    nav{
+    nav {
         padding: 8px 0;
     }
 
-    .branding{
-        img{
+    .branding {
+        img {
             width: 40px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
     }
 }
