@@ -5,6 +5,7 @@ import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
 import PropertyDetailPage from './pages/PropertyDetailPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
+import ProfilePage from './pages/ProfilePage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -31,6 +32,9 @@ createApp(App)
     }, {
         path: '/property-for-sale/:propertyId',
         component: PropertyDetailPage,
+    },{
+        path: '/my-profile',
+        component: ProfilePage
     },{
         path: '/:pathMatch(.*)*',
         component: NotFoundPage
