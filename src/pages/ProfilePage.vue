@@ -40,7 +40,7 @@ export default {
 .my-profile{
     padding-left: 40%;
     padding-top: 50px;
-   
+   background-color: white;
 }
 
 .my-profile input{

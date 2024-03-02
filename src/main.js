@@ -3,7 +3,9 @@ import App from './App.vue'
 import * as VueRouter from 'vue-router'
 import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
+import PropertyRentPage from './pages/PropertyRentPage.vue'
 import PropertyDetailPage from './pages/PropertyDetailPage.vue'
+import SellPropertyPage from './pages/SellPropertyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 //Font Awesome import
@@ -29,9 +31,15 @@ createApp(App)
     }, {
         path: '/property-for-sale',
         component: PropertySalePage,
+    },{
+        path: '/property-for-rent',
+        component: PropertyRentPage,
     }, {
         path: '/property-for-sale/:propertyId',
         component: PropertyDetailPage,
+    },{
+        path: '/sell-property',
+        component: SellPropertyPage,
     },{
         path: '/my-profile',
         component: ProfilePage

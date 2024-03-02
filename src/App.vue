@@ -19,8 +19,9 @@ export default {
 .page-wrap {
   max-width: 100%;
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 120px;
   background-color: white;
+  height: 100vh;
 
 }
 </style>

@@ -7,8 +7,8 @@
             </div>
             <ul v-show="!mobile" class="navigation">
             <li><router-link class="link" to="property-for-sale">Buy</router-link></li>
-            <li><router-link class="link" to="">Rent</router-link></li> 
-            <li><router-link class="link" to="">Sell</router-link></li>
+            <li><router-link class="link" to="property-for-rent">Rent</router-link></li> 
+            <li><router-link class="link" to="sell-property">Sell</router-link></li>
             <li><router-link class="link" to="">Contact</router-link></li>
             <li><router-link class="link" to="save"><font-awesome-icon :icon="['far', 'heart']" /></router-link></li>
             <li><router-link class="link" to="my-profile">My Profile</router-link></li>

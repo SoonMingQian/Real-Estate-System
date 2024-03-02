@@ -55,3 +55,39 @@
     cursor: pointer;
     border-radius: 8px;
 }
+
+.status{
+    position: absolute;
+    bottom: 20px;
+    right: 140px;
+    padding: 10px 25px;
+    color: black;
+}
+
+.edit-property{
+    position: absolute;
+    bottom: 20px;
+    right: 80px;
+    padding: 10px 25px;
+    color: black;
+    cursor: pointer;
+}
+
+.delete-property{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 25px;
+    color: black;
+    cursor: pointer;
+}
+
+.edit-property :hover{
+    transform: scale(1.2);
+    color: crimson;
+}
+
+.delete-property :hover{
+    transform: scale(1.2);
+    color: crimson;
+}
