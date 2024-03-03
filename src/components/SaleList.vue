@@ -1,7 +1,8 @@
 <template>
+    <input type="text" v-model="search">
     <div class="grid-wrap">
-        <div class="house-list" v-for="house in houses" :key="house.id">
-            <router-link :to="'/property-for-sale/' + house.id">
+        <div class="house-list" v-for="house in FilteredProperty" :key="house.id">
+            <router-link class="property-link" :to="'/property-for-sale/' + house.id">
                 <div class="card">
                     <div class="card-banner">
                         <div class="img-holder">
@@ -14,7 +15,7 @@
                             <h3 class="listing-name">
                                 {{ house.houseName }}
                             </h3>
-                            <button class="icon-btn" aria-label="add to favourite">
+                            <button class="icon-btn" aria-label="add to favourite" @click.stop>
                                 <span class="material-symbols-rounded" aria-hidden="true"><font-awesome-icon
                                         :icon="['far', 'heart']" size="lg" /></span>
                             </button>
@@ -55,5 +56,16 @@
 export default {
     name: "SaleList",
     props: ['houses'],
+    data(){
+        return{
+            search: ''
+        }
+    },
+    computed:{
+        FilteredProperty(){
+            const lowerCaseSearch = this.search.toLowerCase();
+            return this.houses.filter(house => house.houseName.toLowerCase().includes(lowerCaseSearch))
+        }
+    }
 }
 </script>

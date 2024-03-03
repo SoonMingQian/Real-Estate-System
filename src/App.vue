@@ -21,7 +21,7 @@ export default {
   margin: 0 auto;
   padding-top: 120px;
   background-color: white;
-  height: 100vh;
+  height: 100%;
 
 }
 </style>
