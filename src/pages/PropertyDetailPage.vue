@@ -1,14 +1,11 @@
 <template>
     <div v-if="house">
         <div class="detail-grid-wrap">
-            <section class="img">
-                <swiper class="swiper" :modules="modules" navigation>
-                    <swiper-slide>
-                        <img :src="house.image" />
-                    </swiper-slide>
-                    <swiper-slide>
-                        <img :src="house.image" />
-                    </swiper-slide>
+            <section class="img" >
+                <swiper class="swiper" :modules="modules" :pagination="{ clickable: true }">
+                    <swiper-slide v-for="(image, index) in house.images" :key="index">
+                        <img :src="image"/>
+                    </swiper-slide>  
                 </swiper>
             </section>
 
@@ -92,15 +89,17 @@
 </template>
 
 <script>
-import { Navigation } from 'swiper'
+import { Pagination } from 'swiper'
 import { houses } from '../temp-data'
 import NotFoundPage from './NotFoundPage.vue'
 import '../property-detail-page.css'
+  import 'swiper/css'
+  import 'swiper/css/pagination'
 export default {
     name: "PropertyDetailPage",
     setup() {
         return {
-            modules: [Navigation]
+            modules: [Pagination]
         }
     },
     data() {
@@ -113,3 +112,6 @@ export default {
     },
 }
 </script>
+
+
+

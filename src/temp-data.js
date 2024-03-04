@@ -37,7 +37,13 @@ export const houses = [
       numOfBedroom: 2,
       numOfBathroom: 1,
       sqft: 1200,
-      image: house1,
+      images: [
+        house1,
+        house2,
+        house3
+       ],
+      features: []
+      
     },
     {
       id: 2,

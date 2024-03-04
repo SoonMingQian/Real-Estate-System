@@ -8,18 +8,19 @@ import PropertyDetailPage from './pages/PropertyDetailPage.vue'
 import MyPropertyPage from './pages/MyPropertyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
+import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 //Swiper import
-import SwiperClass, { Navigation } from 'swiper'
+import SwiperClass, { Pagination } from 'swiper'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-SwiperClass.use(Navigation)
+SwiperClass.use(Pagination)
 library.add(fas, far);
 
 createApp(App)
@@ -40,6 +41,9 @@ createApp(App)
     },{
         path: '/my-property',
         component: MyPropertyPage,
+    },{
+        path: '/my-property/:propertyId',
+        component: EditMyPropertyPage,
     },{
         path: '/my-profile',
         component: ProfilePage
