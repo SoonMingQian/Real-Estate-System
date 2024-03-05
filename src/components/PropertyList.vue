@@ -18,7 +18,10 @@
                                 <span class="p-sqft-details">{{ house.sqft }} sqft</span>
                             </div>
                             <span class="status">Status: Approved</span>
-                            <span class="edit-property"><font-awesome-icon :icon="['fas', 'pen-to-square']" /></span>
+                            <router-link class="property-link" :to="'/my-property/edit-property/' + house.id">
+                                <span class="edit-property"><font-awesome-icon :icon="['fas', 'pen-to-square']" /></span>
+                            </router-link>
+                            
                             <span class="delete-property"><font-awesome-icon :icon="['fas', 'trash']" /></span>
                         </div>
                     </div>
@@ -32,8 +35,14 @@
 </template>
 
 <script>
+import { houses } from '../temp-data'
 export default{
     name: "PropertyList",
-    props: ['savedProperty']
+    props: ['savedProperty'],
+    data(){
+        return{
+            house: houses.find(house => house.id == this.$route.params.propertyId)
+        }
+    }
 }
 </script>

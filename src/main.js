@@ -9,6 +9,7 @@ import MyPropertyPage from './pages/MyPropertyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
+import AddMyPropertyPage from './pages/AddMyPropertyPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -42,8 +43,11 @@ createApp(App)
         path: '/my-property',
         component: MyPropertyPage,
     },{
-        path: '/my-property/:propertyId',
+        path: '/my-property/edit-property/:propertyId',
         component: EditMyPropertyPage,
+    },{
+        path: '/my-property/add-property',
+        component: AddMyPropertyPage,
     },{
         path: '/my-profile',
         component: ProfilePage

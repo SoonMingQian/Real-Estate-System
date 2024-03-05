@@ -6,7 +6,9 @@
     <div class="page-container">
         <PropertyList :savedProperty="savedProperty" />
         <div class="button">
-        <button class="add-property"><font-awesome-icon :icon="['fas', 'plus']" /></button>
+        <button class="add-property">
+            <router-link to="my-property/add-property"><font-awesome-icon :icon="['fas', 'plus']" /></router-link>
+        </button>
     </div>
 </div>
 </template>
@@ -39,7 +41,8 @@ export default {
 <style scoped>
 
 .page-container{
-    background-color: white ;
+    height: 100%;
+    background-color: white;
 }
 .button{
     display: flex;
@@ -54,7 +57,6 @@ export default {
 }
 
 .add-property :hover{
-    transform: scale(1.2);
     color: crimson;
 }
 
