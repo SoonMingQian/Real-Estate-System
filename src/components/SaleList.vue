@@ -2,7 +2,7 @@
     <input type="text" v-model="search">
     <div class="grid-wrap">
         <div class="house-list" v-for="house in FilteredProperty" :key="house.id">
-            <router-link class="property-link" :to="'/property-for-sale/' + house.id">
+            <router-link class="property-link" :to="'/property-listing/' + house.id">
                 <div class="card">
                     <div class="card-banner">
                         <div class="img-holder">

@@ -10,6 +10,8 @@ import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
 import AddMyPropertyPage from './pages/AddMyPropertyPage.vue'
+import ApartmentPage from './pages/ApartmentPage.vue'
+import CommercialPage from './pages/CommercialPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -30,15 +32,21 @@ createApp(App)
     routes: [{
         path: '/save',
         component: SavePage,
-    }, {
+    },{
         path: '/property-for-sale',
         component: PropertySalePage,
     },{
         path: '/property-for-rent',
         component: PropertyRentPage,
-    }, {
-        path: '/property-for-sale/:propertyId',
+    },{
+        path: '/property-listing/:propertyId',
         component: PropertyDetailPage,
+    },{
+        path: '/apartment',
+        component: ApartmentPage,
+    },{
+        path: '/commercial',
+        component: CommercialPage,
     },{
         path: '/my-property',
         component: MyPropertyPage,

@@ -7,7 +7,7 @@ import SaleList from '../components/SaleList.vue';
 import { houses } from '../temp-data.js';
 import '../property-for-sale.css'
 export default{
-    name: 'CommercialPage',
+    name: 'ApartmentPage',
     components:{
         SaleList,
     },
