@@ -12,6 +12,8 @@ import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
 import AddMyPropertyPage from './pages/AddMyPropertyPage.vue'
 import ApartmentPage from './pages/ApartmentPage.vue'
 import CommercialPage from './pages/CommercialPage.vue'
+import SignUpPage from './pages/SignUpPage.vue'
+import LoginPage from './pages/LoginPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -59,6 +61,12 @@ createApp(App)
     },{
         path: '/my-profile',
         component: ProfilePage
+    },{
+        path: '/login',
+        component: LoginPage
+    },{
+        path: '/sign-up',
+        component: SignUpPage
     },{
         path: '/:pathMatch(.*)*',
         component: NotFoundPage
