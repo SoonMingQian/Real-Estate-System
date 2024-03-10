@@ -1,11 +1,12 @@
 <template>
 <div class="wrapper">
     <h1>Login</h1>
-    <form action="#">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
+    <form @submit.prevent="loginAccount">
+        <input type="email" v-model="user.email" placeholder="Email">
+        <input type="password" v-model="user.password" placeholder="Password">
+        <button type="submit">Login</button>
     </form>
-    <button>Login</button>
+    
     <div class="account">
         Dont have an account?<router-link class="account-link" to="/sign-up">Sign Up Here</router-link>
     </div>
@@ -16,8 +17,38 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default{
-    name: 'LoginPage'
+    name: 'LoginPage',
+    data(){
+        return{
+            user:{
+                email: '',
+                password: ''
+            }
+        }
+    },
+    methods:{
+        async loginAccount(){
+            await axios.post('http://localhost:8080/login', {
+                email: this.user.email,
+                password: this.user.password
+            })
+            .then(response => {
+            if(response.data.token){
+                localStorage.setItem('token', response.data.token);
+                console.log('Successfully Login');
+                this.$router.push('/property-for-sale')
+            }else{
+                console.log('Invalid email or password');
+            }
+        })
+        .catch(error => {
+            console.error(error)
+            // Handle other errors, like network issues, server errors, etc.
+        })   
+    }
+    }
 }
 </script>
 
@@ -58,6 +89,7 @@ button{
     width: 90%;
     color: white;
     background: crimson;
+    cursor: pointer;
 }
 
 button :hover{

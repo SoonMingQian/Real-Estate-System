@@ -1,14 +1,15 @@
 <template>
 <div class="wrapper">
     <h1>Sign Up</h1>
-    <form action="#">
-        <input type="text" placeholder="First Name">
-        <input type="text" placeholder="Last Name">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
+    <form @submit.prevent="createUser">
+        <input type="text" v-model="user.firstName" placeholder="First Name">
+        <input type="text" v-model="user.lastName" placeholder="Last Name">
+        <input type="email" v-model="user.email" placeholder="Email">
+        <input type="password" v-model="user.password" placeholder="Password">
         <input type="password" placeholder="Re-enter Password">
+        <button type="submit">Sign Up</button>
     </form>
-    <button>Sign Up</button>
+
     <div class="account">
         Already have an account?<router-link class="account-link" to="/login">Login Here</router-link>
     </div>
@@ -17,8 +18,33 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default{
-    name: 'SignUpPage'
+    name: 'SignUpPage',
+    data(){
+        return{
+            user:{
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: ''
+            }
+        }
+    },
+    methods:{
+        createUser(){
+            axios.post('http://localhost:8080/sign-up', this.user)
+                .then(response => {
+                    console.log('User created successfully:', response.data)
+                    window.alert("Account has been successfully created")
+                    this.$router.push('/login');
+                })
+                .catch(error => {
+                    console.error('Error creating user:', error);
+                    window.alert("Email has already been registered")
+                })
+        }
+    }
 }
 </script>
 
@@ -59,6 +85,7 @@ button{
     width: 90%;
     color: white;
     background: crimson;
+    cursor: pointer;
 }
 
 button :hover{

@@ -14,6 +14,7 @@ import ApartmentPage from './pages/ApartmentPage.vue'
 import CommercialPage from './pages/CommercialPage.vue'
 import SignUpPage from './pages/SignUpPage.vue'
 import LoginPage from './pages/LoginPage.vue'
+import HomePage from './pages/HomePage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -34,6 +35,9 @@ createApp(App)
     routes: [{
         path: '/save',
         component: SavePage,
+    },{
+        path: '/',
+        component: HomePage,
     },{
         path: '/property-for-sale',
         component: PropertySalePage,
