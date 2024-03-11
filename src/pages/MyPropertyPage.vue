@@ -1,5 +1,5 @@
 <template>
-    <AgentNavBar />
+    <ProfileNavBar />
     <div class="salerent-title">
         <h3><font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List</h3>
     </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import AgentNavBar from '../components/AgentNavBar.vue';
+import ProfileNavBar from '../components/ProfileNavBar.vue';
 import PropertyList from '../components/PropertyList.vue';
 import { savedProperty } from '@/temp-data';
 import '../save-page.css'
@@ -23,7 +23,7 @@ export default {
     name: "SaleRentPage",
     components: {
         PropertyList,
-        AgentNavBar,
+        ProfileNavBar,
     },
     style:{
         styleObject:{
@@ -71,4 +71,4 @@ export default {
 }
 
 
-</style>../components/AgentNavBar.vue
+</style>

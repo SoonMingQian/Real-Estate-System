@@ -3,7 +3,11 @@
         <ul class="profile-navigation">
             <li><router-link class="profile-link" to="my-profile"><font-awesome-icon :icon="['fas', 'user']" /> My Profile</router-link></li>
             <li><router-link class="profile-link" to="save"><font-awesome-icon :icon="['fas', 'heart']" /> Shortlist</router-link></li>
-            <li><router-link class="profile-link" to="my-property"><font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List</router-link></li>
+            <li v-if="getAgentSaleRentList">
+                <router-link class="profile-link" to="my-property">
+                    <font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List
+                </router-link>
+            </li>
         </ul>
     </div>
 
@@ -11,7 +15,18 @@
 
 <script>
 export default{
-    name: "AgentNavBar",
+    name: "ProfileNavBar",
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        },
+        getAgentSaleRentList(){
+            if(this.currentUser && this.currentUser['roles']){
+                return this.currentUser['roles'].includes('ROLE_AGENT');
+            }
+            return false;
+        }
+    }
 }
 </script>
 

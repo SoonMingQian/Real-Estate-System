@@ -39,6 +39,7 @@ export default{
             .then(() => {
             // Registration successful, do something if needed
             console.log('Login successful');
+            this.$router.push("/my-profile");
             // Optionally, you can redirect the user to another page
             })
             .catch(error => {

@@ -1,5 +1,5 @@
 <template>
-    <AgentNavBar />
+    <ProfileNavBar />
     <div class="save-title">
         <h3><font-awesome-icon :icon="['far', 'heart']" /> Shortlisted</h3>
     </div>
@@ -33,13 +33,13 @@
 </template>
 
 <script>
-import AgentNavBar from '../components/AgentNavBar.vue';
+import ProfileNavBar from '../components/ProfileNavBar.vue';
 import '../save-page.css'
 import { savedProperty } from '../temp-data';
 export default {
     name: "SavePage",
     components:{
-        AgentNavBar,
+        ProfileNavBar,
     },
     data() {
         return {
@@ -48,4 +48,3 @@ export default {
     }
 }
 </script>
-../components/AgentNavBar.vue
