@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ import com.example.backend.repositories.UserRepository;
 import com.example.backend.security.jwt.JwtUtils;
 import com.example.backend.security.service.MyUserDetails;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -73,7 +75,7 @@ public class AuthController {
 								roles));
 	}
 	
-	@PostMapping("/signup")
+	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest){
 		if(userRepository.existsByEmail(signupRequest.getEmail())) {
 			return ResponseEntity

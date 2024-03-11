@@ -2,17 +2,17 @@
     <ProfileNavBar />
     <div class="my-profile">
         <h1>My Profile</h1>
-        <p>First Name: {{ profile.firstName }}</p>
-        <input v-model="profile.firstName" placeholder="New first name">
-        <p>Last Name: {{ profile.lastName }}</p>
-        <input v-model="profile.lastName" placeholder="New last name">
-        <p>Nationality: {{ profile.nationality }}</p>
-        <input v-model="profile.nationality" placeholder="Enter your nationality">
-        <p>Address: {{ profile.address }}</p>
-        <input v-model="profile.address" placeholder="Enter your address line">
-        <p>Eircode: {{ profile.eircode }}</p>
-        <input v-model="profile.eircode" placeholder="Enter your EIRCODE">
-        <p>Email: {{ profile.email }}</p>
+        <p>First Name: {{ currentUser.firstName }}</p>
+        <input v-model="currentUser.firstName" placeholder="New first name">
+        <p>Last Name: {{ currentUser.lastName }}</p>
+        <input v-model="currentUser.lastName" placeholder="New last name">
+        <p>Nationality: {{ currentUser.nationality }}</p>
+        <input v-model="currentUser.nationality" placeholder="Enter your nationality">
+        <p>Address: {{ currentUser.address }}</p>
+        <input v-model="currentUser.address" placeholder="Enter your address line">
+        <p>Eircode: {{ currentUser.eircode }}</p>
+        <input v-model="currentUser.eircode" placeholder="Enter your EIRCODE">
+        <p>Email: {{ currentUser.email }}</p>
         <button class="button">Save Changes</button>
     </div>
 </template>
@@ -24,16 +24,14 @@ export default {
     components:{
         ProfileNavBar,
     },
-    data() {
-        return {
-            profile: {
-                firstName: 'John',
-                lastName: 'Aly',
-                nationality: 'Malaysian' ,
-                email: 'john@gmail.com',
-                address: [],
-                eircode: [],    
-            }
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
+    mounted(){
+        if(!this.currentUser){
+            this.$router.push('/login');
         }
     }
 }

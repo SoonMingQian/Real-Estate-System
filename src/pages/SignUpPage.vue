@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
     <h1>Sign Up</h1>
-    <form @submit.prevent="createUser">
+    <form @submit.prevent="handleRegister">
         <input type="text" v-model="user.firstName" placeholder="First Name">
         <input type="text" v-model="user.lastName" placeholder="Last Name">
         <input type="email" v-model="user.email" placeholder="Email">
@@ -18,34 +18,47 @@
 </template>
 
 <script>
-import axios from 'axios';
-export default{
-    name: 'SignUpPage',
-    data(){
-        return{
-            user:{
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: ''
-            }
-        }
+export default {
+    name:"SignUpPage",
+  data() {
+    return {
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+      },
+      confirmPassword: ''
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
     },
-    methods:{
-        createUser(){
-            axios.post('http://localhost:8080/sign-up', this.user)
-                .then(response => {
-                    console.log('User created successfully:', response.data)
-                    window.alert("Account has been successfully created")
-                    this.$router.push('/login');
-                })
-                .catch(error => {
-                    console.error('Error creating user:', error);
-                    window.alert("Email has already been registered")
-                })
-        }
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push("/my-profile");
     }
-}
+  },
+  methods: {
+    handleRegister() {
+      // Dispatch the register action
+      this.$store.dispatch('auth/register', this.user)
+        .then(() => {
+          // Registration successful, do something if needed
+          console.log('Registration successful');
+          this.$router.push("/login");
+          // Optionally, you can redirect the user to another page
+        })
+        .catch(error => {
+          // Registration failed, handle the error
+          console.error('Registration failed:', error);
+          // Optionally, you can display an error message to the user
+        });
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
+import store from './store'
 import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
 import PropertyRentPage from './pages/PropertyRentPage.vue'
@@ -69,7 +70,7 @@ createApp(App)
         path: '/login',
         component: LoginPage
     },{
-        path: '/sign-up',
+        path: '/register',
         component: SignUpPage
     },{
         path: '/:pathMatch(.*)*',
@@ -77,5 +78,6 @@ createApp(App)
     }]
 }))
 .use(VueAwesomeSwiper)
+.use(store)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')

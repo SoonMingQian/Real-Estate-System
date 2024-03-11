@@ -1,14 +1,14 @@
+//Define a service for accessing data 
+
 import axios from "axios";
+import authHeader from "./AuthHeader";
 
-export default axios.create({
-    baseURL: "http://localhost:8080",
-    headers:{
-        "Content-Type": "application/json"
-    }
-})
+const API_URL = 'http://localhost:8080/api/test/';
 
-class UserService{
-    addUser(){
-        return axios.post(baseURL);
+class userService{
+    getSaveList(){
+        return axios.get(API_URL + 'user' + '/save', {headers: authHeader()})
     }
 }
+
+export default new userService();

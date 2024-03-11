@@ -1,9 +1,9 @@
 <template>
 <div class="wrapper">
     <h1>Login</h1>
-    <form @submit.prevent="loginAccount">
-        <input type="email" v-model="user.email" placeholder="Email">
-        <input type="password" v-model="user.password" placeholder="Password">
+    <form @submit.prevent="handleLogin">
+        <input  v-model="user.email" type="email" placeholder="Email">
+        <input v-model="user.password" type="password" placeholder="Password">
         <button type="submit">Login</button>
     </form>
     
@@ -17,37 +17,36 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default{
     name: 'LoginPage',
     data(){
         return{
             user:{
-                email: '',
+                email:'',
                 password: ''
             }
         }
     },
+    computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+  },
+  
     methods:{
-        async loginAccount(){
-            await axios.post('http://localhost:8080/login', {
-                email: this.user.email,
-                password: this.user.password
+        handleLogin(){
+            this.$store.dispatch('auth/login', this.user)
+            .then(() => {
+            // Registration successful, do something if needed
+            console.log('Login successful');
+            // Optionally, you can redirect the user to another page
             })
-            .then(response => {
-            if(response.data.token){
-                localStorage.setItem('token', response.data.token);
-                console.log('Successfully Login');
-                this.$router.push('/property-for-sale')
-            }else{
-                console.log('Invalid email or password');
-            }
-        })
-        .catch(error => {
-            console.error(error)
-            // Handle other errors, like network issues, server errors, etc.
-        })   
-    }
+            .catch(error => {
+            // Registration failed, handle the error
+            console.error('Registration failed:', error);
+            // Optionally, you can display an error message to the user
+            });
+        }
     }
 }
 </script>
