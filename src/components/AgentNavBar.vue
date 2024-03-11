@@ -11,7 +11,7 @@
 
 <script>
 export default{
-    name: "ProfileNavBar",
+    name: "AgentNavBar",
 }
 </script>
 

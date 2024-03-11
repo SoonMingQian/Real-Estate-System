@@ -25,6 +25,9 @@ public class User {
 	@Column(unique=true)
 	private String email;
 	private String password;
+	private String nationality;
+	private String address;
+	private String eircode;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", 
@@ -48,6 +51,19 @@ public class User {
 	}
 
 	
+	public User(String firstName, String lastName, String email, String password, String nationality, String address,
+			String eircode) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.nationality = nationality;
+		this.address = address;
+		this.eircode = eircode;
+	}
+
+
 	public User() {
 		super();
 	}
@@ -99,6 +115,36 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+
+	public String getNationality() {
+		return nationality;
+	}
+
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getEircode() {
+		return eircode;
+	}
+
+
+	public void setEircode(String eircode) {
+		this.eircode = eircode;
 	}
 	
 	

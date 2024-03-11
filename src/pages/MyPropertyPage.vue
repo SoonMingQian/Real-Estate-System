@@ -1,5 +1,5 @@
 <template>
-    <ProfileNavBar />
+    <AgentNavBar />
     <div class="salerent-title">
         <h3><font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List</h3>
     </div>
@@ -14,15 +14,16 @@
 </template>
 
 <script>
-import ProfileNavBar from '../components/ProfileNavBar.vue';
+import AgentNavBar from '../components/AgentNavBar.vue';
 import PropertyList from '../components/PropertyList.vue';
 import { savedProperty } from '@/temp-data';
 import '../save-page.css'
+import UserService from '@/services/UserService';
 export default {
-    name: "SellPropertyPage",
+    name: "SaleRentPage",
     components: {
         PropertyList,
-        ProfileNavBar,
+        AgentNavBar,
     },
     style:{
         styleObject:{
@@ -34,6 +35,15 @@ export default {
             savedProperty,
             isActive: true,
         }
+    },
+    mounted(){
+        UserService.getAgentSaleRentList()
+        .then((response) => {
+            this.content = response.data;
+        },
+        (error) => {
+            this.content = (error.response )
+        })
     }
 }
 </script>
@@ -61,4 +71,4 @@ export default {
 }
 
 
-</style>
+</style>../components/AgentNavBar.vue

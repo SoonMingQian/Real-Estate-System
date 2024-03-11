@@ -1,5 +1,5 @@
 <template>
-    <ProfileNavBar />
+    <AgentNavBar />
     <div class="my-profile">
         <h1>My Profile</h1>
         <p>First Name: {{ currentUser.firstName }}</p>
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import ProfileNavBar from '../components/ProfileNavBar.vue';
+import AgentNavBar from '@/components/AgentNavBar.vue';
 export default {
     name: "ProfilePage",
     components:{
-        ProfileNavBar,
+        AgentNavBar,
     },
     computed:{
         currentUser(){
@@ -60,4 +60,4 @@ export default {
     height: 30px;
     margin-bottom: 40px;
 }
-</style>
+</style>../components/AgentNavBar.vue
