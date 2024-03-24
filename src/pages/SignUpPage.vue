@@ -20,44 +20,16 @@
 <script>
 export default {
     name:"SignUpPage",
-  data() {
-    return {
-      user: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: ''
-      },
-      confirmPassword: ''
-    };
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-  },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push("/my-profile");
+    data(){
+        return{
+            user:{
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: ""
+            }
+        }
     }
-  },
-  methods: {
-    handleRegister() {
-      // Dispatch the register action
-      this.$store.dispatch('auth/register', this.user)
-        .then(() => {
-          // Registration successful, do something if needed
-          console.log('Registration successful');
-          this.$router.push("/login");
-          // Optionally, you can redirect the user to another page
-        })
-        .catch(error => {
-          // Registration failed, handle the error
-          console.error('Registration failed:', error);
-          // Optionally, you can display an error message to the user
-        });
-    }
-  }
 };
 </script>
 

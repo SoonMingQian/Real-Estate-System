@@ -11,9 +11,8 @@
                 <li><router-link class="link" to="apartment">Apartment</router-link></li>
                 <li><router-link class="link" to="commercial">Commercial</router-link></li>
                 <li><router-link class="link" to="sell-property">Sell</router-link></li>
-                <li><router-link v-if="!currentUser" class="link" to="login">Log In</router-link></li>
-                <li><router-link v-if="currentUser" class="link" to="my-profile">{{ currentUser.firstName }}</router-link></li>
-                <li><a v-if="currentUser" class="link" @click.prevent="logOut"><font-awesome-icon :icon="['fas', 'arrow-right-from-bracket']" /></a></li>
+                <li><router-link class="link" to="my-profile">My Profile</router-link></li>
+               
             </ul>
             <div class="icon">
                 <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars"
@@ -26,9 +25,7 @@
                     <li><router-link class="link" to="apartment">Apartment</router-link></li>
                     <li><router-link class="link" to="commercial">Commercial</router-link></li>
                     <li><router-link class="link" to="sell-property">Sell</router-link></li>
-                    <li><router-link class="link" to="my-profile">My Profile</router-link></li>
-                    <li><router-link class="link" to="save">Shortlist</router-link></li>
-                    <li><router-link class="link" to="my-property">Rent/Sale List</router-link></li>
+                   
                 </ul>
             </transition>
         </nav>
@@ -40,11 +37,6 @@
 import logo from '@/assets/logo.png'
 export default {
     name: "NavBar",
-    computed:{
-        currentUser(){
-            return this.$store.state.auth.user;
-        }
-    },
     data() {
         return {
             logo,
@@ -83,10 +75,6 @@ export default {
             this.mobileNav = false;
             return;
         },
-        logOut(){
-            this.$store.dispatch('auth/logout');
-            this.$router.push('/login');
-        }
     }
 }
 </script>

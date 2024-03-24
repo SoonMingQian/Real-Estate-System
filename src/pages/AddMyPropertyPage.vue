@@ -27,6 +27,7 @@
             </div>
             <div class="other-container">
                 <div class="other">
+                    <p>Sale/Rent</p>
                     <p>Name: </p>
                     <input class="other-input" placeholder="House name" required><br>
                     <p>Address: </p>
@@ -64,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button">Save Changes</button>
+            <button type="button" @click="createProperty">Save Changes</button>
         </div>
     </div>
 </template>
@@ -77,7 +78,6 @@ export default {
         return {
             images: [],
             isDragging: false,
-
         }
     },
     methods: {
@@ -120,7 +120,7 @@ export default {
                     this.images.push({ name: files[i].name, url: URL.createObjectURL(files[i]) })
                 }
             }
-        }
+        },
     }
 }
 </script>

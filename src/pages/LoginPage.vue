@@ -1,14 +1,14 @@
 <template>
 <div class="wrapper">
     <h1>Login</h1>
-    <form @submit.prevent="handleLogin">
+    <form >
         <input  v-model="user.email" type="email" placeholder="Email">
         <input v-model="user.password" type="password" placeholder="Password">
         <button type="submit">Login</button>
     </form>
     
     <div class="account">
-        Dont have an account?<router-link class="account-link" to="/sign-up">Sign Up Here</router-link>
+        Dont have an account?<router-link class="account-link" to="/register">Sign Up Here</router-link>
     </div>
 </div>
 
@@ -22,31 +22,9 @@ export default{
     data(){
         return{
             user:{
-                email:'',
-                password: ''
+                email: "",
+                password: ""
             }
-        }
-    },
-    computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-  },
-  
-    methods:{
-        handleLogin(){
-            this.$store.dispatch('auth/login', this.user)
-            .then(() => {
-            // Registration successful, do something if needed
-            console.log('Login successful');
-            this.$router.push("/my-profile");
-            // Optionally, you can redirect the user to another page
-            })
-            .catch(error => {
-            // Registration failed, handle the error
-            console.error('Registration failed:', error);
-            // Optionally, you can display an error message to the user
-            });
         }
     }
 }

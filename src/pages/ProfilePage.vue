@@ -24,14 +24,12 @@ export default {
     components:{
         ProfileNavBar,
     },
-    computed:{
-        currentUser(){
-            return this.$store.state.auth.user;
-        }
-    },
-    mounted(){
-        if(!this.currentUser){
-            this.$router.push('/login');
+    data(){
+        return{
+            currentUser:{
+                firstName: "John",
+                lastName: "Doe",
+            }
         }
     }
 }
