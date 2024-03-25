@@ -16,6 +16,7 @@ import com.example.backend.models.File;
 import com.example.backend.repositories.PropertyRepository;
 import com.example.backend.services.FileService;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class FileController {
 

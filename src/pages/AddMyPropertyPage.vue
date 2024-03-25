@@ -1,6 +1,6 @@
 <template>
     <div class="add-my-property">
-        <h1>Add a property</h1>
+        <h1>Upload Image</h1>
 
         <div class="add-container">
             <div class="card">
@@ -20,65 +20,30 @@
 
                         <span class="delete" @click="deleteImage">&times;</span>
 
-                        <img :src="image.url" />
+                        <img :src="createObjectURL(image.file)" />
                     </div>
                 </div>
-                
+
             </div>
-            <div class="other-container">
-                <div class="other">
-                    <p>Sale/Rent</p>
-                    <p>Name: </p>
-                    <input class="other-input" placeholder="House name" required><br>
-                    <p>Address: </p>
-                    <input class="other-input" placeholder="House address" required><br>
-                    <p>Price: </p>
-                    <input class="other-input" placeholder="Price" type="number" required><br>
-                    <p>Number of Bedroom: </p>
-                    <input class="other-input" placeholder="Number of Bedroom" type="number" min="0" required><br>
-                    <p>Number of Bathroom: </p>
-                    <input class="other-input" placeholder="Number of Bathroom" type="number" min="0" required><br>
-                    <p>Sqft: </p>
-                    <input class="other-input" placeholder="Sqft" type="number" min="0" required><br>
-                    <p>Description</p>
-                    <p style="white-space: pre-line;"></p>
-                    <textarea v-model="description" placeholder="Description" required></textarea>
-                    <div class="unit-feature">
-                        <p>Unit Features: {{ features }}</p>
-                        <input type="checkbox" id="air-conditioning" value="Air-Conditioning" v-model="features">
-                        <label for="air-conditioning">Air-Conditioning</label><br>
-                        <input type="checkbox" id="balcony" value="Balcony" v-model="features">
-                        <label for="balcony">Balcony</label><br>
-                        <input type="checkbox" id="wifi" value="WIFI" v-model="features">
-                        <label for="wifi">WIFI</label><br>
-                        <input type="checkbox" id="washing-machine-dryer" value="Washing Machine / Dryer"
-                            v-model="features">
-                        <label for="washing-machine-dryer">Washing Machine / Dryer</label><br>
-                        <input type="checkbox" id="oven-microwave" value="Oven / Microwave" v-model="features">
-                        <label for="oven-microwave">Oven / Microwave</label><br>
-                        <input type="checkbox" id="water-heater" value="Water Heater" v-model="features">
-                        <label for="water-heater">Water Heater</label><br>
-                        <input type="checkbox" id="fridge" value="Fridge" v-model="features">
-                        <label for="fridge">Fridge</label><br>
-                        <input type="checkbox" id="furnished" value="Furnished" v-model="features">
-                        <label for="furnished">Furnished</label><br>
-                    </div>
-                </div>
-            </div>
-            <button type="button" @click="createProperty">Save Changes</button>
+
+            <button type="button" @click="submitFiles">Submit</button>
         </div>
     </div>
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
     name: "AddMyPropertyPage",
     data() {
         return {
             images: [],
             isDragging: false,
+            propertyId: null
         }
+    },
+    created() {
+        this.propertyId = this.$route.params.propertyId;
     },
     methods: {
         selectFiles() {
@@ -93,7 +58,7 @@ export default {
                 if (files[i].type.split("/")[0] != "image")
                     continue;
                 if (!this.images.some((e) => e.name === files[i].name)) {
-                    this.images.push({ name: files[i].name, url: URL.createObjectURL(files[i]) })
+                    this.images.push({ name: files[i].name, file: files[i] })
                 }
             }
         },
@@ -117,15 +82,44 @@ export default {
                 if (files[i].type.split("/")[0] != "image")
                     continue;
                 if (!this.images.some((e) => e.name === files[i].name)) {
-                    this.images.push({ name: files[i].name, url: URL.createObjectURL(files[i]) })
+                    this.images.push({ name: files[i].name, file: files[i] })
                 }
             }
         },
+        createObjectURL(file) {
+            return URL.createObjectURL(file);
+        },
+        submitFiles() {
+            const formData = new FormData();
+            for (let i = 0; i < this.images.length; i++) {
+                formData.append('files', this.images[i].file);
+            }
+
+            axios.post(`http://localhost:8080/add-property/${this.propertyId}/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                    this.$router.push({ path: '/my-property' });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+        }
     }
 }
 </script>
 
 <style scoped>
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+
+}
+
 .add-container {
     width: 70%;
     margin: 0 auto;
@@ -257,35 +251,4 @@ button {
     z-index: 999;
     color: crimson;
 }
-
-.other-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    padding-bottom: 30px;
-}
-
-
-.other {
-    width: 100%;
-    /* Adjust as needed */
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.other-input{
-    width: 60%;
-    height: 30px;
-    border-radius: 3px;
-}
-
-.other textarea{
-    width: 75%;
-    height: 120px;
-}
-
-
 </style>

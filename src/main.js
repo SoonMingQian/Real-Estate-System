@@ -11,6 +11,7 @@ import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
 import AddMyPropertyPage from './pages/AddMyPropertyPage.vue'
+import AddPropertyPage from './pages/AddPropertyPage.vue'
 import ApartmentPage from './pages/ApartmentPage.vue'
 import CommercialPage from './pages/CommercialPage.vue'
 import SignUpPage from './pages/SignUpPage.vue'
@@ -61,8 +62,11 @@ createApp(App)
         path: '/my-property/edit-property/:propertyId',
         component: EditMyPropertyPage,
     },{
-        path: '/my-property/add-property',
+        path: '/my-property/add-property/:propertyId',
         component: AddMyPropertyPage,
+    },{
+        path: '/my-property/add-property',
+        component: AddPropertyPage,
     },{
         path: '/my-profile',
         component: ProfilePage
