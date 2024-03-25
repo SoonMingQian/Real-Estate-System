@@ -24,4 +24,8 @@ public class PropertyService {
 		return propertyRepository.save(property);
 	}
 	
+	public List<Property> getSaleProperties(){
+		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "sale");
+	}
+	
 }
