@@ -84,7 +84,7 @@ export default{
             axios.post("http://localhost:8080/add-property", data)
                 .then(response => {
                     console.log(response.data);
-                    this.$router.push({ path: '/my-property/add-property/${response.data.id}' });
+                    this.$router.push({ path: `/my-property/add-property/${response.data.id}` });
                 })
                 .catch(error => {
                     console.log(error);

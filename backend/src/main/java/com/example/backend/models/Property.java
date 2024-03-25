@@ -28,7 +28,8 @@ public class Property {
 	private String propertyAddress;
 	
 	private String saleType;
-	 
+	
+	@Enumerated(EnumType.STRING)
 	private Status status = Status.PENDING;
 	
 	private double price;
