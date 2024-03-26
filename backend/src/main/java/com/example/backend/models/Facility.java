@@ -3,6 +3,8 @@ package com.example.backend.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,6 +23,7 @@ public class Facility {
 	private String name;
 	
 	@ManyToMany(mappedBy = "facilities")
+    @JsonIgnore 
     private Set<Property> properties = new HashSet<>();
 
     

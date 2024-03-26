@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.models.Facility;
+import com.example.backend.models.File;
 import com.example.backend.models.Property;
 import com.example.backend.repositories.FacilityRepository;
 import com.example.backend.repositories.PropertyRepository;
+import com.example.backend.services.FileService;
 import com.example.backend.services.PropertyService;
 
 @CrossOrigin(origins = "*")
@@ -28,43 +30,44 @@ public class PropertyController {
 
 	@Autowired
 	PropertyService propertyService;
-	
+
 	@Autowired
 	PropertyRepository propertyRepository;
 
 	@Autowired
 	FacilityRepository facilityRepository;
-	
-	@GetMapping("/property-for-sale")
-	public ResponseEntity<List<Property>> getSaleProperties(){
-		List<Property> saleproperties = propertyService.getSaleProperties();
-		return new ResponseEntity<>(saleproperties, HttpStatus.OK);
+
+	@Autowired
+	FileService fileService;
+
+	@GetMapping("/properties")
+	public ResponseEntity<List<Property>> getAllProperties() {
+	    List<Property> properties = propertyService.getSaleProperties();
+	    return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	
+
 	@PostMapping("/add-property")
 	public ResponseEntity<?> createProperty(@RequestBody Property property) {
 		Property newProperty = new Property(property.getPropertyName(),
-            property.getPropertyAddress(),
-            property.getSaleType(),
-            property.getPrice(),
-            property.getSqft(),
-            property.getNumOfBath(),
-            property.getNumOfBed(),
-            property.getDescription());
+				property.getPropertyAddress(),
+				property.getSaleType(),
+				property.getPrice(),
+				property.getSqft(),
+				property.getNumOfBath(),
+				property.getNumOfBed(),
+				property.getDescription());
 
-			Set<Facility> facilities = new HashSet<>();
-			for(Facility facility : property.getFacilities()){
-				Optional<Facility> existingFacilityOptional = facilityRepository.findById(facility.getId());
-				if (existingFacilityOptional.isPresent()) {
-					facilities.add(existingFacilityOptional.get());
-				}
+		Set<Facility> facilities = new HashSet<>();
+		for (Facility facility : property.getFacilities()) {
+			Optional<Facility> existingFacilityOptional = facilityRepository.findById(facility.getId());
+			if (existingFacilityOptional.isPresent()) {
+				facilities.add(existingFacilityOptional.get());
 			}
-			property.setFacilities(facilities);
-			Property savedProperty = propertyRepository.save(property);
-			return new ResponseEntity<>(savedProperty, HttpStatus.CREATED);
-	
-			
+		}
+		property.setFacilities(facilities);
+		Property savedProperty = propertyRepository.save(property);
+		return new ResponseEntity<>(savedProperty, HttpStatus.CREATED);
+
 	}
 }
-
-

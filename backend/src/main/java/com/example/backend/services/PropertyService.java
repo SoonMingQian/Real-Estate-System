@@ -28,4 +28,6 @@ public class PropertyService {
 		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "sale");
 	}
 	
+	
+	
 }

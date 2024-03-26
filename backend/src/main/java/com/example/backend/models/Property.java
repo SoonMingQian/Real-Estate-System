@@ -42,6 +42,9 @@ public class Property {
 	
 	private String description;
 	
+	@OneToMany(mappedBy = "property")
+	private List<File> files;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "property_facility",
 	           joinColumns = @JoinColumn(name = "property_id"),
@@ -162,6 +165,17 @@ public class Property {
 	}
 
 
+	public List<File> getFiles() {
+		return files;
+	}
+
+
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+
+
+	
 
 	
 }

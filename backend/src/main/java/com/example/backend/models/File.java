@@ -2,6 +2,8 @@ package com.example.backend.models;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class File {
 	
 	@ManyToOne
 	@JoinColumn(name = "propertyId")
+    @JsonIgnore 
 	private Property property;
 
 	public File() {

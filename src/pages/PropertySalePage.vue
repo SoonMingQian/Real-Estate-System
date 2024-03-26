@@ -1,25 +1,37 @@
 <template>
-    <PropertyFilter />
-    <SaleList :houses="houses"/>
+    <SaleList :properties="properties" />
 </template>
 
 <script>
 import SaleList from '../components/SaleList.vue';
-import PropertyFilter from '../components/PropertyFilter.vue'
-import { houses } from '../temp-data.js';
+
+import axios from 'axios';
 import '../property-for-sale.css'
+
 export default {
     name: "PropertySalePage",
-    components:{
+    components: {
         SaleList,
-        PropertyFilter
     },
     data() {
         return {
-            houses,
+            properties: [],
         }
+    },
+    created() {
+        this.fetchProperties();
+    },
+    methods: {
+        async fetchProperties() {
+            try {
+                const response = await axios.get('http://localhost:8080/properties');
+                this.properties = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+       
     }
 }
 
 </script>
-

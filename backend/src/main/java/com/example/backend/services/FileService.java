@@ -1,5 +1,7 @@
 package com.example.backend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,14 @@ public class FileService {
 			    .orElseThrow(() -> new ResourceNotFoundException("Not found Property with id = " + propertyId));
 		file.setProperty(property);
 		return fileRepository.save(file);
+	}
+	
+	public File getFirstFileByPropertyId(Long propertyId) {
+	    List<File> files = fileRepository.findFilesByPropertyId(propertyId);
+	    if (files.isEmpty()) {
+	        throw new ResourceNotFoundException("No files found for Property with id = " + propertyId);
+	    }
+	    return files.get(0);
 	}
 
 }
