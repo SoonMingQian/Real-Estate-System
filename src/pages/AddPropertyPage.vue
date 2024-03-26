@@ -8,6 +8,15 @@
                 <option value="rent">Rent</option>
             </select>
 
+            <p>Property Type <span class="required">*</span></p>
+            <select class="other-input" v-model="propertyType">
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="office">Office</option>
+                <option value="parking">Parking</option>
+                <option value="restaurant/bar">Restaurant/Bar</option>
+            </select>
+
             <p>Name <span class="required">*</span></p>
             <input class="other-input" placeholder="House name" v-model="propertyName" required><br>
             <p>Address <span class="required">*</span> </p>
@@ -46,7 +55,8 @@ export default{
     name: "AddPropertyPage",
     data(){
         return{
-            saleType: "sale",
+            saleType: "",
+            propertyType: "",
             propertyName: "",
             propertyAddress: "",
             price: "",
@@ -71,6 +81,7 @@ export default{
         handleSubmit(){
             const data = {
                 saleType: this.saleType,
+                propertyType: this.propertyType,
                 propertyName: this.propertyName,
                 propertyAddress: this.propertyAddress,
                 price: this.price,

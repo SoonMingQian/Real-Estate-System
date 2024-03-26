@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class PropertyService {
 	
 	public List<Property> getRentProperties(){
 		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "rent");
+	}
+	
+	public Optional<Property> getPropertyById(Long id) {
+	    return propertyRepository.findById(id);
 	}
 	
 	

@@ -29,6 +29,8 @@ public class Property {
 	
 	private String saleType;
 	
+	private String propertyType;
+	
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.PENDING;
 	
@@ -56,12 +58,13 @@ public class Property {
 	}
 
 	
-	public Property(String propertyName, String propertyAddress, String saleType, double price, double sqft,
+	public Property(String propertyName, String propertyAddress, String saleType, String propertyType, double price, double sqft,
 			int numOfBath, int numOfBed, String description) {
 		super();
 		this.propertyName = propertyName;
 		this.propertyAddress = propertyAddress;
 		this.saleType = saleType;
+		this.propertyType = propertyType;
 		this.price = price;
 		this.sqft = sqft;
 		this.numOfBath = numOfBath;
@@ -175,6 +178,16 @@ public class Property {
 	}
 
 
+	public String getPropertyType() {
+		return propertyType;
+	}
+
+
+	public void setPropertyType(String propertyType) {
+		this.propertyType = propertyType;
+	}
+
+	
 	
 
 	
