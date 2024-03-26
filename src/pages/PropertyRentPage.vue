@@ -1,11 +1,12 @@
 <template>
-    <SaleList :houses="houses"/>
+    <SaleList :properties="properties"/>
 </template>
 
 <script>
+import axios from 'axios';
 import SaleList from '../components/SaleList.vue';
-import { houses } from '../temp-data.js';
 import '../property-for-sale.css'
+
 export default {
     name: "PropertySalePage",
     components:{
@@ -13,8 +14,22 @@ export default {
     },
     data() {
         return {
-            houses,
+            properties: [],
         }
+    },
+    created() {
+        this.fetchProperties();
+    },
+    methods: {
+        async fetchProperties() {
+            try {
+                const response = await axios.get('http://localhost:8080/properties/rent');
+                this.properties = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+       
     }
 }
 </script>

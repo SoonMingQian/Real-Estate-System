@@ -24,7 +24,7 @@ export default {
     methods: {
         async fetchProperties() {
             try {
-                const response = await axios.get('http://localhost:8080/properties');
+                const response = await axios.get('http://localhost:8080/properties/sale');
                 this.properties = response.data;
             } catch (error) {
                 console.error(error);

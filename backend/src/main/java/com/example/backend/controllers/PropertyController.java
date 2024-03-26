@@ -40,9 +40,15 @@ public class PropertyController {
 	@Autowired
 	FileService fileService;
 
-	@GetMapping("/properties")
-	public ResponseEntity<List<Property>> getAllProperties() {
+	@GetMapping("/properties/sale")
+	public ResponseEntity<List<Property>> getAllSaleProperties() {
 	    List<Property> properties = propertyService.getSaleProperties();
+	    return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
+	
+	@GetMapping("/properties/rent")
+	public ResponseEntity<List<Property>> getAllRentProperties() {
+	    List<Property> properties = propertyService.getRentProperties();
 	    return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	

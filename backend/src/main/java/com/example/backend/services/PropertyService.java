@@ -28,6 +28,10 @@ public class PropertyService {
 		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "sale");
 	}
 	
+	public List<Property> getRentProperties(){
+		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "rent");
+	}
+	
 	
 	
 }
