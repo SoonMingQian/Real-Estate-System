@@ -15,4 +15,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 	List<Property> findByStatusAndSaleType(Status status, String saleType);
 	
 	Optional<Property> findById(Long id);
+	
+	List<Property> findByPropertyType(String propertyType);
 }

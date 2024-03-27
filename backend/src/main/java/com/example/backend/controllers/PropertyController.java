@@ -53,6 +53,18 @@ public class PropertyController {
 	    return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
 	
+	@GetMapping("/apartment")
+	public ResponseEntity<List<Property>> getAllApartment() {
+	    List<Property> properties = propertyService.getApartment();
+	    return new ResponseEntity<>(properties, HttpStatus.OK);
+	}	
+	
+	@GetMapping("/office")
+	public ResponseEntity<List<Property>> getAllOffice() {
+	    List<Property> properties = propertyService.getOffice();
+	    return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
+	
 	@GetMapping("property/{id}")
     public ResponseEntity<Property> getPropertyById(@PathVariable Long id) {
         Optional<Property> property = propertyService.getPropertyById(id);

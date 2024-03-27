@@ -4,7 +4,6 @@
 
 <script>
 import SaleList from '../components/SaleList.vue';
-
 import axios from 'axios';
 import '../property-for-sale.css'
 

@@ -85,13 +85,16 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <NotFoundPage/>
+    </div>
     
 </template>
 
 <script>
 import axios from 'axios';
 import { Pagination } from 'swiper'
-
+import NotFoundPage from './NotFoundPage.vue'
 import '../property-detail-page.css'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -107,6 +110,9 @@ export default {
         return {
             property: null,
         }
+    },
+    components:{
+        NotFoundPage
     },
     async created() {
         await this.fetchProperty();

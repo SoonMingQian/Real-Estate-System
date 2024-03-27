@@ -37,6 +37,12 @@ public class PropertyService {
 	    return propertyRepository.findById(id);
 	}
 	
+	public List<Property> getApartment(){
+		return propertyRepository.findByPropertyType("apartment");
+	}
 	
+	public List<Property> getOffice(){
+		return propertyRepository.findByPropertyType("office");
+	}
 	
 }
