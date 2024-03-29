@@ -1,10 +1,10 @@
 <template>
     <div class="profile-nav">
         <ul class="profile-navigation">
-            <li><router-link class="profile-link" to="my-profile"><font-awesome-icon :icon="['fas', 'user']" /> My Profile</router-link></li>
-            <li><router-link class="profile-link" to="save"><font-awesome-icon :icon="['fas', 'heart']" /> Shortlist</router-link></li>
+            <li><router-link class="profile-link" to="/my-profile"><font-awesome-icon :icon="['fas', 'user']" /> My Profile</router-link></li>
+            <li><router-link class="profile-link" to="/save"><font-awesome-icon :icon="['fas', 'heart']" /> Shortlist</router-link></li>
             <li >
-                <router-link class="profile-link" to="my-property">
+                <router-link class="profile-link" to="/my-property">
                     <font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List
                 </router-link>
             </li>

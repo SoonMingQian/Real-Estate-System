@@ -1,91 +1,52 @@
 <template>
-    <div class="edit-my-property">
-        <h1>Edit {{ house.houseName }}</h1>
-
-        <div class="edit-container">
-            <div class="card">
-                <div class="top">
+   
+            <div class="edit-container">
+                <div class="card">
+                    <div class="top">
+                        <div class="container">
+                            <div v-if="property && property.files">
+                            <div class="image" v-for="(files, index) in property.files" :key="index">
+                                <span class="delete" @click="deleteFile(files.id)">&times;</span>
+                                <img :src="'data:' + files.contentType + ';base64,' + files.fileData" />
+                            </div>
+                        </div>
+                        </div>
+                        <p>Drag & drop images</p>
+                    </div>
+                    <div class="drag-area" @dragover.prevent="onDragover" @dragleave.prevent="onDragleave"
+                        @drop.prevent="onDrop">
+                        <span v-if="!isDragging">Drag & drop image here or
+                            <span class="select" role="button" @click="selectFiles">Choose</span>
+                        </span>
+                        <div v-else class="select">Drop images here</div>
+                        <input name="file" type="file" class="file" ref="fileInput" multiple @change="onFileSelect">
+                    </div>
                     <div class="container">
-                        <div class="image" v-for="(image, index) in house.images" :key="index">
+                        <div class="image" v-for="(image, index) in images" :key="index">
                             <span class="delete" @click="deleteImage">&times;</span>
-                            <img :src="image.url" />
+                            <img :src="createObjectURL(image.file)" />
                         </div>
                     </div>
-                    <p>Drag & drop images</p>
-                </div>
-                <div class="drag-area" @dragover.prevent="onDragover" @dragleave.prevent="onDragleave"
-                    @drop.prevent="onDrop">
-                    <span v-if="!isDragging">Drag & drop image here or
-                        <span class="select" role="button" @click="selectFiles">Choose</span>
-                    </span>
-                    <div v-else class="select">Drop images here</div>
-                    <input name="file" type="file" class="file" ref="fileInput" multiple @change="onFileSelect">
-                </div>
-                <div class="container">
-                    <div class="image" v-for="(image, index) in images" :key="index">
-
-                        <span class="delete" @click="deleteImage">&times;</span>
-
-                        <img :src="image.url" />
-                    </div>
-                </div>
-                
-            </div>
-            <div class="other-container">
-                <div class="other">
-                    <p>Name: {{ house.houseName }}</p>
-                    <input class="other-input" v-model="house.houseName" placeholder="House name" required>
-                    <p>Address: {{ house.houseAddress }}</p>
-                    <input class="other-input" v-model="house.houseAddress" placeholder="House address" required>
-                    <p>Price: {{ house.price }}</p>
-                    <input class="other-input" v-model="house.price" placeholder="Price" type="number" required>
-                    <p>Number of Bedroom: {{ house.numOfBedroom }}</p>
-                    <input class="other-input" v-model="house.numOfBedroom" placeholder="Number of Bedroom" type="number" min="0" required>
-                    <p>Number of Bathroom: {{ house.numOfBathroom }}</p>
-                    <input class="other-input" v-model="house.numOfBathroom" placeholder="Number of Bathroom" type="number" min="0" required>
-                    <p>Sqft: {{ house.sqft }}</p>
-                    <input class="other-input" v-model="house.sqft" placeholder="Sqft" type="number" min="0" required>
-                    <p>Description</p>
-                    <p style="white-space: pre-line;">{{ house.description }}</p>
-                    <textarea v-model="house.description" placeholder="Description" required></textarea>
-                    <div class="unit-feature">
-                        <p>Unit Features: {{ house.features }}</p>
-                        <input type="checkbox" id="air-conditioning" value="Air-Conditioning" v-model="house.features">
-                        <label for="air-conditioning">Air-Conditioning</label><br>
-                        <input type="checkbox" id="balcony" value="Balcony" v-model="house.features">
-                        <label for="balcony">Balcony</label><br>
-                        <input type="checkbox" id="wifi" value="WIFI" v-model="house.features">
-                        <label for="wifi">WIFI</label><br>
-                        <input type="checkbox" id="washing-machine-dryer" value="Washing Machine / Dryer"
-                            v-model="house.features">
-                        <label for="washing-machine-dryer">Washing Machine / Dryer</label><br>
-                        <input type="checkbox" id="oven-microwave" value="Oven / Microwave" v-model="house.features">
-                        <label for="oven-microwave">Oven / Microwave</label><br>
-                        <input type="checkbox" id="water-heater" value="Water Heater" v-model="house.features">
-                        <label for="water-heater">Water Heater</label><br>
-                        <input type="checkbox" id="fridge" value="Fridge" v-model="house.features">
-                        <label for="fridge">Fridge</label><br>
-                        <input type="checkbox" id="furnished" value="Furnished" v-model="house.features">
-                        <label for="furnished">Furnished</label><br>
-                    </div>
+                    <button type="button" @click="submitFiles">Submit</button>
                 </div>
             </div>
-            <button type="button">Save Changes</button>
-        </div>
-    </div>
+
+           
 </template>
 
 <script>
-import { houses } from '../temp-data'
+import axios from 'axios';
 export default {
     name: "EditMyPropertyPage",
     data() {
         return {
-            house: houses.find(house => house.id == this.$route.params.propertyId),
             images: [],
             isDragging: false,
-
+            property: null, 
         }
+    },
+    created() {
+        this.fetchProperty();
     },
     methods: {
         selectFiles() {
@@ -100,7 +61,7 @@ export default {
                 if (files[i].type.split("/")[0] != "image")
                     continue;
                 if (!this.images.some((e) => e.name === files[i].name)) {
-                    this.images.push({ name: files[i].name, url: URL.createObjectURL(files[i]) })
+                    this.images.push({ name: files[i].name, file: files[i] })
                 }
             }
         },
@@ -124,10 +85,56 @@ export default {
                 if (files[i].type.split("/")[0] != "image")
                     continue;
                 if (!this.images.some((e) => e.name === files[i].name)) {
-                    this.images.push({ name: files[i].name, url: URL.createObjectURL(files[i]) })
+                    this.images.push({ name: files[i].name, file: files[i] })
                 }
             }
+        },
+        createObjectURL(file) {
+            return URL.createObjectURL(file);
+        },
+        async fetchProperty() {
+            const propertyId = this.$route.params.propertyId;
+            console.log(propertyId);
+            try {
+                const response = await axios.get(`http://localhost:8080/property/${propertyId}`);
+                this.property = response.data;
+                console.log(this.property);
+            } catch (error) {
+                console.error("Error fetching property", error);
+            }
+        },
+        async deleteFile(fileId) {
+            if(window.confirm("Are you sure you want to delete this image?")){
+            try {
+                await axios.delete(`http://localhost:8080/file/${fileId}`);
+                // Remove the deleted image from the property.images array
+                this.property.files = this.property.files.filter(file => file.id !== fileId);
+            } catch (error) {
+                console.error("Error deleting file", error);
+            }
         }
+        },
+        submitFiles() {
+            const formData = new FormData();
+            for (let i = 0; i < this.images.length; i++) {
+                formData.append('files', this.images[i].file);
+            }
+
+            axios.post(`http://localhost:8080/add-property/${this.property.id}/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                    this.$router.push({ path: '/my-property' });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+        }
+
     }
 }
 </script>
@@ -166,6 +173,7 @@ button {
     margin-bottom: 30px;
     width: 100%;
     background: crimson;
+    cursor: pointer;
 }
 
 .card .drag-area {
@@ -263,35 +271,4 @@ button {
     z-index: 999;
     color: crimson;
 }
-
-.other-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    padding-bottom: 30px;
-}
-
-
-.other {
-    width: 100%;
-    /* Adjust as needed */
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.other-input{
-    width: 60%;
-    height: 30px;
-    border-radius: 3px;
-}
-
-.other textarea{
-    width: 75%;
-    height: 120px;
-}
-
-
 </style>

@@ -1,10 +1,8 @@
 <template>
     <ProfileNavBar />
-    <div class="salerent-title">
-        <h3><font-awesome-icon :icon="['fas', 'house']" /> Sale/Rent List</h3>
-    </div>
+    
     <div class="page-container">
-        <PropertyList :savedProperty="savedProperty" />
+        <PropertyList :properties="properties" />
         <div class="button">
         <button class="add-property">
             <router-link to="my-property/add-property"><font-awesome-icon :icon="['fas', 'plus']" /></router-link>
@@ -14,9 +12,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ProfileNavBar from '../components/ProfileNavBar.vue';
 import PropertyList from '../components/PropertyList.vue';
-import { savedProperty } from '@/temp-data';
 import '../save-page.css'
 export default {
     name: "SaleRentPage",
@@ -31,10 +29,24 @@ export default {
     },
     data() {
         return {
-            savedProperty,
-            isActive: true,
+            properties: [],
         }
     },
+    created() {
+        this.fetchProperties();
+    },
+    methods: {
+        async fetchProperties() {
+            try {
+                const response = await axios.get('http://localhost:8080/properties/sale');
+                this.properties = response.data;
+                console.log(this.properties);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+       
+    }
 }
 </script>
 

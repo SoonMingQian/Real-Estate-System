@@ -9,6 +9,7 @@ import PropertyDetailPage from './pages/PropertyDetailPage.vue'
 import MyPropertyPage from './pages/MyPropertyPage.vue'
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
+import EditPropertyPage from './pages/EditPropertyPage.vue'
 import EditMyPropertyPage from './pages/EditMyPropertyPage.vue'
 import AddMyPropertyPage from './pages/AddMyPropertyPage.vue'
 import AddPropertyPage from './pages/AddPropertyPage.vue'
@@ -59,8 +60,11 @@ createApp(App)
         path: '/my-property',
         component: MyPropertyPage,
     },{
-        path: '/my-property/edit-property/:propertyId',
+        path: '/my-property/edit-property/image/:propertyId',
         component: EditMyPropertyPage,
+    },{
+        path: '/my-property/edit-property/:propertyId',
+        component: EditPropertyPage,
     },{
         path: '/my-property/add-property/:propertyId',
         component: AddMyPropertyPage,

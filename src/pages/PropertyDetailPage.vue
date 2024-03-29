@@ -103,7 +103,6 @@ export default {
     setup() {
         return {
             modules: [Pagination],
-
         }
     },
     data() {
@@ -122,6 +121,7 @@ export default {
             try {
                 const response = await axios.get(`http://localhost:8080/property/${this.$route.params.propertyId}`);
                 this.property = response.data;
+                console.log(this.property);
             } catch (error) {
                 console.error(error);
             }

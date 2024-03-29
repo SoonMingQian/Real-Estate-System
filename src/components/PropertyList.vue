@@ -1,24 +1,24 @@
 <template>
     <div class="save-container">
         <div class="collection-main-content">
-            <div v-if="savedProperty.length > 0">
-                <div class="property-card" v-for="house in savedProperty" :key="house.id">
+            <div v-if="properties.length > 0">
+                <div class="property-card" v-for="property in properties" :key="property.id">
                     <div class="property-card-content">
 
-                        <img :src="house.image" alt="{{ house.houseName }}" class="property-img" />
+                        <img v-if="property.files && property.files.length > 0" :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData" alt="{{ property.propertyName }}" class="property-img" />
                         <div class="property-content">
-                            <h3 class="p-name">{{ house.houseName }}</h3>
-                            <p class="p-address">{{ house.houseAddress }}</p>
-                            <p class="p-price">€ {{ house.price }}</p>
+                            <h3 class="p-name">{{ property.propertyName }}</h3>
+                            <p class="p-address">{{ property.propertyAddress }}</p>
+                            <p class="p-price">€ {{ property.price }}</p>
                             <div class="p-features">
-                                <span class="p-room-details">{{ house.numOfBedroom }} <font-awesome-icon
+                                <span class="p-room-details">{{ property.numOfBed }} <font-awesome-icon
                                         :icon="['fas', 'bed']" /></span>
-                                <span class="p-bathroom-details">{{ house.numOfBathroom }} <font-awesome-icon
+                                <span class="p-bathroom-details">{{ property.numOfBath }} <font-awesome-icon
                                         :icon="['fas', 'toilet']" /></span>
-                                <span class="p-sqft-details">{{ house.sqft }} sqft</span>
+                                <span class="p-sqft-details">{{ property.sqft }} sqft</span>
                             </div>
-                            <span class="status">Status: Approved</span>
-                            <router-link class="property-link" :to="'/my-property/edit-property/' + house.id">
+                            <span class="status">Status: {{ property.status }}</span>
+                            <router-link class="property-link" :to="`/my-property/edit-property/${property.id}`">
                                 <span class="edit-property"><font-awesome-icon :icon="['fas', 'pen-to-square']" /></span>
                             </router-link>
                             
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="savedProperty.length === 0">
+            <div v-if="properties.length === 0">
                 <h2>no content</h2>
             </div>
         </div>
@@ -35,14 +35,9 @@
 </template>
 
 <script>
-import { houses } from '../temp-data'
+
 export default{
     name: "PropertyList",
-    props: ['savedProperty'],
-    data(){
-        return{
-            house: houses.find(house => house.id == this.$route.params.propertyId)
-        }
-    }
+    props: ['properties'],
 }
 </script>
