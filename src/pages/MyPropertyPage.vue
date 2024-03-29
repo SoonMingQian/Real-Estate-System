@@ -1,8 +1,11 @@
 <template>
     <ProfileNavBar />
-    
     <div class="page-container">
-        <PropertyList :properties="properties" />
+        <PropertyList :properties="properties" @property-deleted="fetchProperties"/>
+        <div v-if="properties.length === 0">
+            <img class="img" :src="noproperty" alt="No properties" />
+            <h2 class="noproperty">No Property</h2>
+        </div>
         <div class="button">
         <button class="add-property">
             <router-link to="my-property/add-property"><font-awesome-icon :icon="['fas', 'plus']" /></router-link>
@@ -15,6 +18,7 @@
 import axios from 'axios';
 import ProfileNavBar from '../components/ProfileNavBar.vue';
 import PropertyList from '../components/PropertyList.vue';
+import noproperty from '../assets/noproperty.png';
 import '../save-page.css'
 export default {
     name: "SaleRentPage",
@@ -30,6 +34,7 @@ export default {
     data() {
         return {
             properties: [],
+            noproperty,
         }
     },
     created() {
@@ -44,7 +49,7 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-        },
+        },    
        
     }
 }
@@ -72,5 +77,21 @@ export default {
     color: crimson;
 }
 
+.img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10%;
+    height: 20%;
+    padding-top: 100px;
+}
+
+.noproperty{
+    text-align: center;
+    color: crimson;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 80px;
+}
 
 </style>

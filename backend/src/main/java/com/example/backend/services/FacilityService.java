@@ -1,5 +1,7 @@
 package com.example.backend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +17,9 @@ public class FacilityService {
 	public Facility saveFacility(Facility facility) {
 		return facilityRepository.save(facility);
 	}
+	
+	public void deleteFacilitiesByPropertyId(Long propertyId) {
+        List<Facility> facilities = facilityRepository.findByPropertyId(propertyId);
+        facilityRepository.deleteAll(facilities);
+    }
 }

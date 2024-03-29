@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import com.example.backend.models.Facility;
 import com.example.backend.models.File;
 import com.example.backend.models.Property;
 import com.example.backend.models.Status;
+import com.example.backend.repositories.FacilityRepository;
 import com.example.backend.repositories.FileRepository;
 import com.example.backend.repositories.PropertyRepository;
 
@@ -21,6 +23,12 @@ public class PropertyService {
 
 	@Autowired
 	private PropertyRepository propertyRepository;
+	
+	@Autowired
+    private FacilityRepository facilityRepository;
+
+	@Autowired
+	private FileRepository fileRepository;
 	
 	public Property saveProperty(Property property) {
 		return propertyRepository.save(property);
@@ -61,5 +69,29 @@ public class PropertyService {
 		property.setFacilities(propertyDetails.getFacilities());
 		
 		return propertyRepository.save(property);
+	}
+	
+	public void deleteFacilitiesByPropertyId(Long propertyId) {
+		Optional<Property> property = propertyRepository.findById(propertyId);
+        if (property.isPresent()) {
+            Set<Facility> facilities = property.get().getFacilities();
+            property.get().getFacilities().clear();
+            for (Facility facility : facilities) {
+                facility.getProperties().remove(property.get());
+                facilityRepository.save(facility);
+            }
+            propertyRepository.save(property.get());
+        } else {
+            throw new NoSuchElementException("No property found with id " + propertyId);
+        }
+    }
+	
+	public void deleteProperty(Long propertyId) {
+	    propertyRepository.deleteById(propertyId);
+	}
+
+	public void deleteFilesByPropertyId(Long propertyId) {
+		List<File> files = fileRepository.findByPropertyId(propertyId);
+		fileRepository.deleteAll(files);
 	}
 }

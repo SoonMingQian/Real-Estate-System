@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import com.example.backend.models.File;
 import com.example.backend.models.Property;
 import com.example.backend.repositories.FacilityRepository;
 import com.example.backend.repositories.PropertyRepository;
+import com.example.backend.services.FacilityService;
 import com.example.backend.services.FileService;
 import com.example.backend.services.PropertyService;
 
@@ -41,6 +43,9 @@ public class PropertyController {
 
 	@Autowired
 	FileService fileService;
+	
+	@Autowired
+	FacilityService facilityService;
 
 	@GetMapping("/properties/sale")
 	public ResponseEntity<List<Property>> getAllSaleProperties() {
@@ -106,5 +111,17 @@ public class PropertyController {
 													@RequestBody Property propertyDetails){
 		Property updatedProperty = propertyService.updateProperty(propertyId, propertyDetails);
 		return ResponseEntity.ok(updatedProperty);
+	}
+	
+	@DeleteMapping("/deleteproperty/{propertyId}")
+	public ResponseEntity<String> deleteProperty(@PathVariable Long propertyId){
+	    try {
+	        propertyService.deleteFacilitiesByPropertyId(propertyId);
+			propertyService.deleteFilesByPropertyId(propertyId);
+	        propertyService.deleteProperty(propertyId);
+	        return ResponseEntity.ok("Property deleted successfully");
+	    } catch(Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not delete property: " + e.getMessage());
+	    }
 	}
 }

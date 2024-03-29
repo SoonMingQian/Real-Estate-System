@@ -5,7 +5,9 @@
                 <div class="property-card" v-for="property in properties" :key="property.id">
                     <div class="property-card-content">
 
-                        <img v-if="property.files && property.files.length > 0" :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData" alt="{{ property.propertyName }}" class="property-img" />
+                        <img v-if="property.files && property.files.length > 0"
+                            :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData"
+                            alt="{{ property.propertyName }}" class="property-img" />
                         <div class="property-content">
                             <h3 class="p-name">{{ property.propertyName }}</h3>
                             <p class="p-address">{{ property.propertyAddress }}</p>
@@ -19,10 +21,12 @@
                             </div>
                             <span class="status">Status: {{ property.status }}</span>
                             <router-link class="property-link" :to="`/my-property/edit-property/${property.id}`">
-                                <span class="edit-property"><font-awesome-icon :icon="['fas', 'pen-to-square']" /></span>
+                                <span class="edit-property"><font-awesome-icon
+                                        :icon="['fas', 'pen-to-square']" /></span>
                             </router-link>
-                            
-                            <span class="delete-property"><font-awesome-icon :icon="['fas', 'trash']" /></span>
+
+                            <span class="delete-property" @click="deleteProperty(property.id)"><font-awesome-icon
+                                    :icon="['fas', 'trash']" /></span>
                         </div>
                     </div>
                 </div>
@@ -35,9 +39,22 @@
 </template>
 
 <script>
-
-export default{
+import axios from 'axios';
+export default {
     name: "PropertyList",
     props: ['properties'],
+    methods: {
+        deleteProperty(propertyId) {
+            axios.delete(`http://localhost:8080/deleteproperty/${propertyId}`)
+                .then(response => {
+                    console.log(response.data);
+                    // Emit an event to the parent component
+                    this.$emit('property-deleted');
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }
 }
 </script>

@@ -121,7 +121,7 @@ export default{
     width: 70%;
     /* Adjust as needed */
     padding: 20px;
-    height: 151vh;
+    height: 190vh;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    
 }

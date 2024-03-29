@@ -36,16 +36,6 @@ public class FileController {
 	            .body(file.getFileData());
 	}
 	
-	@PutMapping("updateproperty/{propertyId}/upload")
-	public ResponseEntity<String> updateFile(@PathVariable("propertyId") Long propertyId, @RequestParam("file") MultipartFile[] files){
-		try {
-			fileService.updateFile(propertyId, files);
-			return ResponseEntity.ok("File updated succesfully");
-		}catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not update file: " + e.getMessage());
-	    }
-	}
-	
 	@DeleteMapping("/file/{fileId}")
 	public ResponseEntity<String> deleteFile(@PathVariable Long fileId){
 		try {
