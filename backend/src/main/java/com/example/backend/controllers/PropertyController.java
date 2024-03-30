@@ -124,4 +124,18 @@ public class PropertyController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not delete property: " + e.getMessage());
 	    }
 	}
+	
+	@GetMapping("/filter")
+	public List<Property> getFilteredProperties(
+			@RequestParam(required = false) String propertyType,
+			@RequestParam(required = false) Integer minPrice,
+			@RequestParam(required = false) Integer maxPrice,
+			@RequestParam(required = false) Integer minNumOfBed,
+			@RequestParam(required = false) Integer maxNumOfBed,
+			@RequestParam(required = false) Integer minNumOfBath,
+			@RequestParam(required = false) Integer maxNumOfBath,
+			@RequestParam(required = false) String saleType,
+			@RequestParam(required = false) Long facility_id){
+		return propertyService.getFilteredProperties(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facility_id);
+	}
 }

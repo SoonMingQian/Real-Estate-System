@@ -1,10 +1,10 @@
 <template>
     <div class="save-container">
+        <h1><font-awesome-icon :icon="['fas', 'house']" /> My Property</h1>
         <div class="collection-main-content">
             <div v-if="properties.length > 0">
                 <div class="property-card" v-for="property in properties" :key="property.id">
                     <div class="property-card-content">
-
                         <img v-if="property.files && property.files.length > 0"
                             :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData"
                             alt="{{ property.propertyName }}" class="property-img" />
@@ -31,9 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="properties.length === 0">
-                <h2>no content</h2>
-            </div>
+            
         </div>
     </div>
 </template>

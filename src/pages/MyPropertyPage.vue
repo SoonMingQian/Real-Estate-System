@@ -60,6 +60,9 @@ export default {
 .page-container{
     height: 100%;
     background-color: white;
+    padding-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .button{
     display: flex;

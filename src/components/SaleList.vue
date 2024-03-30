@@ -1,12 +1,19 @@
 <template>
     <input type="text" v-model="search">
+    <input type="text" v-model="propertyType" placeholder="Filter by property type">
+    <input type="number" v-model="price" placeholder="Filter by price">
+    <input type="number" v-model="numOfBeds" placeholder="Filter by number of beds">
+    <input type="number" v-model="numOfBath" placeholder="Filter by number of baths">
+    <input type="text" v-model="saleType" placeholder="Filter by sale type">
+    <input type="text" v-model="facilities" placeholder="Filter by facilities">
     <div class="grid-wrap">
         <div class="house-list" v-for="property in filteredProperties" :key="property.id">
             <router-link class="property-link" :to="'/property-listing/' + property.id">
                 <div class="card">
                     <div class="card-banner">
                         <div class="img-holder">
-                            <img :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData" alt="{{ property.propertyName }}" class="img-cover" />
+                            <img :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData"
+                                alt="{{ property.propertyName }}" class="img-cover" />
                         </div>
                     </div>
 
@@ -56,16 +63,28 @@
 export default {
     name: "SaleLis",
     props: ['properties'],
-    data(){
-        return{
+    data() {
+        return {
             search: '',
-            searchProperties: []
+            Properties: [],
+            propertyType: '', // filter criteria
+            price: '', // filter criteria
+            numOfBeds: '', // filter criteria
+            numOfBath: '', // filter criteria
+            saleType: '', // filter criteria
+            facilities:'' // filter criteria
         }
     },
     computed: {
-        filteredProperties(){
+        filteredProperties() {
             return this.properties.filter(property => {
-                return property.propertyName.toLowerCase().includes(this.search.toLowerCase());
+                return property.propertyName.toLowerCase().includes(this.search.toLowerCase()) &&
+                (!this.propertyType || property.propertyType === this.propertyType) &&
+                (!this.price || property.price <= this.price) &&
+                (!this.numOfBeds || property.numOfBed === this.numOfBeds) &&
+                (!this.numOfBath || property.numOfBath === this.numOfBath) &&
+                (!this.saleType || property.saleType === this.saleType) &&
+                (!this.facilities || property.facilities.includes(this.facilities));
             });
         }
     }
