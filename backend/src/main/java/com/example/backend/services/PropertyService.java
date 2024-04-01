@@ -95,7 +95,7 @@ public class PropertyService {
 		fileRepository.deleteAll(files);
 	}
 	
-	public List<Property> getFilteredProperties(String propertyType, Integer minPrice, Integer maxPrice, Integer minNumOfBed, Integer maxNumOfBed, Integer minNumOfBath, Integer maxNumOfBath, String saleType, Long facility_id){
-		return propertyRepository.findWithFilters(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facility_id);
+	public List<Property> getFilteredProperties(String propertyType, Integer minPrice, Integer maxPrice, Integer minNumOfBed, Integer maxNumOfBed, Integer minNumOfBath, Integer maxNumOfBath, String saleType, Long facilityId){
+		return propertyRepository.findWithFilters(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
 	}
 }

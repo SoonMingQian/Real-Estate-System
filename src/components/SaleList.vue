@@ -1,12 +1,53 @@
 <template>
-    <input type="text" v-model="search">
-    <input type="text" v-model="propertyType" placeholder="Filter by property type">
-    <input type="number" v-model="price" placeholder="Filter by price">
-    <input type="number" v-model="numOfBeds" placeholder="Filter by number of beds">
-    <input type="number" v-model="numOfBath" placeholder="Filter by number of baths">
-    <input type="text" v-model="saleType" placeholder="Filter by sale type">
-    <input type="text" v-model="facilities" placeholder="Filter by facilities">
+    <div class="sidebar" :class="{ active: showFilter }">
+        <button class="close-btn" @click="showFilter = false"><font-awesome-icon :icon="['fas', 'xmark']" /></button>
+        <h1>Filter</h1>
+        <ul>
+            <li>Property Type</li>
+            <li><select class="other-input" v-model="propertyType">
+                    <option value="" disabled selected>Select property type</option>
+                    <option value="house">House</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="office">Office</option>
+                    <option value="parking">Parking</option>
+                    <option value="restaurant/bar">Restaurant/Bar</option>
+                </select>
+            </li>
+            <li>Price</li>
+            <li><input type="number" class="input" v-model="minPrice" placeholder="Min"></li>
+            <li><input type="number" class="input" v-model="maxPrice" placeholder="Max"></li>
+            <li>Beds</li>
+            <li><input type="number" class="input" v-model="minNumOfBed" placeholder="Min"></li>
+            <li><input type="number" class="input" v-model="maxNumOfBed" placeholder="Max"></li>
+            <li>Bathrooms</li>
+            <li><input type="number" class="input" v-model="minNumOfBath" placeholder="Min"></li>
+            <li><input type="number" class="input" v-model="maxNumOfBath" placeholder="Max"></li>
+            <li>Sale Type</li>
+            <li><select class="other-input" v-model="saleType">
+                    <option value="" disabled selected>Select sale type</option>
+                    <option value="sale">Sale</option>
+                    <option value="rent">Rent</option>
+                </select>
+            </li>
+            <li>Facilities</li>
+            <li>
+                <div v-for="feature in features" :key="feature.id">
+                    <input type="checkbox" :id="feature.name" :value="feature.id" v-model="facilities">
+                    <label :for="feature.name">{{ feature.name }}</label>
+                </div>
+            </li>
+        </ul>
+        <div class="reset" @click="resetFilter">Reset</div>
+        <button class="apply" @click="getFilteredProperties">Apply</button>
+    </div>
+
+
+
     <div class="grid-wrap">
+        <div class="center-content">
+            <input type="text" v-model="search" placeholder="Search">
+            <button @click="showFilter = !showFilter">Filter</button>
+        </div>
         <div class="house-list" v-for="property in filteredProperties" :key="property.id">
             <router-link class="property-link" :to="'/property-listing/' + property.id">
                 <div class="card">
@@ -60,33 +101,206 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: "SaleLis",
     props: ['properties'],
+    emits: ['updateProperties'],
     data() {
         return {
             search: '',
-            Properties: [],
-            propertyType: '', // filter criteria
-            price: '', // filter criteria
-            numOfBeds: '', // filter criteria
-            numOfBath: '', // filter criteria
-            saleType: '', // filter criteria
-            facilities:'' // filter criteria
+            propertyType: '',
+            minPrice: null,
+            maxPrice: null,
+            minNumOfBed: null,
+            maxNumOfBed: null,
+            minNumOfBath: null,
+            maxNumOfBath: null,
+            saleType: '',
+            facilities: [],
+            features: [
+                { id: 1, name: "Air-Conditioning" },
+                { id: 2, name: "Balcony" },
+                { id: 3, name: "WIFI" },
+                { id: 4, name: "Washing Machine / Dryer" },
+                { id: 5, name: "Oven / Microwave" },
+                { id: 6, name: "Water Heater" },
+                { id: 7, name: "Fridge" },
+                { id: 8, name: "Furnished" }
+            ],
+            showFilter: false
+        }
+    },
+    methods: {
+        resetFilter() {
+            this.propertyType = '';
+            this.minPrice = null;
+            this.maxPrice = null;
+            this.minNumOfBed = null;
+            this.maxNumOfBed = null;
+            this.minNumOfBath = null;
+            this.maxNumOfBath = null;
+            this.saleType = '';
+            this.facilities = [];
+        },
+        getFilteredProperties() {
+            const params = {
+                propertyType: this.propertyType,
+                minPrice: this.minPrice,
+                maxPrice: this.maxPrice,
+                minNumOfBed: this.minNumOfBed,
+                maxNumOfBed: this.maxNumOfBed,
+                minNumOfBath: this.minNumOfBath,
+                maxNumOfBath: this.maxNumOfBath,
+                saleType: this.saleType,
+                facilityId: this.facilities
+            };
+
+            // Remove unset parameters
+            Object.keys(params).forEach(key => {
+                if (params[key] === '' || params[key] === null || params[key].length === 0) {
+                    delete params[key];
+                }
+            });
+
+            axios.get('http://localhost:8080/filter', {
+                params,
+                paramsSerializer: params => {
+                    return Object.keys(params).map(key => {
+                        if (Array.isArray(params[key])) {
+                            return params[key].map(value => `${key}=${value}`).join('&');
+                        } else {
+                            return `${key}=${params[key]}`;
+                        }
+                    }).join('&');
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                    this.$emit('updateProperties', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
     },
     computed: {
         filteredProperties() {
             return this.properties.filter(property => {
-                return property.propertyName.toLowerCase().includes(this.search.toLowerCase()) &&
-                (!this.propertyType || property.propertyType === this.propertyType) &&
-                (!this.price || property.price <= this.price) &&
-                (!this.numOfBeds || property.numOfBed === this.numOfBeds) &&
-                (!this.numOfBath || property.numOfBath === this.numOfBath) &&
-                (!this.saleType || property.saleType === this.saleType) &&
-                (!this.facilities || property.facilities.includes(this.facilities));
+                return property.propertyName.toLowerCase().includes(this.search.toLowerCase())
             });
         }
     }
 }
 </script>
+
+<style scoped>
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    padding-top: 100px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.input {
+    margin-bottom: 10px;
+    height: 30px;
+}
+
+.sidebar ul li select {
+    margin-bottom: 10px;
+    height: 30px;
+}
+
+.reset {
+    cursor: pointer;
+    color: crimson;
+    font-size: 1rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.reset :hover {
+    color: black;
+}
+
+.close-btn {
+    padding-top: 120px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    font-size: 20px;
+    display: inline-block;
+    border-radius: 20px;
+    outline: none;
+    color: white;
+    background: crimson;
+    cursor: pointer;
+}
+
+.close-btn :hover {
+    color: black;
+}
+
+.apply {
+    font-size: 1rem;
+    width: 150px;
+    height: 30px;
+    margin-bottom: 30px;
+    display: inline-block;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    color: white;
+    background: crimson;
+    cursor: pointer;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.center-content input{
+    height: 30px;
+    width: 300px;
+    margin-right: 20px;
+    border-radius: 10px
+}
+
+.center-content button{
+    width: 100px;
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.center-content button:hover{
+    color: black;
+}
+</style>

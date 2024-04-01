@@ -1,5 +1,5 @@
 <template>
-    <SaleList :properties="properties" />
+    <SaleList :properties="properties"  @updateProperties="properties = $event" />
 </template>
 
 <script>

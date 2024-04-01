@@ -135,7 +135,7 @@ public class PropertyController {
 			@RequestParam(required = false) Integer minNumOfBath,
 			@RequestParam(required = false) Integer maxNumOfBath,
 			@RequestParam(required = false) String saleType,
-			@RequestParam(required = false) Long facility_id){
-		return propertyService.getFilteredProperties(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facility_id);
+			@RequestParam(required = false) Long facilityId){
+		return propertyService.getFilteredProperties(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
 	}
 }

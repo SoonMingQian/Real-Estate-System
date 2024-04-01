@@ -20,23 +20,23 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 	List<Property> findByPropertyType(String propertyType);
 
 	@Query("SELECT p FROM Property p JOIN p.facilities f WHERE" +
-			"(p.propertyType = :propertyType OR :propertyType IS NULL) AND " +
-			"(p.price >= :minPrice OR :minPrice IS NULL) AND " +
-			"(p.price <= :maxPrice OR :maxPrice IS NULL) AND " +
-			"(p.numOfBed >= :minNumOfBed OR :minNumOfBed IS NULL) AND " +
-			"(p.numOfBed <= :maxNumOfBed OR :maxNumOfBed IS NULL) AND " +
-			"(p.numOfBath >= :minNumOfBath OR :minNumOfBath IS NULL) AND " +
-			"(p.numOfBath <= :maxNumOfBath OR :maxNumOfBath IS NULL) AND " +
-			"(p.saleType = :saleType OR :saleType IS NULL) AND " +
-			"(f.id = :facilityId OR :facilityId IS NULL)")
-	List<Property> findWithFilters(
-			@Param("propertyType") String propertyType,
-			@Param("minPrice") Integer minPrice,
-			@Param("maxPrice") Integer maxPrice,
-			@Param("minNumOfBed") Integer minNumOfBed,
-			@Param("maxNumOfBed") Integer maxNumOfBed,
-			@Param("minNumOfBath") Integer minNumOfBath,
-			@Param("maxNumOfBath") Integer maxNumOfBath,
-			@Param("saleType") String saleType,
-			@Param("facilityId") Long facility_id);
+        "(p.propertyType = :propertyType OR :propertyType IS NULL) AND " +
+        "(p.price >= :minPrice OR :minPrice IS NULL) AND " +
+        "(p.price <= :maxPrice OR :maxPrice IS NULL) AND " +
+        "(p.numOfBed >= :minNumOfBed OR :minNumOfBed IS NULL) AND " +
+        "(p.numOfBed <= :maxNumOfBed OR :maxNumOfBed IS NULL) AND " +
+        "(p.numOfBath >= :minNumOfBath OR :minNumOfBath IS NULL) AND " +
+        "(p.numOfBath <= :maxNumOfBath OR :maxNumOfBath IS NULL) AND " +
+        "(p.saleType = :saleType OR :saleType IS NULL) AND " +
+        "(:facilityId IS NULL OR f.id = :facilityId)")
+List<Property> findWithFilters(
+        @Param("propertyType") String propertyType,
+        @Param("minPrice") Integer minPrice,
+        @Param("maxPrice") Integer maxPrice,
+        @Param("minNumOfBed") Integer minNumOfBed,
+        @Param("maxNumOfBed") Integer maxNumOfBed,
+        @Param("minNumOfBath") Integer minNumOfBath,
+        @Param("maxNumOfBath") Integer maxNumOfBath,
+        @Param("saleType") String saleType,
+        @Param("facilityId") Long facilityId);
 }
