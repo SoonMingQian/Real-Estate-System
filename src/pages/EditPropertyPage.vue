@@ -1,5 +1,5 @@
 <template>
- <div class="edit-property-page" v-if="property">
+    <div class="edit-property-page" v-if="property">
         <h2>Edit Property {{ property.propertyName }}</h2>
         <form @submit.prevent="updateProperty">
             <p>Name: {{ property.propertyName }} <span class="required">*</span></p>
@@ -21,10 +21,9 @@
             <p style="white-space: pre-line;"></p>
             <textarea v-model="property.description" placeholder="Description"></textarea>
             <div class="unit-feature">
-                <p>Unit Features: {{ property.facilities }} </p>
+                <p>Unit Features:</p>
                 <div v-for="feature in features" :key="feature.id">
-                    <input type="checkbox" :id="feature.name" :value="feature.id"
-                        :checked="isFeatureInPropertyFacilities(feature)">
+                    <input type="checkbox" :id="feature.name" :value="feature.id" v-model="feature.checked">
                     <label :for="feature.name">{{ feature.name }}</label>
                 </div>
             </div>
@@ -35,28 +34,28 @@
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 export default {
     name: "EditPropertyPage",
     data() {
         return {
             property: null,
             features: [
-                { id: 1, name: "Air-Conditioning" },
-                { id: 2, name: "Balcony" },
-                { id: 3, name: "WIFI" },
-                { id: 4, name: "Washing Machine / Dryer" },
-                { id: 5, name: "Oven / Microwave" },
-                { id: 6, name: "Water Heater" },
-                { id: 7, name: "Fridge" },
-                { id: 8, name: "Furnished" }
+                { id: 1, name: "Air-Conditioning", checked: false },
+                { id: 2, name: "Balcony", checked: false },
+                { id: 3, name: "WIFI", checked: false },
+                { id: 4, name: "Washing Machine / Dryer", checked: false },
+                { id: 5, name: "Oven / Microwave", checked: false },
+                { id: 6, name: "Water Heater", checked: false },
+                { id: 7, name: "Fridge", checked: false },
+                { id: 8, name: "Furnished", checked: false }
             ],
         }
     },
     created() {
         this.fetchProperty();
     },
-    methods:{
+    methods: {
         isFeatureInPropertyFacilities(feature) {
             return this.property.facilities.some(facility => facility.id === feature.id);
         },
@@ -64,17 +63,23 @@ export default {
             const propertyId = this.$route.params.propertyId;
             console.log(propertyId);
             try {
-                const response = await axios.get(`http://localhost:8080/property/${propertyId}`);
+                const response = await UserService.getPropertyDetail(this.$route.params.propertyId);
                 this.property = response.data;
                 console.log(this.property);
+
+                // Update the `checked` field of each feature
+                this.features.forEach(feature => {
+                    feature.checked = this.isFeatureInPropertyFacilities(feature);
+                });
             } catch (error) {
-                console.error("Error fetching property", error);
+                console.error(error);
             }
         },
         async updateProperty() {
             try {
                 const propertyId = this.$route.params.propertyId;
-                await axios.put(`http://localhost:8080/updateproperty/${propertyId}`, this.property);
+                this.property.facilities = this.features.filter(feature => feature.checked).map(feature => ({ id: feature.id }));
+                await UserService.editProperty(propertyId, this.property);
                 this.$router.push(`/my-property/edit-property/image/${propertyId}`);
             } catch (error) {
                 console.error("Error updating property", error);

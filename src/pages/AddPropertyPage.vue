@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 
 export default{
     name: "AddPropertyPage",
@@ -77,6 +77,11 @@ export default{
             facilities: [],
         }
     },
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
     methods:{
         handleSubmit(){
             const data = {
@@ -92,13 +97,13 @@ export default{
                 facilities: this.facilities.map(id => ({ id: id }))
             };
 
-            axios.post("http://localhost:8080/add-property", data)
+            UserService.addProperty(this.currentUser.id, data)
                 .then(response => {
                     console.log(response.data);
-                    this.$router.push({ path: `/my-property/add-property/${response.data.id}` });
+                    this.$router.push({ path: `/my-property/add-property/${response.data.id}` })
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
     }

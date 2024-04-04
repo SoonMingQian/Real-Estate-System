@@ -12,7 +12,7 @@
                 <li><router-link class="link" to="/commercial">Commercial</router-link></li>
                 <li><router-link class="link" to="/sell-property">Sell</router-link></li>
                 <li><router-link class="link" to="/my-profile">My Profile</router-link></li>
-               
+                <li><button class="nav-link" @click.prevent="logOut">LogOut</button></li>
             </ul>
             <div class="icon">
                 <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars"
@@ -25,7 +25,7 @@
                     <li><router-link class="link" to="/apartment">Apartment</router-link></li>
                     <li><router-link class="link" to="/commercial">Commercial</router-link></li>
                     <li><router-link class="link" to="/sell-property">Sell</router-link></li>
-                   
+
                 </ul>
             </transition>
         </nav>
@@ -75,6 +75,10 @@ export default {
             this.mobileNav = false;
             return;
         },
+        logOut() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
+        }
     }
 }
 </script>

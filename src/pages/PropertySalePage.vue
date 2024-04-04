@@ -1,36 +1,29 @@
 <template>
-    <SaleList :properties="properties"  @updateProperties="properties = $event" />
+  <SaleList :properties="properties" @updateProperties="properties = $event" />
 </template>
 
 <script>
 import SaleList from '../components/SaleList.vue';
-import axios from 'axios';
 import '../property-for-sale.css'
-
+import UserService from '@/services/user.service';
 export default {
-    name: "PropertySalePage",
-    components: {
-        SaleList,
-    },
-    data() {
-        return {
-            properties: [],
-        }
-    },
-    created() {
-        this.fetchProperties();
-    },
-    methods: {
-        async fetchProperties() {
-            try {
-                const response = await axios.get('http://localhost:8080/properties/sale');
-                this.properties = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-       
+  name: "PropertySalePage",
+  components: {
+    SaleList,
+  },
+  data() {
+    return {
+      properties: [],
     }
+  },
+  async created() {
+    try {
+      const response = await UserService.getSaleProperties();
+      this.properties = response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 }
 
 </script>

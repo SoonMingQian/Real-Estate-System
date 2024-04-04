@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
+import store from "./store";
 
 import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
@@ -86,5 +87,6 @@ createApp(App)
     }]
 }))
 .use(VueAwesomeSwiper)
+.use(store)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')

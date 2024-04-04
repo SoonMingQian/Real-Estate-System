@@ -39,4 +39,6 @@ List<Property> findWithFilters(
         @Param("maxNumOfBath") Integer maxNumOfBath,
         @Param("saleType") String saleType,
         @Param("facilityId") Long facilityId);
+	
+	List<Property> findByUserId(Long userId);
 }

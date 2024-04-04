@@ -1,13 +1,16 @@
 package com.example.backend.controllers;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +26,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.backend.models.Facility;
 import com.example.backend.models.File;
 import com.example.backend.models.Property;
+import com.example.backend.models.User;
 import com.example.backend.repositories.FacilityRepository;
 import com.example.backend.repositories.PropertyRepository;
 import com.example.backend.services.FacilityService;
 import com.example.backend.services.FileService;
 import com.example.backend.services.PropertyService;
+import com.example.backend.services.UserService;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api")
 public class PropertyController {
 
 	@Autowired
@@ -46,6 +53,9 @@ public class PropertyController {
 	
 	@Autowired
 	FacilityService facilityService;
+	
+	@Autowired
+	UserService userService;
 
 	@GetMapping("/properties/sale")
 	public ResponseEntity<List<Property>> getAllSaleProperties() {
@@ -80,9 +90,24 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
     }
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<Property>> getPropertiesByUserId(@PathVariable Long userId){
+		List<Property> properties = propertyService.getPropertiesByUserId(userId);
+		return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
 
-	@PostMapping("/add-property")
-	public ResponseEntity<?> createProperty(@RequestBody Property property) {
+	@PostMapping("/add-property/{userId}")
+	@PreAuthorize("hasRole('AGENT')")
+	public ResponseEntity<?> createProperty(@RequestBody Property property, @PathVariable Long userId) {
+		Optional<User> userOptional = userService.getUserById(userId);
+		if (!userOptional.isPresent()) {
+		    Map<String, Object> errorResponse = new HashMap<>();
+		    errorResponse.put("error", "User not found");
+		    errorResponse.put("userId", userId);
+		    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+		}
+		User user = userOptional.get();
 		Property newProperty = new Property(property.getPropertyName(),
 				property.getPropertyAddress(),
 				property.getSaleType(),
@@ -92,6 +117,8 @@ public class PropertyController {
 				property.getNumOfBath(),
 				property.getNumOfBed(),
 				property.getDescription());
+		
+		newProperty.setUser(user);
 
 		Set<Facility> facilities = new HashSet<>();
 		for (Facility facility : property.getFacilities()) {
@@ -100,13 +127,14 @@ public class PropertyController {
 				facilities.add(existingFacilityOptional.get());
 			}
 		}
-		property.setFacilities(facilities);
-		Property savedProperty = propertyRepository.save(property);
+		newProperty.setFacilities(facilities);
+		Property savedProperty = propertyRepository.save(newProperty);
 		return new ResponseEntity<>(savedProperty, HttpStatus.CREATED);
 
 	}
 	
 	@PutMapping("/updateproperty/{id}")
+	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<Property> updateProperty(@PathVariable(value = "id") Long propertyId,
 													@RequestBody Property propertyDetails){
 		Property updatedProperty = propertyService.updateProperty(propertyId, propertyDetails);
@@ -114,6 +142,7 @@ public class PropertyController {
 	}
 	
 	@DeleteMapping("/deleteproperty/{propertyId}")
+	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> deleteProperty(@PathVariable Long propertyId){
 	    try {
 	        propertyService.deleteFacilitiesByPropertyId(propertyId);

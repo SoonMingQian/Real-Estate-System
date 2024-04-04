@@ -31,19 +31,19 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 export default {
     name: "PropertyList",
     props: ['properties'],
     methods: {
         deleteProperty(propertyId) {
-            axios.delete(`http://localhost:8080/deleteproperty/${propertyId}`)
+            UserService.deleteProperty(propertyId)
                 .then(response => {
                     console.log(response.data);
                     // Emit an event to the parent component

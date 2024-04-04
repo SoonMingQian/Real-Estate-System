@@ -24,12 +24,9 @@ export default {
     components:{
         ProfileNavBar,
     },
-    data(){
-        return{
-            currentUser:{
-                firstName: "John",
-                lastName: "Doe",
-            }
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
         }
     }
 }

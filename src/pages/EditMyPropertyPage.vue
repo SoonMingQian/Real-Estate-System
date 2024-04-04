@@ -1,48 +1,48 @@
 <template>
-   
-            <div class="edit-container">
-                <div class="card">
-                    <div class="top">
-                        <div class="container">
-                            <div v-if="property && property.files">
-                            <div class="image" v-for="(files, index) in property.files" :key="index">
-                                <span class="delete" @click="deleteFile(files.id)">&times;</span>
-                                <img :src="'data:' + files.contentType + ';base64,' + files.fileData" />
-                            </div>
-                        </div>
-                        </div>
-                        <p>Drag & drop images</p>
-                    </div>
-                    <div class="drag-area" @dragover.prevent="onDragover" @dragleave.prevent="onDragleave"
-                        @drop.prevent="onDrop">
-                        <span v-if="!isDragging">Drag & drop image here or
-                            <span class="select" role="button" @click="selectFiles">Choose</span>
-                        </span>
-                        <div v-else class="select">Drop images here</div>
-                        <input name="file" type="file" class="file" ref="fileInput" multiple @change="onFileSelect">
-                    </div>
-                    <div class="container">
-                        <div class="image" v-for="(image, index) in images" :key="index">
-                            <span class="delete" @click="deleteImage">&times;</span>
-                            <img :src="createObjectURL(image.file)" />
+
+    <div class="edit-container">
+        <div class="card">
+            <div class="top">
+                <div class="container">
+                    <div v-if="property && property.files">
+                        <div class="image" v-for="(files, index) in property.files" :key="index">
+                            <span class="delete" @click="deleteFile(files.id)">&times;</span>
+                            <img :src="'data:' + files.contentType + ';base64,' + files.fileData" />
                         </div>
                     </div>
-                    <button type="button" @click="submitFiles">Submit</button>
+                </div>
+                <p>Drag & drop images</p>
+            </div>
+            <div class="drag-area" @dragover.prevent="onDragover" @dragleave.prevent="onDragleave"
+                @drop.prevent="onDrop">
+                <span v-if="!isDragging">Drag & drop image here or
+                    <span class="select" role="button" @click="selectFiles">Choose</span>
+                </span>
+                <div v-else class="select">Drop images here</div>
+                <input name="file" type="file" class="file" ref="fileInput" multiple @change="onFileSelect">
+            </div>
+            <div class="container">
+                <div class="image" v-for="(image, index) in images" :key="index">
+                    <span class="delete" @click="deleteImage">&times;</span>
+                    <img :src="createObjectURL(image.file)" />
                 </div>
             </div>
+            <button type="button" @click="submitFiles">Submit</button>
+        </div>
+    </div>
 
-           
+
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 export default {
     name: "EditMyPropertyPage",
     data() {
         return {
             images: [],
             isDragging: false,
-            property: null, 
+            property: null,
         }
     },
     created() {
@@ -96,44 +96,35 @@ export default {
             const propertyId = this.$route.params.propertyId;
             console.log(propertyId);
             try {
-                const response = await axios.get(`http://localhost:8080/property/${propertyId}`);
+                const response = await UserService.getEditProperty(this.$route.params.propertyId);
                 this.property = response.data;
                 console.log(this.property);
             } catch (error) {
-                console.error("Error fetching property", error);
+                console.error(error);
             }
         },
         async deleteFile(fileId) {
-            if(window.confirm("Are you sure you want to delete this image?")){
-            try {
-                await axios.delete(`http://localhost:8080/file/${fileId}`);
-                // Remove the deleted image from the property.images array
-                this.property.files = this.property.files.filter(file => file.id !== fileId);
-            } catch (error) {
-                console.error("Error deleting file", error);
-            }
-        }
-        },
-        submitFiles() {
-            const formData = new FormData();
-            for (let i = 0; i < this.images.length; i++) {
-                formData.append('files', this.images[i].file);
-            }
-
-            axios.post(`http://localhost:8080/add-property/${this.property.id}/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            if (window.confirm("Are you sure you want to delete this image?")) {
+                try {
+                    await UserService.deleteFile(fileId);
+                    // Remove the deleted image from the property.images array
+                    this.property.files = this.property.files.filter(file => file.id !== fileId);
+                } catch (error) {
+                    console.error("Error deleting file", error);
                 }
-            })
-                .then(response => {
-                    console.log(response.data);
-                    this.$router.push({ path: '/my-property' });
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-
-        }
+            }
+        },
+        async submitFiles() {
+            try {
+                const propertyId = this.property.id;
+                if (this.images && this.images.length > 0) {
+                    await UserService.editPropertyImg(propertyId, this.images);
+                }
+                this.$router.push({ path: '/my-property' });
+            } catch (error) {
+                console.error("Error updating property image", error);
+            }
+        },
 
     }
 }

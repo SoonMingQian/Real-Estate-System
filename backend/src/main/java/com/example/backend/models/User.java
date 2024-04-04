@@ -3,17 +3,9 @@ package com.example.backend.models;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.ManyToAny;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity(name = "users")
 public class User {
@@ -21,6 +13,10 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	private String firstName;
+	
+	private String lastName;
 	
 	@Column(unique = true)
 	private String email;
@@ -33,12 +29,18 @@ public class User {
 	     inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Property> properties = new HashSet<>();
+	
+	
 	public User() {
 		super();
 	}
 
-	public User(String email, String password) {
+	public User(String firstName, String lastName, String email, String password) {
 		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 	}
@@ -49,6 +51,22 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -74,5 +92,16 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+	public Set<Property> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Set<Property> properties) {
+		this.properties = properties;
+	}
+
+	
+	
 	
 }

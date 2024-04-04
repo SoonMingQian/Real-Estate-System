@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 export default {
     name: "AddMyPropertyPage",
     data() {
@@ -90,16 +90,7 @@ export default {
             return URL.createObjectURL(file);
         },
         submitFiles() {
-            const formData = new FormData();
-            for (let i = 0; i < this.images.length; i++) {
-                formData.append('files', this.images[i].file);
-            }
-
-            axios.post(`http://localhost:8080/add-property/${this.propertyId}/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            UserService.addPropertyImg(this.propertyId, this.images)
                 .then(response => {
                     console.log(response.data);
                     this.$router.push({ path: '/my-property' });
@@ -107,8 +98,7 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
-
-        }
+        },
     }
 }
 </script>

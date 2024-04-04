@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import com.example.backend.services.FileService;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api")
 public class FileController {
 
 	@Autowired
@@ -37,6 +39,7 @@ public class FileController {
 	}
 	
 	@DeleteMapping("/file/{fileId}")
+	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> deleteFile(@PathVariable Long fileId){
 		try {
 			fileService.deleteFile(fileId);
@@ -47,6 +50,7 @@ public class FileController {
 	}
 
 	@PostMapping("/add-property/{propertyId}/upload")
+	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> uploadFiles(@PathVariable("propertyId") Long propertyId, @RequestParam("files") MultipartFile[] files){
 		try {
 			for (MultipartFile file : files) {

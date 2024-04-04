@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 import { Pagination } from 'swiper'
 import NotFoundPage from './NotFoundPage.vue'
 import '../property-detail-page.css'
@@ -119,15 +119,13 @@ export default {
     methods: {
         async fetchProperty() {
             try {
-                const response = await axios.get(`http://localhost:8080/property/${this.$route.params.propertyId}`);
+                const response = await UserService.getPropertyDetail(this.$route.params.propertyId);
                 this.property = response.data;
                 console.log(this.property);
             } catch (error) {
                 console.error(error);
             }
         },
-
     },
-   
 }
 </script>

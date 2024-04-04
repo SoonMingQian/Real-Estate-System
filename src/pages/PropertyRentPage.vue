@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 import SaleList from '../components/SaleList.vue';
 import '../property-for-sale.css'
 
@@ -17,19 +17,13 @@ export default {
             properties: [],
         }
     },
-    created() {
-        this.fetchProperties();
-    },
-    methods: {
-        async fetchProperties() {
-            try {
-                const response = await axios.get('http://localhost:8080/properties/rent');
-                this.properties = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-       
+    async created() {
+    try {
+      const response = await UserService.getRentProperties();
+      this.properties = response.data;
+    } catch (error) {
+      console.error(error);
     }
+  },
 }
 </script>

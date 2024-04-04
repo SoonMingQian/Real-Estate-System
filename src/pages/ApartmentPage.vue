@@ -1,14 +1,14 @@
 <template>
-    <SaleList :properties="properties"/>
+    <SaleList :properties="properties" />
 </template>
 
 <script>
 import SaleList from '../components/SaleList.vue';
-import axios from 'axios';
+import UserService from '@/services/user.service';
 import '../property-for-sale.css'
-export default{
+export default {
     name: 'ApartmentPage',
-    components:{
+    components: {
         SaleList,
     },
     data() {
@@ -16,19 +16,13 @@ export default{
             properties: [],
         }
     },
-    created() {
-        this.fetchProperties();
+    async created() {
+        try {
+            const response = await UserService.getApartment();
+            this.properties = response.data;
+        } catch (error) {
+            console.error(error);
+        }
     },
-    methods: {
-        async fetchProperties() {
-            try {
-                const response = await axios.get('http://localhost:8080/apartment');
-                this.properties = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-       
-    }
 }
 </script>

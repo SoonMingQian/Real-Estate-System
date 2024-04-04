@@ -1,21 +1,21 @@
 <template>
     <ProfileNavBar />
     <div class="page-container">
-        <PropertyList :properties="properties" @property-deleted="fetchProperties"/>
+        <PropertyList :properties="properties" @property-deleted="fetchProperties" />
         <div v-if="properties.length === 0">
             <img class="img" :src="noproperty" alt="No properties" />
             <h2 class="noproperty">No Property</h2>
         </div>
         <div class="button">
-        <button class="add-property">
-            <router-link to="my-property/add-property"><font-awesome-icon :icon="['fas', 'plus']" /></router-link>
-        </button>
+            <button class="add-property">
+                <router-link to="my-property/add-property"><font-awesome-icon :icon="['fas', 'plus']" /></router-link>
+            </button>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
-import axios from 'axios';
+import UserService from '@/services/user.service';
 import ProfileNavBar from '../components/ProfileNavBar.vue';
 import PropertyList from '../components/PropertyList.vue';
 import noproperty from '../assets/noproperty.png';
@@ -26,8 +26,8 @@ export default {
         PropertyList,
         ProfileNavBar,
     },
-    style:{
-        styleObject:{
+    style: {
+        styleObject: {
             color: 'red',
         }
     },
@@ -37,37 +37,41 @@ export default {
             noproperty,
         }
     },
-    created() {
-        this.fetchProperties();
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
+    async created() {
+        await this.fetchProperties();
     },
     methods: {
         async fetchProperties() {
             try {
-                const response = await axios.get('http://localhost:8080/properties/sale');
+                const response = await UserService.getMyProperties(this.currentUser.id);
                 this.properties = response.data;
-                console.log(this.properties);
             } catch (error) {
                 console.error(error);
             }
-        },    
-       
-    }
+        },
+    },
 }
 </script>
 
 <style scoped>
-
-.page-container{
+.page-container {
     height: 100%;
     background-color: white;
     padding-top: 30px;
     padding-left: 10px;
     padding-right: 10px;
 }
-.button{
+
+.button {
     display: flex;
     justify-content: center;
 }
+
 .add-property {
     background-color: white;
     width: 80px;
@@ -76,11 +80,11 @@ export default {
     transition: 0.5s;
 }
 
-.add-property :hover{
+.add-property :hover {
     color: crimson;
 }
 
-.img{
+.img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -89,12 +93,11 @@ export default {
     padding-top: 100px;
 }
 
-.noproperty{
+.noproperty {
     text-align: center;
     color: crimson;
     font-size: 20px;
     padding-top: 10px;
     padding-bottom: 80px;
 }
-
 </style>

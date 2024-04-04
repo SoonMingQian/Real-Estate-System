@@ -54,6 +54,10 @@ public class PropertyService {
 		return propertyRepository.findByPropertyType("office");
 	}
 	
+	public List<Property> getPropertiesByUserId(Long userId){
+		return propertyRepository.findByUserId(userId);
+	}
+	
 	public Property updateProperty(Long id, Property propertyDetails) {
 		Property property = propertyRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id"));
