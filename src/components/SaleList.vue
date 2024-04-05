@@ -63,9 +63,13 @@
                             <h3 class="listing-name">
                                 {{ property.propertyName }}
                             </h3>
-                            <button class="icon-btn" aria-label="add to favourite" @click.stop>
-                                <span class="material-symbols-rounded" aria-hidden="true"><font-awesome-icon
-                                        :icon="['far', 'heart']" size="lg" /></span>
+                            <button class="icon-btn" aria-label="add to favourite"
+                                @click.prevent.stop="toggleShortlist(userId, property.id)">
+                                <span class="material-symbols-rounded" aria-hidden="true">
+                                    <font-awesome-icon
+                                        :icon="isShortlisted(property.id) ? ['fas', 'heart'] : ['far', 'heart']"
+                                        size="lg" :class="{ 'pink-heart': isShortlisted(property.id) }" />
+                                </span>
                             </button>
                         </div>
                         <div class="listing-description">
@@ -101,10 +105,11 @@
 </template>
 
 <script>
+import UserService from '@/services/user.service';
 import axios from 'axios';
 export default {
     name: "SaleLis",
-    props: ['properties'],
+    props: ['properties', 'userId'],
     emits: ['updateProperties'],
     data() {
         return {
@@ -128,8 +133,12 @@ export default {
                 { id: 7, name: "Fridge" },
                 { id: 8, name: "Furnished" }
             ],
-            showFilter: false
+            showFilter: false,
+            shortlistedProperties: []
         }
+    },
+    created() {
+        this.fetchShortlistedProperties(this.currentUser.id);
     },
     methods: {
         resetFilter() {
@@ -182,6 +191,46 @@ export default {
                 .catch(error => {
                     console.error(error);
                 });
+        },
+        toggleShortlist(userId, propertyId) {
+            if (this.isShortlisted(propertyId)) {
+                this.removeFromShortlist(userId, propertyId);
+            } else {
+                this.addToShortlist(userId, propertyId);
+            }
+        },
+        addToShortlist(userId, propertyId) {
+            this.shortlistedProperties.push({ id: propertyId });
+            UserService.addToShortlist(this.currentUser.id, propertyId)
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        removeFromShortlist(userId, propertyId) {
+            UserService.removeFromShortlist(this.currentUser.id, propertyId)
+                .then(response => {
+                    // remove the propertyId from the local state
+                    this.shortlistedProperties = this.shortlistedProperties.filter(property => property.id !== propertyId);
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        fetchShortlistedProperties() {
+            UserService.getShortlistedProperties(this.currentUser.id)
+                .then(response => {
+                    this.shortlistedProperties = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        isShortlisted(propertyId) {
+            return this.shortlistedProperties.some(property => property.id === propertyId);
         }
     },
     computed: {
@@ -189,6 +238,9 @@ export default {
             return this.properties.filter(property => {
                 return property.propertyName.toLowerCase().includes(this.search.toLowerCase())
             });
+        },
+        currentUser() {
+            return this.$store.state.auth.user;
         }
     }
 }
@@ -279,19 +331,19 @@ export default {
 }
 
 .center-content {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
-.center-content input{
+.center-content input {
     height: 30px;
     width: 300px;
     margin-right: 20px;
     border-radius: 10px
 }
 
-.center-content button{
+.center-content button {
     width: 100px;
     background-color: crimson;
     color: white;
@@ -300,7 +352,11 @@ export default {
     cursor: pointer;
 }
 
-.center-content button:hover{
+.center-content button:hover {
     color: black;
+}
+
+.pink-heart {
+    color: pink;
 }
 </style>

@@ -81,6 +81,26 @@ class UserService{
         return axios.get(`http://localhost:8080/api/user/${userId}`, { headers: authHeader() })
     }
 
+    getProfile(userId){
+        return axios.get(`http://localhost:8080/api/useraccount/${userId}`, { headers: authHeader() });
+    }
+
+    updateProfile(userId, userData){
+        return axios.put(`http://localhost:8080/api/updateuser/${userId}`, userData, { headers: authHeader() });
+    }
+
+    addToShortlist(userId, propertyId){
+        return axios.post(`http://localhost:8080/api/users/shortlist/${userId}/${propertyId}`, { headers: authHeader() });
+    }
+
+    getShortlistedProperties(userId){
+        return axios.get(`http://localhost:8080/api/shortlist/${userId}`, { headers: authHeader() });
+    }
+
+    removeFromShortlist(userId, propertyId){
+        return axios.delete(`http://localhost:8080/api/deleteshortlist/${userId}/${propertyId}`, { headers: authHeader() });
+    }
+
     getUserBoard(){
         return axios.get(API_URL + "user", { headers: authHeader() });
     }

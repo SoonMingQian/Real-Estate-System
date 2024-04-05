@@ -51,6 +51,10 @@ public class Property {
 	@JoinColumn(name = "user_id")
 	@JsonIgnore 
 	private User user;
+	
+	@ManyToMany(mappedBy = "shortlistedProperties")
+	@JsonIgnore 
+	private Set<User> usersWhoShortlisted = new HashSet<>();
 
 	public Property() {
 		super();
@@ -196,8 +200,16 @@ public class Property {
 		this.user = user;
 	}
 
-	
-	
 
-	
+	public Set<User> getUsersWhoShortlisted() {
+		return usersWhoShortlisted;
+	}
+
+
+	public void setUsersWhoShortlisted(Set<User> usersWhoShortlisted) {
+		this.usersWhoShortlisted = usersWhoShortlisted;
+	}
+
+
+		
 }

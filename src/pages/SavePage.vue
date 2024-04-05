@@ -5,27 +5,30 @@
     </div>
     <div class="save-container">
         <div class="collection-main-content">
-            <div v-if="savedProperty.length > 0">
-                <div class="property-card" v-for="house in savedProperty" :key="house.id">
+            <div v-if="shortlistedProperties.length > 0">
+                <div class="property-card" v-for="property in shortlistedProperties" :key="property.id">
+                    <router-link class="property-link" :to="'/property-listing/' + property.id">
                     <div class="property-card-content">
-                        <img :src="house.image" alt="{{ house.houseName }}" class="property-img" />
+                        <img :src="'data:' + property.files[0].contentType + ';base64,' + property.files[0].fileData"
+                                alt="{{ property.propertyName }}" class="img-cover" />
                         <div class="property-content">
-                            <h3 class="p-name">{{ house.houseName }}</h3>
-                            <p class="p-address">{{ house.houseAddress }}</p>
-                            <p class="p-price">€ {{ house.price }}</p>
+                            <h3 class="p-name">{{ property.propertyName }}</h3>
+                            <p class="p-address">{{ property.propertyAddress }}</p>
+                            <p class="p-price">€ {{ property.price }}</p>
                             <div class="p-features">
-                                <span class="p-room-details">{{ house.numOfBedroom }} <font-awesome-icon
+                                <span class="p-room-details">{{ property.numOfBed }} <font-awesome-icon
                                         :icon="['fas', 'bed']" /></span>
-                                <span class="p-bathroom-details">{{ house.numOfBathroom }} <font-awesome-icon
+                                <span class="p-bathroom-details">{{ property.numOfBath }} <font-awesome-icon
                                         :icon="['fas', 'toilet']" /></span>
-                                <span class="p-sqft-details">{{ house.sqft }} sqft</span>
+                                <span class="p-sqft-details">{{ property.sqft }} sqft</span>
                             </div>
-                            <button class="unsaved">Remove</button>
+                            <button class="unsaved" @click.prevent.stop="removeFromShortlist(userId, property.id)">Remove</button>
                         </div>
                     </div>
+                </router-link>
                 </div>
             </div>
-            <div v-if="savedProperty.length === 0">
+            <div v-if="shortlistedProperties.length === 0">
                 <h2>no content</h2>
             </div>
         </div>
@@ -35,7 +38,7 @@
 <script>
 import ProfileNavBar from '../components/ProfileNavBar.vue';
 import '../save-page.css'
-import { savedProperty } from '../temp-data';
+import UserService from '@/services/user.service';
 export default {
     name: "SavePage",
     components:{
@@ -43,8 +46,38 @@ export default {
     },
     data() {
         return {
-            savedProperty,
+            shortlistedProperties: []
         }
+    },
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
+    created() {
+        this.fetchShortlistedProperties(this.currentUser.id);
+    },
+    methods:{
+        fetchShortlistedProperties() {
+            UserService.getShortlistedProperties(this.currentUser.id)
+                .then(response => {
+                    this.shortlistedProperties = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        removeFromShortlist(userId, propertyId) {
+            UserService.removeFromShortlist(this.currentUser.id, propertyId)
+                .then(response => {
+                    // remove the propertyId from the local state
+                    this.shortlistedProperties = this.shortlistedProperties.filter(property => property.id !== propertyId);
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
     }
 }
 </script>

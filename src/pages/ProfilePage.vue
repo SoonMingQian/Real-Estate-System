@@ -1,45 +1,81 @@
 <template>
     <ProfileNavBar />
-    <div class="my-profile">
+    <form class="my-profile" @submit="updateUser">
         <h1>My Profile</h1>
-        <p>First Name: {{ currentUser.firstName }}</p>
-        <input v-model="currentUser.firstName" placeholder="New first name">
-        <p>Last Name: {{ currentUser.lastName }}</p>
-        <input v-model="currentUser.lastName" placeholder="New last name">
-        <p>Nationality: {{ currentUser.nationality }}</p>
-        <input v-model="currentUser.nationality" placeholder="Enter your nationality">
-        <p>Address: {{ currentUser.address }}</p>
-        <input v-model="currentUser.address" placeholder="Enter your address line">
-        <p>Eircode: {{ currentUser.eircode }}</p>
-        <input v-model="currentUser.eircode" placeholder="Enter your EIRCODE">
-        <p>Email: {{ currentUser.email }}</p>
+        <p>First Name: {{ user.firstName }}</p>
+        <input v-model="user.firstName" placeholder="New first name">
+        <p>Last Name: {{ user.lastName }}</p>
+        <input v-model="user.lastName" placeholder="New last name">
+        <p>Nationality: {{ user.nationality }}</p>
+        <input v-model="user.nationality" placeholder="Enter your nationality">
+        <p>Address: {{ user.address }}</p>
+        <input v-model="user.address" placeholder="Enter your address line">
+        <p>Eircode: {{ user.eircode }}</p>
+        <input v-model="user.eircode" placeholder="Enter your EIRCODE">
+        <p>Email: {{ user.email }}</p>
         <button class="button">Save Changes</button>
-    </div>
+    </form>
 </template>
 
 <script>
+import UserService from '@/services/user.service';
 import ProfileNavBar from '@/components/ProfileNavBar.vue';
 export default {
     name: "ProfilePage",
-    components:{
+    components: {
         ProfileNavBar,
+
     },
-    computed:{
-        currentUser(){
+    data() {
+        return {
+            user: {
+                firstName: "",
+                lastName: "",
+                nationality: "",
+                address: "",
+                eircode: ""
+            }
+        }
+    },
+    computed: {
+        currentUser() {
             return this.$store.state.auth.user;
+        }
+    },
+    created() {
+        this.fetchProfile();
+    },
+    methods: {
+        async fetchProfile() {
+            try {
+                const response = await UserService.getProfile(this.currentUser.id);
+                this.user = response.data;
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async updateUser() {
+            event.preventDefault();
+            try {
+                const response = await UserService.updateProfile(this.currentUser.id, this.user);
+                this.user = response.data;
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 }
 </script>
 
 <style scoped>
-.my-profile{
+.my-profile {
     padding-left: 40%;
     padding-top: 80px;
     background-color: white;
 }
 
-.my-profile input{
+.my-profile input {
     border-radius: 8px;
     border-style: 0px solid;
     width: 300px;
@@ -47,7 +83,7 @@ export default {
     margin-bottom: 25px;
 }
 
-.button{
+.button {
     margin-top: 25px;
     border-radius: 8px;
     background-color: crimson;

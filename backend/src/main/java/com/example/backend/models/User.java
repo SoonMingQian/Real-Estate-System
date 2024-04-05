@@ -23,6 +23,12 @@ public class User {
 	
 	private String password;
 	
+	private String nationality;
+	
+	private String address;
+	
+	private String eircode;
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(  name = "user_roles", 
 	     joinColumns = @JoinColumn(name = "user_id"), 
@@ -31,6 +37,12 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Property> properties = new HashSet<>();
+	
+	@ManyToMany
+	@JoinTable(name = "shortlist",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "property_id"))
+	private Set<Property> shortlistedProperties = new HashSet<>();
 	
 	
 	public User() {
@@ -101,7 +113,37 @@ public class User {
 		this.properties = properties;
 	}
 
-	
-	
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEircode() {
+		return eircode;
+	}
+
+	public void setEircode(String eircode) {
+		this.eircode = eircode;
+	}
+
+	public Set<Property> getShortlistedProperties() {
+		return shortlistedProperties;
+	}
+
+	public void setShortlistedProperties(Set<Property> shortlistedProperties) {
+		this.shortlistedProperties = shortlistedProperties;
+	}
+
 	
 }

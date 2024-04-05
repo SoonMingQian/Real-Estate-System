@@ -54,16 +54,19 @@
                             <div class="features-block">
                                 <h2 class="title">Unit Features</h2>
                                 <div v-for="(facility, index) in property.facilities" :key="index">
-                                <h3 class="description"><font-awesome-icon :icon="['fas', 'check']" /> {{ facility.name }}</h3>
-                            </div>
+                                    <h3 class="description"><font-awesome-icon :icon="['fas', 'check']" /> {{
+                                        facility.name }}</h3>
+                                </div>
                             </div>
                         </section>
                     </div>
                     <div class="contact-section">
 
                         <div class="action-list-button">
-                            <button class="icon-btn" aria-label="add to favourite">
-                                <font-awesome-icon :icon="['far', 'heart']" />
+                            <button class="icon-btn" aria-label="add to favourite" @click.prevent.stop="toggleShortlist(userId, property.id)">
+                                <font-awesome-icon
+                                    :icon="isShortlisted(property.id) ? ['fas', 'heart'] : ['far', 'heart']" size="lg"
+                                    :class="{ 'pink-heart': isShortlisted(property.id) }" />
                             </button>
                             <span>Shortlist</span>
                         </div>
@@ -86,9 +89,9 @@
         </div>
     </div>
     <div v-else>
-        <NotFoundPage/>
+        <NotFoundPage />
     </div>
-    
+
 </template>
 
 <script>
@@ -108,13 +111,20 @@ export default {
     data() {
         return {
             property: null,
+            shortlistedProperties: []
         }
     },
-    components:{
+    components: {
         NotFoundPage
+    },
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
     },
     async created() {
         await this.fetchProperty();
+        this.fetchShortlistedProperties(this.currentUser.id);
     },
     methods: {
         async fetchProperty() {
@@ -126,6 +136,46 @@ export default {
                 console.error(error);
             }
         },
+        toggleShortlist(userId, propertyId) {
+            if (this.isShortlisted(propertyId)) {
+                this.removeFromShortlist(userId, propertyId);
+            } else {
+                this.addToShortlist(userId, propertyId);
+            }
+        },
+        addToShortlist(userId, propertyId) {
+            this.shortlistedProperties.push({ id: propertyId });
+            UserService.addToShortlist(this.currentUser.id, propertyId)
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        removeFromShortlist(userId, propertyId) {
+            UserService.removeFromShortlist(this.currentUser.id, propertyId)
+                .then(response => {
+                    // remove the propertyId from the local state
+                    this.shortlistedProperties = this.shortlistedProperties.filter(property => property.id !== propertyId);
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        fetchShortlistedProperties() {
+            UserService.getShortlistedProperties(this.currentUser.id)
+                .then(response => {
+                    this.shortlistedProperties = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        isShortlisted(propertyId) {
+            return this.shortlistedProperties.some(property => property.id === propertyId);
+        }
     },
 }
 </script>
