@@ -77,9 +77,23 @@
                                     <h2 class="name">{{ property.propertyName }}</h2>
                                 </div>
                                 <div class="card-body">
-                                    <button class="email-agent">
+                                    <button class="email-agent"  @click="showForm = !showForm">
                                         <font-awesome-icon :icon="['far', 'envelope']" /> Send Enquiry
                                     </button>
+
+                                    <div v-if="showForm" class="email-form">
+                                        <button class="close-button" @click="showForm = false"><font-awesome-icon :icon="['fas', 'x']" /></button>
+                                        
+                                        <form @submit.prevent="sendEmail">
+                                        <h1>Send Enquiry</h1>
+                                        <label>Email: {{ email }}</label>
+                                        
+
+                                        <label>Message</label>
+                                        <textarea name="message" v-model="message" cols="30" rows="5" placeholder="Message" required></textarea>
+                                        <button type="submit">Send</button>
+                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +125,11 @@ export default {
     data() {
         return {
             property: null,
-            shortlistedProperties: []
+            shortlistedProperties: [],
+            showForm: false,
+            name: '',
+            email: '',
+            message: '',
         }
     },
     components: {
@@ -124,7 +142,17 @@ export default {
     },
     async created() {
         await this.fetchProperty();
-        this.fetchShortlistedProperties(this.currentUser.id);
+        if(this.currentUser){
+            this.fetchShortlistedProperties(this.currentUser.id);
+        }
+        UserService.getEmailByPropertyId(this.$route.params.propertyId)
+            .then(response => {
+                this.email = response.data;
+            })
+            .catch(error => {
+                console.error(error);
+        });
+       
     },
     methods: {
         async fetchProperty() {
@@ -144,6 +172,10 @@ export default {
             }
         },
         addToShortlist(userId, propertyId) {
+            if (!this.currentUser) {
+                this.$router.push('/login');
+                return;
+            }
             this.shortlistedProperties.push({ id: propertyId });
             UserService.addToShortlist(this.currentUser.id, propertyId)
                 .then(response => {
@@ -175,7 +207,76 @@ export default {
         },
         isShortlisted(propertyId) {
             return this.shortlistedProperties.some(property => property.id === propertyId);
-        }
+        },
+        sendEmail() {
+            const subject = encodeURIComponent('Enquiry');
+            const body = encodeURIComponent(this.message);
+            window.location.href = `mailto:${this.email}?subject=${subject}&body=${body}`;
+        },
     },
 }
 </script>
+
+<style scoped>
+
+.email-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1000; /* Add a high z-index value */
+}
+
+.email-form form {
+  background-color: #fff; /* Give the actual form a white background */
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px; /* Limit the form width */
+  width: 100%; /* Make the form take up all available width */
+}
+
+.email-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.email-form input,
+.email-form textarea {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.email-form button {
+  padding: 10px 20px;
+  background-color: crimson;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.email-form button:hover {
+  background-color: #45a049;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: white;
+  cursor: pointer;
+}
+</style>

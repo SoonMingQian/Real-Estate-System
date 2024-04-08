@@ -14,6 +14,7 @@ import com.example.backend.models.Facility;
 import com.example.backend.models.File;
 import com.example.backend.models.Property;
 import com.example.backend.models.Status;
+import com.example.backend.models.User;
 import com.example.backend.repositories.FacilityRepository;
 import com.example.backend.repositories.FileRepository;
 import com.example.backend.repositories.PropertyRepository;
@@ -44,6 +45,15 @@ public class PropertyService {
 	
 	public Optional<Property> getPropertyById(Long id) {
 	    return propertyRepository.findById(id);
+	}
+	
+	public String getUserEmail(Long id) {
+	    Optional<Property> property = propertyRepository.findById(id);
+	    if (property.isPresent()) {
+	        User user = property.get().getUser();
+	        return user != null ? user.getEmail() : null;
+	    }
+	    return null;
 	}
 	
 	public List<Property> getApartment(){

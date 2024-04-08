@@ -1,11 +1,11 @@
 <template>
     <div class="edit-property-page" v-if="property">
-        <h2>Edit Property {{ property.propertyName }}</h2>
-        <form @submit.prevent="updateProperty">
+        <form @submit.prevent="updateProperty" class="other">
+            <h2>Edit Property {{ property.propertyName }}</h2>
             <p>Name: {{ property.propertyName }} <span class="required">*</span></p>
-            <input type="text" v-model="property.propertyName" required>
+            <input class="other-input" type="text" v-model="property.propertyName" required>
             <p>Address: {{ property.propertyAddress }} <span class="required">*</span> </p>
-            <input type="text" v-model="property.propertyAddress" required>
+            <input class="other-input" type="text" v-model="property.propertyAddress" required>
             <p>Price: € {{ property.price }} <span class="required">*</span> </p>
             <input class="other-input" placeholder="Price" type="number" v-model="property.price" required><br>
             <p>Number of Bedroom: {{ property.numOfBed }} <span class="required">*</span> </p>
@@ -27,8 +27,11 @@
                     <label :for="feature.name">{{ feature.name }}</label>
                 </div>
             </div>
+            <div class="button-container">
             <button type="submit">Save Changes</button>
+            </div>
         </form>
+    
     </div>
     <div v-else>Loading...</div>
 </template>
@@ -88,3 +91,65 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.edit-property-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 30px;
+    padding-bottom: 70px;
+}
+
+
+.other {
+    width: 70%;
+    /* Adjust as needed */
+    padding: 20px;
+    height: 170vh;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    
+}
+
+.other-input{
+    width: 60%;
+    height: 30px;
+}
+
+.other textarea{
+    width: 75%;
+    height: 120px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.other button {
+    font-size: 1rem;
+    width: 150px;
+    height: 30px;
+    margin-top: 30px; /* adjust as needed */
+    margin-bottom: 20px;
+    display: inline-block;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    color: white;
+    background: crimson;
+    cursor: pointer;
+}
+
+
+
+.other button :hover{
+    background: black;
+}
+
+.required {
+    color: red;
+}
+</style>

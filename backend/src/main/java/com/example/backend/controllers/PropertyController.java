@@ -145,6 +145,7 @@ public class PropertyController {
 	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> deleteProperty(@PathVariable Long propertyId){
 	    try {
+	    	userService.removePropertyFromShortlist(propertyId);
 	        propertyService.deleteFacilitiesByPropertyId(propertyId);
 			propertyService.deleteFilesByPropertyId(propertyId);
 	        propertyService.deleteProperty(propertyId);
@@ -167,4 +168,10 @@ public class PropertyController {
 			@RequestParam(required = false) Long facilityId){
 		return propertyService.getFilteredProperties(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
 	}
+	
+	 @GetMapping("/property/{propertyId}/userEmail")
+	 public ResponseEntity<String> getUserEmailByPropertyId(@PathVariable Long propertyId) {
+		 String email = propertyService.getUserEmail(propertyId);
+	     return email != null ? ResponseEntity.ok(email) : ResponseEntity.notFound().build();
+	 }
 }

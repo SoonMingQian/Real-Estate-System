@@ -11,8 +11,18 @@
                 <li><router-link class="link" to="/apartment">Apartment</router-link></li>
                 <li><router-link class="link" to="/commercial">Commercial</router-link></li>
                 <li><router-link class="link" to="/sell-property">Sell</router-link></li>
-                <li><router-link class="link" to="/my-profile">My Profile</router-link></li>
-                <li><button class="nav-link" @click.prevent="logOut">LogOut</button></li>
+                <div v-if="!currentUser">
+                    <li><router-link class="link" to="/login">Login</router-link></li>
+                </div>
+                <div v-else>
+                    <li><router-link class="link" to="/my-profile">My Profile</router-link></li>
+
+                </div>
+                <div v-if="currentUser">
+                    <li><span class="nav-link" @click.prevent="logOut"><font-awesome-icon
+                                :icon="['fas', 'right-from-bracket']" /></span></li>
+                </div>
+
             </ul>
             <div class="icon">
                 <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars"
@@ -25,6 +35,17 @@
                     <li><router-link class="link" to="/apartment">Apartment</router-link></li>
                     <li><router-link class="link" to="/commercial">Commercial</router-link></li>
                     <li><router-link class="link" to="/sell-property">Sell</router-link></li>
+                    <div v-if="!currentUser">
+                        <li><router-link class="link" to="/login">Login</router-link></li>
+                    </div>
+                    <div v-else>
+                        <li><router-link class="link" to="/my-profile">My Profile</router-link></li>
+
+                    </div>
+                    <div v-if="currentUser">
+                        <li><span class="nav-link" @click.prevent="logOut"><font-awesome-icon
+                                    :icon="['fas', 'right-from-bracket']" /></span></li>
+                    </div>
 
                 </ul>
             </transition>
@@ -52,6 +73,11 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.updateScroll)
+    },
+    computed: {
+        currentUser() {
+            return this.$store.state.auth.user;
+        }
     },
     methods: {
         toggleMobileNav() {

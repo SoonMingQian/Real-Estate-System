@@ -47,6 +47,10 @@ export default {
     },
     methods: {
         async fetchProfile() {
+            if (!this.currentUser) {
+                this.$router.push('/login');
+                return;
+            }
             try {
                 const response = await UserService.getProfile(this.currentUser.id);
                 this.user = response.data;

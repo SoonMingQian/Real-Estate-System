@@ -47,6 +47,10 @@ export default {
     },
     methods: {
         async fetchProperties() {
+            if (!this.currentUser) {
+                this.$router.push('/login');
+                return;
+            }
             try {
                 const response = await UserService.getMyProperties(this.currentUser.id);
                 this.properties = response.data;

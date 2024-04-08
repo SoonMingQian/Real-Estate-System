@@ -29,16 +29,16 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
         "(p.numOfBath <= :maxNumOfBath OR :maxNumOfBath IS NULL) AND " +
         "(p.saleType = :saleType OR :saleType IS NULL) AND " +
         "(:facilityId IS NULL OR f.id = :facilityId)")
-List<Property> findWithFilters(
-        @Param("propertyType") String propertyType,
-        @Param("minPrice") Integer minPrice,
-        @Param("maxPrice") Integer maxPrice,
-        @Param("minNumOfBed") Integer minNumOfBed,
-        @Param("maxNumOfBed") Integer maxNumOfBed,
-        @Param("minNumOfBath") Integer minNumOfBath,
-        @Param("maxNumOfBath") Integer maxNumOfBath,
-        @Param("saleType") String saleType,
-        @Param("facilityId") Long facilityId);
+	List<Property> findWithFilters(
+	        @Param("propertyType") String propertyType,
+	        @Param("minPrice") Integer minPrice,
+	        @Param("maxPrice") Integer maxPrice,
+	        @Param("minNumOfBed") Integer minNumOfBed,
+	        @Param("maxNumOfBed") Integer maxNumOfBed,
+	        @Param("minNumOfBath") Integer minNumOfBath,
+	        @Param("maxNumOfBath") Integer maxNumOfBath,
+	        @Param("saleType") String saleType,
+	        @Param("facilityId") Long facilityId);
 	
 	List<Property> findByUserId(Long userId);
 }

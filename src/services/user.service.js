@@ -101,6 +101,10 @@ class UserService{
         return axios.delete(`http://localhost:8080/api/deleteshortlist/${userId}/${propertyId}`, { headers: authHeader() });
     }
 
+    getEmailByPropertyId(propertyId){
+        return axios.get(`http://localhost:8080/api/property/${propertyId}/userEmail`, { headers: authHeader() });
+    }
+
     getUserBoard(){
         return axios.get(API_URL + "user", { headers: authHeader() });
     }

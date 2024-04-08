@@ -138,7 +138,9 @@ export default {
         }
     },
     created() {
-        this.fetchShortlistedProperties(this.currentUser.id);
+        if (this.currentUser) {
+            this.fetchShortlistedProperties(this.currentUser.id);
+        }
     },
     methods: {
         resetFilter() {
@@ -172,7 +174,7 @@ export default {
                 }
             });
 
-            axios.get('http://localhost:8080/filter', {
+            axios.get('http://localhost:8080/api/filter', {
                 params,
                 paramsSerializer: params => {
                     return Object.keys(params).map(key => {
@@ -200,6 +202,10 @@ export default {
             }
         },
         addToShortlist(userId, propertyId) {
+            if (!this.currentUser) {
+                this.$router.push('/login');
+                return;
+            }
             this.shortlistedProperties.push({ id: propertyId });
             UserService.addToShortlist(this.currentUser.id, propertyId)
                 .then(response => {

@@ -3,14 +3,22 @@
         <h1>Sign Up</h1>
         <form @submit.prevent="handleRegister">
             <div v-if="!successful">
-                <input type="text" v-model="user.firstName" placeholder="First Name">
-                <input type="text" v-model="user.lastName" placeholder="Last Name">
-                <input type="email" v-model="user.email" placeholder="Email">
-                <input type="password" v-model="user.password" placeholder="Password">
-                <input type="password" placeholder="Re-enter Password">
-                <button type="submit">Sign Up</button>
+                <input type="text" v-model="user.firstName" placeholder="First Name" required>
+                <input type="text" v-model="user.lastName" placeholder="Last Name" required>
+                <input type="email" v-model="user.email" placeholder="Email" required>
+                <input type="password" v-model="user.password" placeholder="Password" required>
+                <input type="password" v-model="user.rePassword" placeholder="Re-enter Password" required>
+                <label><input type="checkbox" @change="handleRoleChange" :checked="user.role.includes('agent')"> Are you an agent?</label>
+                <button type="submit" :disabled="!passwordValid">Sign Up</button>
             </div>
-        </form>
+        </form><br>
+        <div v-if="passwordError" class="alert alert-danger">
+            {{ passwordError }}
+        </div>
+
+        <div v-if="nameError" class="alert alert-danger">
+            {{ nameError }}
+        </div>
 
         <div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
             {{ message }}
@@ -35,7 +43,9 @@ export default {
                 firstName: "",
                 lastName: "",
                 email: "",
-                password: ""
+                password: "",
+                repassword: "",
+                role: [],
             }
         }
     },
@@ -43,6 +53,29 @@ export default {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
+        passwordValid(){
+            return this.user.password.lenth >= 8 && this.user.password === this.user.repassword;
+        },
+        passwordError() {
+            if (this.user.password.length < 8) {
+                return "Password must be at least 8 characters long.";
+            }
+            if (this.user.password !== this.user.rePassword) {
+                return "Passwords do not match.";
+            }
+            return "";
+        },
+        nameValid() {
+            const nameRegex = /^[A-Za-z]+$/;
+            return nameRegex.test(this.user.firstName) && nameRegex.test(this.user.lastName);
+        },
+        nameError() {
+            if (!this.nameValid) {
+                return "First name and last name must only contain alphabets.";
+            }
+            return "";
+        }
+        
     },
     mounted() {
         if (this.loggedIn) {
@@ -54,6 +87,13 @@ export default {
             this.message = "";
             this.successful = false;
             this.loading = true;
+
+            const nameRegex = /^[A-Za-z]+$/;
+            if (!nameRegex.test(this.user.firstName) || !nameRegex.test(this.user.lastName)) {
+                this.message = "First name and last name must only contain alphabets.";
+                this.loading = false;
+                return;
+            }
 
             store.dispatch("auth/register", this.user).then(
                 (data) => {
@@ -74,6 +114,16 @@ export default {
                 }
             );
         },
+        handleRoleChange(event) {
+        if (event.target.checked) {
+            this.user.role.push('agent');
+        } else {
+            const index = this.user.role.indexOf('agent');
+            if (index !== -1) {
+                this.user.role.splice(index, 1);
+            }
+        }
+    },
     },
 };
 </script>
@@ -135,5 +185,29 @@ input:focus {
 .account-link {
     color: crimson;
     text-decoration: none;
+}
+
+form input[type="checkbox"] {
+    width: auto; /* Reset the width */
+    vertical-align: middle; /* Align it vertically in the middle */
+    margin: 0 10px 0 0; /* Add some margin to the right */
+}
+
+form label {
+    display: inline-block; /* Make the label inline-block */
+    vertical-align: middle; /* Align it vertically in the middle */
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
 }
 </style>

@@ -6,11 +6,11 @@
             <input v-model="user.password" type="password" placeholder="Password">
             <button type="submit" :disabled="loading">Login</button>
             <span v-show="loading"></span>
-            <div v-if="message" class="alert alert-danger" role="alert">
-                {{ message }}
-            </div>
+        </form><br>
 
-        </form>
+        <div v-if="loginError" class="alert alert-danger">
+            {{ loginError }}
+        </div>
 
         <div class="account">
             Dont have an account?<router-link class="account-link" to="/register">Sign Up Here</router-link>
@@ -39,12 +39,20 @@ export default {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
+        loginError() {
+            if (this.message.includes("401")) {
+                return "Incorrect email or password. Please try again.";
+            }
+            return "";
+        }
     },
     created() {
         if (this.loggedIn) {
             this.$router.push("/my-profile");
         }
+        
     },
+    
     methods: {
         handleLogin() {
             this.loading = true;
@@ -125,5 +133,18 @@ input:focus {
 .account-link {
     color: crimson;
     text-decoration: none;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
 }
 </style>

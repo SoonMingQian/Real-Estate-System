@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.models.PasswordResetToken;
 import com.example.backend.models.Property;
 import com.example.backend.models.User;
+import com.example.backend.repositories.PasswordResetTokenRepository;
 import com.example.backend.repositories.PropertyRepository;
 import com.example.backend.repositories.UserRepository;
 
@@ -21,6 +23,9 @@ public class UserService {
 	
 	@Autowired
 	PropertyRepository propertyRepository;
+	
+	@Autowired
+	PasswordResetTokenRepository passwordResetTokenRepository;
 	
 	public Optional<User> getUserById(Long userId) {
 		return userRepository.findById(userId);
@@ -69,5 +74,23 @@ public class UserService {
 	    
 	}
 	
+	public void removePropertyFromShortlist(Long proprtyId) {
+		List<User> users = userRepository.findAll();
+		for(User user : users) {
+			Set<Property> shortlistedProperties = user.getShortlistedProperties();
+			shortlistedProperties.removeIf(property -> property.getId().equals(proprtyId));
+			 user.setShortlistedProperties(shortlistedProperties);
+		     userRepository.save(user);
+		}
+	}
+	
+	public Optional<User> findUserByEmail(final String email) {
+		return userRepository.findByEmail(email);
+	}
+	
+	public void createPasswordResetTokenForUser(User user, String token) {
+		PasswordResetToken myToken = new PasswordResetToken(token, user);
+		passwordResetTokenRepository.save(myToken);
+	}
 	
 }
