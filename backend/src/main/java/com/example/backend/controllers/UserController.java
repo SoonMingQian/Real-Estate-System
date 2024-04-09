@@ -61,14 +61,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 	
-	@PostMapping("/user/resetPassword")
-	public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
-		Optional<User> user = userService.findUserByEmail(userEmail);
-		if(user == null) {
-			throw new UsernameNotFoundException(userEmail);
-		}
-		String token = UUID.randomUUID().toString();
-		userService.
-	}
-	
 }

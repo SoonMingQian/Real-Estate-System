@@ -7,9 +7,9 @@
                 <input type="text" v-model="user.lastName" placeholder="Last Name" required>
                 <input type="email" v-model="user.email" placeholder="Email" required>
                 <input type="password" v-model="user.password" placeholder="Password" required>
-                <input type="password" v-model="user.rePassword" placeholder="Re-enter Password" required>
+                <input type="password" v-model="user.repassword" placeholder="Re-enter Password" required>
                 <label><input type="checkbox" @change="handleRoleChange" :checked="user.role.includes('agent')"> Are you an agent?</label>
-                <button type="submit" :disabled="!passwordValid">Sign Up</button>
+                <button type="submit" :disabled="passwordInvalid">Sign Up</button>
             </div>
         </form><br>
         <div v-if="passwordError" class="alert alert-danger">
@@ -53,14 +53,18 @@ export default {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
-        passwordValid(){
-            return this.user.password.lenth >= 8 && this.user.password === this.user.repassword;
+        passwordInvalid() {
+            if(this.user.password.length < 8 || this.user.password != this.user.repassword) {
+                return true;
+            }else{
+                return false;
+            }
         },
         passwordError() {
             if (this.user.password.length < 8) {
                 return "Password must be at least 8 characters long.";
             }
-            if (this.user.password !== this.user.rePassword) {
+            if (this.user.password != this.user.repassword) {
                 return "Passwords do not match.";
             }
             return "";
@@ -94,12 +98,13 @@ export default {
                 this.loading = false;
                 return;
             }
-
+            console.log(this.user);
             store.dispatch("auth/register", this.user).then(
                 (data) => {
                     this.message = data.message;
                     this.successful = true;
                     this.loading = false;
+                    console.log(data.message)
                     this.$router.push("/login");
                 },
                 (error) => {
@@ -114,14 +119,11 @@ export default {
                 }
             );
         },
-        handleRoleChange(event) {
-        if (event.target.checked) {
-            this.user.role.push('agent');
+        handleRoleChange(e) {
+        if (e.target.checked) {
+            this.user.role = ["agent"]; // set role to ["agent"] when checkbox is checked
         } else {
-            const index = this.user.role.indexOf('agent');
-            if (index !== -1) {
-                this.user.role.splice(index, 1);
-            }
+            this.user.role = []; // set role to an empty array when checkbox is unchecked
         }
     },
     },

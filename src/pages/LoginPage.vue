@@ -5,6 +5,7 @@
             <input v-model="user.email" type="email" placeholder="Email">
             <input v-model="user.password" type="password" placeholder="Password">
             <button type="submit" :disabled="loading">Login</button>
+            
             <span v-show="loading"></span>
         </form><br>
 
@@ -13,12 +14,10 @@
         </div>
 
         <div class="account">
+            <router-link class="account-link" to="/forgotPassword">Forgot Password? Click Here!</router-link><br>
             Dont have an account?<router-link class="account-link" to="/register">Sign Up Here</router-link>
         </div>
     </div>
-
-
-
 </template>
 
 <script>
@@ -147,4 +146,6 @@ input:focus {
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
+
 </style>

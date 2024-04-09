@@ -1,3 +1,4 @@
+
 package com.example.backend.services;
 
 import java.util.List;
@@ -5,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.exception.ResourceNotFoundException;
@@ -23,6 +25,9 @@ public class UserService {
 	
 	@Autowired
 	PropertyRepository propertyRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	PasswordResetTokenRepository passwordResetTokenRepository;
@@ -84,13 +89,15 @@ public class UserService {
 		}
 	}
 	
-	public Optional<User> findUserByEmail(final String email) {
+	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 	
-	public void createPasswordResetTokenForUser(User user, String token) {
-		PasswordResetToken myToken = new PasswordResetToken(token, user);
-		passwordResetTokenRepository.save(myToken);
+	public void changeUserPassword(User user, String password) {
+		String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
 	}
+	
 	
 }

@@ -19,6 +19,8 @@ import CommercialPage from './pages/CommercialPage.vue'
 import SignUpPage from './pages/SignUpPage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
+import ChangePasswordPage from './pages/ChangePasswordPage.vue'
+import ForgotPasswordPage from './pages/ForgotPasswordPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -81,6 +83,13 @@ createApp(App)
     },{
         path: '/register',
         component: SignUpPage
+    },{
+        path: '/user/changePassword',
+        component: ChangePasswordPage,
+        props: (route) => ({ token: route.query.token })
+    },{
+        path: '/forgotPassword',
+        component: ForgotPasswordPage,
     },{
         path: '/:pathMatch(.*)*',
         component: NotFoundPage

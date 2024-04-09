@@ -13,11 +13,9 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class PasswordResetToken {
-
-	private static final int EXPIRATION = 60 * 24;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private String token;
@@ -32,17 +30,10 @@ public class PasswordResetToken {
 		super();
 	}
 
-	public PasswordResetToken(final String token) {
-		super();
-		this.token = token;
-		this.expiryDate = calculateExpiryDate(EXPIRATION);	
-	}
-
-	public PasswordResetToken(String token, User user) {
+	public PasswordResetToken(User user, String token) {
 		super();
 		this.token = token;
 		this.user = user;
-		this.expiryDate = calculateExpiryDate(EXPIRATION);	
 	}
 
 	public Long getId() {
@@ -77,23 +68,4 @@ public class PasswordResetToken {
 		this.expiryDate = expiryDate;
 	}
 
-	public static int getExpiration() {
-		return EXPIRATION;
-	}
-	
-	private Date calculateExpiryDate(final int expiryTimeInMinutes) {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(new Date().getTime());
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-        return new Date(cal.getTime().getTime());
-    }
-
-    public void updateToken(final String token) {
-        this.token = token;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
-    }
-
-	
-	
-	
 }
