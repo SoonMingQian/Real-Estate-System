@@ -142,7 +142,6 @@ public class PropertyController {
 	}
 	
 	@DeleteMapping("/deleteproperty/{propertyId}")
-	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> deleteProperty(@PathVariable Long propertyId){
 	    try {
 	    	userService.removePropertyFromShortlist(propertyId);

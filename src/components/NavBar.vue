@@ -113,7 +113,6 @@ export default {
 header {
     z-index: 99;
     width: 100%;
-    position: fixed;
     transition: .5s ease all;
     background-color: white;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);

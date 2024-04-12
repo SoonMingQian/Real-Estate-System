@@ -18,8 +18,5 @@ public class FacilityService {
 		return facilityRepository.save(facility);
 	}
 	
-	public void deleteFacilitiesByPropertyId(Long propertyId) {
-        List<Facility> facilities = facilityRepository.findByPropertyId(propertyId);
-        facilityRepository.deleteAll(facilities);
-    }
+	
 }

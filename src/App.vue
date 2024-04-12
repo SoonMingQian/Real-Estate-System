@@ -1,6 +1,6 @@
 <template>
-  <NavBar />
-  <div class="page-wrap">
+  <div class="page-wrap" >
+    <NavBar v-if="!$route.meta.hideNavbar"/>
     <router-view></router-view>
   </div>
 </template>
@@ -17,10 +17,10 @@ export default {
 </script>
 
 <style scoped>
+
 .page-wrap {
   max-width: 100%;
   margin: 0 auto;
-  padding-top: 120px;
   background-color: white;
   min-height: 90vh;
   height: auto;

@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.models.Property;
 import com.example.backend.models.User;
+import com.example.backend.services.PropertyService;
 import com.example.backend.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PropertyService propertyService;
 	
 	@GetMapping("/useraccount/{id}")
 	public ResponseEntity<Optional<User>> getUserById(@PathVariable Long id){
@@ -61,4 +66,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 	
+	@GetMapping("/users")
+	public List<User> getAllUsers(){
+		return userService.getAllUsers();
+	}
+	
+	@DeleteMapping("/deleteuser/{id}")
+	public void deleteUser(@PathVariable Long id, Long propertyId) {
+		userService.deleteUser(id);
+	}
 }

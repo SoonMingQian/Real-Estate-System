@@ -40,6 +40,7 @@
             })
             .then(response => {
             console.log('Response:', response.data);
+            this.$router.push('/login');
             })
             .catch(error => {
             console.error('Error:', error);

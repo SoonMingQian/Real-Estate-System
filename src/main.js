@@ -2,6 +2,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
 import store from "./store";
+//Vuetify import
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+//mdi font import
+import '@mdi/font/css/materialdesignicons.css'
 
 import SavePage from './pages/SavePage.vue'
 import PropertySalePage from './pages/PropertySalePage.vue'
@@ -21,6 +28,7 @@ import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
 import ChangePasswordPage from './pages/ChangePasswordPage.vue'
 import ForgotPasswordPage from './pages/ForgotPasswordPage.vue'
+import UserManagementPage from './pages/UserManagementPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -34,6 +42,15 @@ import 'swiper/css/navigation'
 
 SwiperClass.use(Pagination)
 library.add(fas, far);
+const vuetify = createVuetify({
+    components,
+    directives,
+})
+export default createVuetify({
+    icons: {
+      defaultSet: 'mdi', // This is already the default value - only for display purposes
+    },
+  })
 
 createApp(App)
 .use(VueRouter.createRouter({
@@ -91,11 +108,18 @@ createApp(App)
         path: '/forgotPassword',
         component: ForgotPasswordPage,
     },{
+        path: '/manageUser',
+        component: UserManagementPage,
+        meta: { 
+            hideNavbar: true, 
+        }
+    },{
         path: '/:pathMatch(.*)*',
         component: NotFoundPage
     }]
 }))
 .use(VueAwesomeSwiper)
 .use(store)
+.use(vuetify)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')
