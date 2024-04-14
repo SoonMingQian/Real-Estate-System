@@ -17,13 +17,13 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+           <router-link to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
+            <router-link to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
+            <router-link to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 750px"><v-data-table
+      <v-main style="height: auto"><v-data-table
     :headers="headers"
     :items="usersWithRoleNames"
     :sort-by="[{ key: 'id', order: 'asc' }]"

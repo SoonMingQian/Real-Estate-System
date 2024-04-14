@@ -29,6 +29,8 @@ import HomePage from './pages/HomePage.vue'
 import ChangePasswordPage from './pages/ChangePasswordPage.vue'
 import ForgotPasswordPage from './pages/ForgotPasswordPage.vue'
 import UserManagementPage from './pages/UserManagementPage.vue'
+import PropertyManagementPage from './pages/PropertyManagementPage.vue'
+import ApprovePage from './pages/ApprovePage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -110,6 +112,18 @@ createApp(App)
     },{
         path: '/manageUser',
         component: UserManagementPage,
+        meta: { 
+            hideNavbar: true, 
+        }
+    },{
+        path: '/manageProperty',
+        component: PropertyManagementPage,
+        meta: { 
+            hideNavbar: true, 
+        }
+    },{
+        path: '/approve',
+        component: ApprovePage,
         meta: { 
             hideNavbar: true, 
         }

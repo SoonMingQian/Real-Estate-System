@@ -36,11 +36,15 @@ public class PropertyService {
 	}
 	
 	public List<Property> getSaleProperties(){
-		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "sale");
+		return propertyRepository.findByStatusAndSaleType(Status.APPROVED, "sale");
 	}
 	
 	public List<Property> getRentProperties(){
-		return propertyRepository.findByStatusAndSaleType(Status.PENDING, "rent");
+		return propertyRepository.findByStatusAndSaleType(Status.APPROVED, "rent");
+	}
+	
+	public List<Property> getStatusPending(){
+		return propertyRepository.findByStatus(Status.PENDING);
 	}
 	
 	public Optional<Property> getPropertyById(Long id) {
@@ -57,11 +61,11 @@ public class PropertyService {
 	}
 	
 	public List<Property> getApartment(){
-		return propertyRepository.findByPropertyType("apartment");
+		return propertyRepository.findByPropertyType(Status.APPROVED, "apartment");
 	}
 	
 	public List<Property> getOffice(){
-		return propertyRepository.findByPropertyType("office");
+		return propertyRepository.findByPropertyType(Status.APPROVED, "office");
 	}
 	
 	public List<Property> getPropertiesByUserId(Long userId){
@@ -111,5 +115,23 @@ public class PropertyService {
 	
 	public List<Property> getFilteredProperties(String propertyType, Integer minPrice, Integer maxPrice, Integer minNumOfBed, Integer maxNumOfBed, Integer minNumOfBath, Integer maxNumOfBath, String saleType, Long facilityId){
 		return propertyRepository.findWithFilters(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
+	}
+	
+	public List<Property> getAllProperties() {
+		return propertyRepository.findAll();
+	}
+	
+	public Property approveProperty(Long id) {
+		Property property = propertyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id"));
+		property.setStatus(Status.APPROVED);
+	    return propertyRepository.save(property);
+	}
+	
+	public Property rejectProperty(Long id) {
+		Property property = propertyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id"));
+		property.setStatus(Status.REJECTED);
+	    return propertyRepository.save(property);
 	}
 }

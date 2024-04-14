@@ -14,10 +14,12 @@ import java.util.Optional;
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 	List<Property> findByStatusAndSaleType(Status status, String saleType);
+	
+	List<Property> findByStatus(Status status);
 
 	Optional<Property> findById(Long id);
 
-	List<Property> findByPropertyType(String propertyType);
+	List<Property> findByStatusAndPropertyType(Status status, String propertyType);
 
 	@Query("SELECT p FROM Property p JOIN p.facilities f WHERE" +
         "(p.propertyType = :propertyType OR :propertyType IS NULL) AND " +
@@ -28,7 +30,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
         "(p.numOfBath >= :minNumOfBath OR :minNumOfBath IS NULL) AND " +
         "(p.numOfBath <= :maxNumOfBath OR :maxNumOfBath IS NULL) AND " +
         "(p.saleType = :saleType OR :saleType IS NULL) AND " +
-        "(:facilityId IS NULL OR f.id = :facilityId)")
+        "(:facilityId IS NULL OR f.id = :facilityId) AND " +
+        "(p.status = 'APPROVED')")
 	List<Property> findWithFilters(
 	        @Param("propertyType") String propertyType,
 	        @Param("minPrice") Integer minPrice,

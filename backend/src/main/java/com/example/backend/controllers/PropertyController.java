@@ -168,9 +168,30 @@ public class PropertyController {
 		return propertyService.getFilteredProperties(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
 	}
 	
-	 @GetMapping("/property/{propertyId}/userEmail")
-	 public ResponseEntity<String> getUserEmailByPropertyId(@PathVariable Long propertyId) {
-		 String email = propertyService.getUserEmail(propertyId);
-	     return email != null ? ResponseEntity.ok(email) : ResponseEntity.notFound().build();
-	 }
+	@GetMapping("/property/{propertyId}/userEmail")
+	public ResponseEntity<String> getUserEmailByPropertyId(@PathVariable Long propertyId) {
+		String email = propertyService.getUserEmail(propertyId);
+	    return email != null ? ResponseEntity.ok(email) : ResponseEntity.notFound().build();
+	}
+	 
+	@GetMapping("/properties")
+	public List<Property> getAllProperties(){
+		return propertyService.getAllProperties	();
+	}
+	
+	@PutMapping("/approve/{id}")
+    public Property approveProperty(@PathVariable Long id) {
+        return propertyService.approveProperty(id);
+    }
+	
+	@PutMapping("/reject/{id}")
+    public Property rejectProperty(@PathVariable Long id) {
+        return propertyService.rejectProperty(id);
+    }
+	
+	@GetMapping("/properties/pending")
+	public ResponseEntity<List<Property>> getAllPendingProperties() {
+	    List<Property> properties = propertyService.getStatusPending();
+	    return new ResponseEntity<>(properties, HttpStatus.OK);
+	}
 }
