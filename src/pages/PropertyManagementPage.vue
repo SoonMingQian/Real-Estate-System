@@ -8,24 +8,24 @@
         >
           <v-list>
             <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              subtitle="sandra_a88@gmailcom"
-              title="Sandra Adams"
+              prepend-icon="mdi-account"
+              title="Admin"
             ></v-list-item>
           </v-list>
   
           <v-divider></v-divider>
   
           <v-list density="compact" nav>
+            <router-link to="/dashboard"><v-list-item prepend-icon="mdi-chart-bar" title="Dashboard" value="dashboard"></v-list-item></router-link>
              <router-link to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
             <router-link to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
             <router-link to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
           </v-list>
         </v-navigation-drawer>
   
-        <v-main style="height: 750px"><v-data-table
+        <v-main style="height: auto"><v-data-table
       :headers="headers"
-      :items="usersWithRoleNames"
+      :items="properties"
       :sort-by="[{ key: 'id', order: 'asc' }]"
       class="my-data-table no-space"
     >
@@ -111,7 +111,7 @@
       { title: 'Facilities', key: 'facilities', align: 'start'},
       { title: 'Actions', key: 'actions', sortable: false },
       ],
-      users: [],
+      properties: [],
       editedItem: {
         propertyName: '',
         propertyAddress: '',
@@ -125,17 +125,7 @@
         facilities: [],
       },
     }),
-  
-    computed: {
-      
-      usersWithRoleNames() {
-        return this.users.map(user => ({
-          ...user,
-          roles: (user.roles || []).map(roles => roles.name).join(', ')
-        }));
-      },
-    },
-  
+ 
     watch: {
       dialog (val) {
         val || this.close()
@@ -146,14 +136,26 @@
     },
   
     created () {
+      this.checkUserRole()
       this.initialize()
+    },
+    computed: {
+      currentUser(){
+        return this.$store.state.auth.user;
+      },
     },
   
     methods: {
+      checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_ADMIN')) {
+                this.$router.push('/login');
+          }
+      },
       async initialize () {
         try {
           const response = await axios.get('http://localhost:8080/api/properties')
-          this.users = response.data
+          this.properties = response.data
           console.log(this.users)
         } catch (error) {
           console.error(error)
@@ -200,3 +202,10 @@
       
   }
   </script>
+
+<style scoped>
+.router-link-active {
+  text-decoration: none; /* Remove underline */
+  color: crimson; /* Inherit color */
+}
+</style>

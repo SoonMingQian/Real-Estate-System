@@ -4,8 +4,17 @@
         <form @submit.prevent="submitForm">
           <input type="password" id="password" v-model="password" placeholder="Password">
           <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password"> 
-            <button type="submit">Submit</button>
+            <button type="submit" :disabled="passwordInvalid">Submit</button>
         </form><br>
+        <div v-if="passwordError" class="alert alert-danger">
+            {{ passwordError }}
+        </div>
+        <div v-if="showNotification" class="notification">
+            Password has been changed successfully.
+        </div>
+        <div v-if="failChangePassword" class="notification">
+            Fail to change password.
+        </div>
     </div>
 </template>
 
@@ -17,8 +26,28 @@
     data() {
       return {
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        showNotification: false,
+        failChangePassword: false
       }
+    },
+    computed:{
+        passwordInvalid() {
+            if(this.password.length < 8 || this.password != this.confirmPassword) {
+                return true;
+            }else{
+                return false;
+            }
+        },
+        passwordError() {
+            if (this.password.length < 8) {
+                return "Password must be at least 8 characters long.";
+            }
+            if (this.password != this.confirmPassword) {
+                return "Passwords do not match.";
+            }
+            return "";
+        },
     },
     created() {
         if (this.$store.state.email) {
@@ -40,10 +69,14 @@
             })
             .then(response => {
             console.log('Response:', response.data);
-            this.$router.push('/login');
+            this.showNotification = true;
+            setTimeout(() => {
+                this.$router.push('/login');
+            }, 2000); 
             })
             .catch(error => {
             console.error('Error:', error);
+            this.failChangePassword = true;
             });
         }
   }
@@ -111,5 +144,11 @@ input:focus {
     border-color: #ebccd1;
 }
 
+.notification {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
 
 </style>

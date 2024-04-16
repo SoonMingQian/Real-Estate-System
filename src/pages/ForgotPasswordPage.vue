@@ -5,6 +5,9 @@
             <input type="email" id="email" v-model="email" placeholder="Email">
             <button type="submit">Submit</button>
         </form><br>
+        <div v-if="showNotification" class="notification">
+            Link had sent to reset password.
+        </div>
     </div>
 </template>
 
@@ -14,7 +17,8 @@ export default {
   name: 'ForgotPasswordPage',
   data() {
     return {
-      email: ''
+      email: '',
+      showNotification: false
     }
   },
     methods: {
@@ -23,6 +27,7 @@ export default {
         axios.post(`http://localhost:8080/api/user/resetPassword?email=${this.email}`)
             .then(response => {
             console.log('Response:', response.data);
+            this.showNotification = true;
             })
             .catch(error => {
             console.error('Error:', error);
@@ -104,5 +109,11 @@ input:focus {
     border-color: #ebccd1;
 }
 
+.notification {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
 
 </style>

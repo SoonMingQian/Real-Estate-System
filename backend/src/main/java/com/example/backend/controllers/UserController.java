@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -75,4 +76,20 @@ public class UserController {
 	public void deleteUser(@PathVariable Long id, Long propertyId) {
 		userService.deleteUser(id);
 	}
+	
+	@GetMapping("/users/pending")
+	public ResponseEntity<List<User>> getAllPendingProperties() {
+	    List<User> users = userService.getStatusPending();
+	    return new ResponseEntity<>(users, HttpStatus.OK);
+	}
+	
+	@PutMapping("/approve/user/{id}")
+    public User approveUser(@PathVariable Long id) {
+        return userService.approveUser(id);
+    }
+	
+	@PutMapping("/reject/user/{id}")
+    public User rejectUser(@PathVariable Long id) {
+        return userService.rejectUser(id);
+    }
 }

@@ -85,6 +85,7 @@ export default {
     width: 300px;
     height: 30px;
     margin-bottom: 25px;
+    border: 1px solid #000;
 }
 
 .button {
@@ -94,5 +95,6 @@ export default {
     color: white;
     height: 30px;
     margin-bottom: 40px;
+    border: 1px solid #000;
 }
 </style>

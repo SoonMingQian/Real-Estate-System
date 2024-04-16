@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.models.PasswordResetToken;
 import com.example.backend.models.Property;
+import com.example.backend.models.Status;
 import com.example.backend.models.User;
 import com.example.backend.repositories.PasswordResetTokenRepository;
 import com.example.backend.repositories.PropertyRepository;
@@ -113,5 +114,24 @@ public class UserService {
 		}
 		userRepository.deleteById(id);
 	}
+	
+	public List<User> getStatusPending(){
+		return userRepository.findByStatus(Status.PENDING);
+	}
+	
+	public User approveUser(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found for this id"));
+		user.setStatus(Status.APPROVED);
+	    return userRepository.save(user);
+	}
+	
+	public User rejectUser(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found for this id"));
+		user.setStatus(Status.REJECTED);
+	    return userRepository.save(user);
+	}
+	
 
 }

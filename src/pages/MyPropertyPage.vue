@@ -43,14 +43,17 @@ export default {
         }
     },
     async created() {
+        this.checkUserRole();
         await this.fetchProperties();
     },
     methods: {
-        async fetchProperties() {
-            if (!this.currentUser) {
+        checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
                 this.$router.push('/login');
-                return;
             }
+        },
+        async fetchProperties() {
             try {
                 const response = await UserService.getMyProperties(this.currentUser.id);
                 this.properties = response.data;

@@ -4,13 +4,17 @@
         <form @submit.prevent="handleLogin">
             <input v-model="user.email" type="email" placeholder="Email">
             <input v-model="user.password" type="password" placeholder="Password">
-            <button type="submit" :disabled="loading">Login</button>
+            <button type="submit" :disabled="loading" @click="resetNotifications">Login</button>
             
             <span v-show="loading"></span>
         </form><br>
 
         <div v-if="loginError" class="alert alert-danger">
-            {{ loginError }}
+            Wrong email or password. Please try again.
+        </div>
+
+        <div v-if="statusPending" class="alert alert-danger">
+            Your account is being reviewed or rejected. Please contact the administrator.
         </div>
 
         <div class="account">
@@ -31,18 +35,14 @@ export default {
             user: {
                 email: "",
                 password: ""
-            }
+            },
+            loginError: false,
+            statusPending: false,
         }
     },
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
-        },
-        loginError() {
-            if (this.message.includes("401")) {
-                return "Incorrect email or password. Please try again.";
-            }
-            return "";
         }
     },
     created() {
@@ -53,6 +53,10 @@ export default {
     },
     
     methods: {
+        resetNotifications() {
+            this.loginError = false;
+            this.statusPending = false;
+        },  
         handleLogin() {
             this.loading = true;
 
@@ -68,6 +72,11 @@ export default {
                             error.response.data.message) ||
                         error.message ||
                         error.toString();
+                    if (this.message.includes("401")) {
+                        this.loginError = true;
+                    }else {
+                        this.statusPending = true;
+                    }
                 }
             );
         },

@@ -57,8 +57,15 @@ export default {
     },
     created() {
         this.fetchProperty();
+        this.checkUserRole();
     },
     methods: {
+        checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
+                this.$router.push('/login');
+          }
+        },
         isFeatureInPropertyFacilities(feature) {
             return this.property.facilities.some(facility => facility.id === feature.id);
         },
@@ -97,7 +104,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: auto;
     padding-top: 30px;
     padding-bottom: 70px;
 }
@@ -107,7 +114,7 @@ export default {
     width: 70%;
     /* Adjust as needed */
     padding: 20px;
-    height: 170vh;
+    height: auto;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    
 }
@@ -115,11 +122,13 @@ export default {
 .other-input{
     width: 60%;
     height: 30px;
+    border: 1px solid #000;
 }
 
 .other textarea{
     width: 75%;
     height: 120px;
+    border: 1px solid #000;
 }
 
 .button-container {

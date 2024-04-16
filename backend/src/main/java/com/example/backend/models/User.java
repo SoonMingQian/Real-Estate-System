@@ -1,4 +1,4 @@
-	package com.example.backend.models;
+package com.example.backend.models;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +22,9 @@ public class User {
 	private String email;
 	
 	private String password;
+	
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
 	private String nationality;
 	
@@ -145,5 +148,11 @@ public class User {
 		this.shortlistedProperties = shortlistedProperties;
 	}
 
-	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 }

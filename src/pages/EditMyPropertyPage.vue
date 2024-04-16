@@ -1,5 +1,6 @@
 <template>
-
+<div class="add-my-property">
+        <h1>Upload Image</h1>
     <div class="edit-container">
         <div class="card">
             <div class="top">
@@ -28,9 +29,18 @@
                 </div>
             </div>
             <button type="button" @click="submitFiles">Submit</button>
+            <!-- Notification for successful upload -->
+            <div v-if="uploadSuccess" class="alert alert-success">
+            Upload successful.
+            </div>
+
+            <!-- Notification for failed update -->
+            <div v-if="updateFailed" class="alert alert-danger">
+            Update failed. Please try again.
+            </div>
         </div>
     </div>
-
+</div>
 
 </template>
 
@@ -43,10 +53,19 @@ export default {
             images: [],
             isDragging: false,
             property: null,
+            uploadSuccess: false,
+            updateFailed: false,
         }
     },
     created() {
         this.fetchProperty();
+        this.checkUserRole();
+    },
+    checkUserRole() {
+        console.log(this.currentUser); 
+        if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
+            this.$router.push('/login');
+        }
     },
     methods: {
         selectFiles() {
@@ -120,9 +139,13 @@ export default {
                 if (this.images && this.images.length > 0) {
                     await UserService.editPropertyImg(propertyId, this.images);
                 }
-                this.$router.push({ path: '/my-property' });
+                this.uploadSuccess = true;
+                setTimeout(() => {
+                    this.$router.push('/my-property');
+                }, 2000); 
             } catch (error) {
                 console.error("Error updating property image", error);
+                this.updateFailed = true;
             }
         },
 
@@ -261,5 +284,17 @@ button {
 .delete {
     z-index: 999;
     color: crimson;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }
 </style>

@@ -8,15 +8,15 @@
         >
           <v-list>
             <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              subtitle="sandra_a88@gmailcom"
-              title="Sandra Adams"
+              prepend-icon="mdi-account"
+              title="Admin"
             ></v-list-item>
           </v-list>
   
           <v-divider></v-divider>
   
           <v-list density="compact" nav>
+            <router-link to="/dashboard"><v-list-item prepend-icon="mdi-chart-bar" title="Dashboard" value="dashboard"></v-list-item></router-link>
             <router-link to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
             <router-link to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
             <router-link to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
@@ -25,7 +25,7 @@
   
         <v-main style="height: auto"><v-data-table
       :headers="headers"
-      :items="usersWithRoleNames"
+      :items="properties"
       :sort-by="[{ key: 'id', order: 'asc' }]"
       class="my-data-table no-space"
     >
@@ -100,13 +100,6 @@
       :sort-by="[{ key: 'id', order: 'asc' }]"
       class="my-data-table no-space"
     >
-   
-      <template v-slot:[`item.image`]="{ item }">
-        <v-img v-for="(file, index) in item.files" :key="index" :src="'data:' + file.contentType + ';base64,' + file.fileData" ></v-img>
-      </template>
-      <template v-slot:[`item.facilities`]="{ item }">
-        {{ item.facilities.map(facility => facility.name).join(', ') }}
-      </template>
       <template v-slot:top>
         <v-toolbar
           flat
@@ -124,7 +117,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-darken-1" variant="text" @click="close">Cancel</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="Approve">OK</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="ApproveUser">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -135,7 +128,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirmUser">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -210,13 +203,14 @@
         { title: 'Eircode', key: 'eircode', align: 'start' },
         { title: 'Nationality', key: 'nationality', align: 'start' },
         { title: 'Role', key: 'roles', align: 'start' },
+        { title: 'Status', key: 'status', align: 'start' },
         { title: 'Actions', key: 'actions', sortable: false },
         ],
       users: [],
+      properties: [],
     }),
   
     computed: {
-      
       usersWithRoleNames() {
         return this.users.map(user => ({
           ...user,
@@ -241,11 +235,13 @@
     methods: {
       async initialize () {
         try {
-          const response = await axios.get('http://localhost:8080/api/properties/pending')
-          this.users = response.data
-          console.log(this.users)
+          const propertiesResponse = await axios.get('http://localhost:8080/api/properties/pending');
+          this.properties = propertiesResponse.data;
+
+          const usersResponse = await axios.get('http://localhost:8080/api/users/pending'); // replace with your API endpoint
+          this.users = usersResponse.data;
         } catch (error) {
-          console.error(error)
+          console.error(error);
         }
       },
   
@@ -266,8 +262,16 @@
         } catch (error) {
             console.error(error);
         }
-       
-    },
+      },
+      async ApproveUser () {
+        try {
+            await axios.put(`http://localhost:8080/api/approve/user/${this.editedItem.id}`);
+            this.closeDelete();
+            this.initialize();
+        } catch (error) {
+            console.error(error);
+        }
+      },
       
       async deleteItemConfirm () {
         try {
@@ -276,9 +280,20 @@
             this.initialize();
         } catch (error) {
             console.error(error);
-        }
-       
-    },
+        } 
+      },
+
+      async deleteItemConfirmUser () {
+        try {
+            await axios.put(`http://localhost:8080/api/reject/user/${this.editedItem.id}`);
+            this.closeDelete();
+            this.initialize();
+        } catch (error) {
+            console.error(error);
+        } 
+      },
+
+
   
       close () {
         this.dialog = false
@@ -302,3 +317,10 @@
       
   }
   </script>
+
+<style scoped>
+.router-link-active {
+  text-decoration: none; /* Remove underline */
+  color: crimson; /* Inherit color */
+}
+</style>

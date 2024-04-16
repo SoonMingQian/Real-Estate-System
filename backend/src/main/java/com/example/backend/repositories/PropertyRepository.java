@@ -44,4 +44,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 	        @Param("facilityId") Long facilityId);
 	
 	List<Property> findByUserId(Long userId);
+	
+	Long countBySaleTypeAndStatus(String saleType, Status status);
+	
+	Long countByPropertyTypeAndStatus(String propertyType, Status status);
 }

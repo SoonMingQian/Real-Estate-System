@@ -28,6 +28,15 @@
 
             <button type="button" @click="submitFiles">Submit</button>
         </div>
+        <!-- Notification for successful upload -->
+        <div v-if="uploadSuccess" class="alert alert-success">
+        Upload successful.
+        </div>
+
+        <!-- Notification for failed update -->
+        <div v-if="updateFailed" class="alert alert-danger">
+        Update failed. Please try again.
+        </div>
     </div>
 </template>
 
@@ -39,13 +48,22 @@ export default {
         return {
             images: [],
             isDragging: false,
-            propertyId: null
+            propertyId: null,
+            uploadSuccess: false,
+            updateFailed: false,
         }
     },
     created() {
         this.propertyId = this.$route.params.propertyId;
+        this.checkUserRole();
     },
     methods: {
+        checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
+                this.$router.push('/login');
+          }
+        },
         selectFiles() {
             this.$refs.fileInput.click();
         },
@@ -93,10 +111,15 @@ export default {
             UserService.addPropertyImg(this.propertyId, this.images)
                 .then(response => {
                     console.log(response.data);
-                    this.$router.push({ path: '/my-property' });
+                    this.uploadSuccess = true;
+                    setTimeout(() => {
+                        this.$router.push('/my-property');
+                    }, 2000); 
+                    
                 })
                 .catch(error => {
                     console.log(error);
+                    this.updateFailed = true;
                 });
         },
     }
@@ -104,6 +127,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -240,5 +265,24 @@ button {
 .delete {
     z-index: 999;
     color: crimson;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }
 </style>

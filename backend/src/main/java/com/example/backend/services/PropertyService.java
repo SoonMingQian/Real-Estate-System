@@ -1,7 +1,9 @@
 package com.example.backend.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -61,11 +63,11 @@ public class PropertyService {
 	}
 	
 	public List<Property> getApartment(){
-		return propertyRepository.findByPropertyType(Status.APPROVED, "apartment");
+		return propertyRepository.findByStatusAndPropertyType(Status.APPROVED, "apartment");
 	}
 	
 	public List<Property> getOffice(){
-		return propertyRepository.findByPropertyType(Status.APPROVED, "office");
+		return propertyRepository.findByStatusAndPropertyType(Status.APPROVED, "office");
 	}
 	
 	public List<Property> getPropertiesByUserId(Long userId){
@@ -133,5 +135,22 @@ public class PropertyService {
 				.orElseThrow(() -> new ResourceNotFoundException("Property not found for this id"));
 		property.setStatus(Status.REJECTED);
 	    return propertyRepository.save(property);
+	}
+	
+	public Map<String, Long> getPropertyCounts(){
+		Map<String, Long> counts = new HashMap<>();
+		counts.put("rent", propertyRepository.countBySaleTypeAndStatus("rent", Status.APPROVED));
+		counts.put("sale", propertyRepository.countBySaleTypeAndStatus("sale", Status.APPROVED));
+		return counts;
+	}
+	
+	public Map<String, Long> getPropertyTypeCounts(){
+		Map<String, Long> counts = new HashMap<>();
+		counts.put("house", propertyRepository.countByPropertyTypeAndStatus("house", Status.APPROVED));
+		counts.put("apartment", propertyRepository.countByPropertyTypeAndStatus("apartment", Status.APPROVED));
+		counts.put("office", propertyRepository.countByPropertyTypeAndStatus("office", Status.APPROVED));
+		counts.put("parking", propertyRepository.countByPropertyTypeAndStatus("parking", Status.APPROVED));
+		counts.put("restaurant/bar", propertyRepository.countByPropertyTypeAndStatus("restaurant/bar", Status.APPROVED));
+		return counts;
 	}
 }

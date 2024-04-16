@@ -35,7 +35,6 @@ export default{
 <style scoped>
 
 .profile-nav{
-    position: fixed;
     display: flex;
     flex-direction: row;
     padding-top: 10px;

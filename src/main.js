@@ -31,6 +31,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage.vue'
 import UserManagementPage from './pages/UserManagementPage.vue'
 import PropertyManagementPage from './pages/PropertyManagementPage.vue'
 import ApprovePage from './pages/ApprovePage.vue'
+import DashBoardPage from './pages/DashBoardPage.vue'
 //Font Awesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -124,6 +125,12 @@ createApp(App)
     },{
         path: '/approve',
         component: ApprovePage,
+        meta: { 
+            hideNavbar: true, 
+        }
+    },{
+        path: '/dashboard',
+        component: DashBoardPage,
         meta: { 
             hideNavbar: true, 
         }

@@ -194,4 +194,14 @@ public class PropertyController {
 	    List<Property> properties = propertyService.getStatusPending();
 	    return new ResponseEntity<>(properties, HttpStatus.OK);
 	}
+	
+	@GetMapping("/counts/saletype")
+	public Map<String, Long> getPropertyCounts(){
+		return propertyService.getPropertyCounts();
+	}
+	
+	@GetMapping("/counts/propertytype")
+	public Map<String, Long> getPropertyTypeCounts(){
+		return propertyService.getPropertyTypeCounts();
+	}
 }

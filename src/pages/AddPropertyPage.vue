@@ -18,17 +18,17 @@
             </select>
 
             <p>Name <span class="required">*</span></p>
-            <input class="other-input" placeholder="House name" v-model="propertyName" required><br>
+            <input class="other-input" placeholder="House name" v-model="propertyName" required>
             <p>Address <span class="required">*</span> </p>
-            <input class="other-input" placeholder="House address" v-model="propertyAddress" required><br>
+            <input class="other-input" placeholder="House address" v-model="propertyAddress" required>
             <p>Price <span class="required">*</span> </p>
-            <input class="other-input" placeholder="Price" type="number" v-model="price" required><br>
+            <input class="other-input" placeholder="Price" type="number" v-model="price" required>
             <p>Number of Bedroom <span class="required">*</span> </p>
-            <input class="other-input" placeholder="Number of Bedroom" v-model="numOfBed" type="number" min="0" required><br>
+            <input class="other-input" placeholder="Number of Bedroom" v-model="numOfBed" type="number" min="0" required>
             <p>Number of Bathroom <span class="required">*</span> </p>
-            <input class="other-input" placeholder="Number of Bathroom" v-model="numOfBath" type="number" min="0" required><br>
+            <input class="other-input" placeholder="Number of Bathroom" v-model="numOfBath" type="number" min="0" required>
             <p>Sqft <span class="required">*</span> </p>
-            <input class="other-input" placeholder="Sqft" type="number" v-model="sqft" min="0" required><br>
+            <input class="other-input" placeholder="Sqft" type="number" v-model="sqft" min="0" required>
             <p>Description </p>
             <p style="white-space: pre-line;"></p>
             <textarea v-model="description" placeholder="Description"></textarea>
@@ -82,7 +82,16 @@ export default{
             return this.$store.state.auth.user;
         }
     },
+    created(){
+        this.checkUserRole();
+    },
     methods:{
+        checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_AGENT ')) {
+                this.$router.push('/login');
+          }
+        },
         handleSubmit(){
             const data = {
                 saleType: this.saleType,
@@ -116,7 +125,7 @@ export default{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: auto;
     padding-top: 30px;
     padding-bottom: 70px;
 }
@@ -126,7 +135,7 @@ export default{
     width: 70%;
     /* Adjust as needed */
     padding: 20px;
-    height: 190vh;
+    height: auto;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);    
 }
@@ -134,11 +143,13 @@ export default{
 .other-input{
     width: 60%;
     height: 30px;
+    border: 1px solid #000;
 }
 
 .other textarea{
     width: 75%;
     height: 120px;
+    border: 1px solid #000;
 }
 
 .button-container {
@@ -172,5 +183,8 @@ export default{
     color: red;
 }
 
+.other-input, .unit-feature {
+  margin-bottom: 20px; /* Adjust this value to fit your needs */
+}
 </style>
 
