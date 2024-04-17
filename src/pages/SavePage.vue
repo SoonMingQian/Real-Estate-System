@@ -86,6 +86,13 @@ export default {
 </script>
 
 <style scoped>
+.save-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+}
 .img {
     padding-top: 50px;
     display: block;

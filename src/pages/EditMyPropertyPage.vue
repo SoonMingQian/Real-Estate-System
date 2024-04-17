@@ -61,13 +61,18 @@ export default {
         this.fetchProperty();
         this.checkUserRole();
     },
-    checkUserRole() {
-        console.log(this.currentUser); 
-        if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
-            this.$router.push('/login');
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
         }
     },
     methods: {
+        checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
+                this.$router.push('/login');
+            }
+        },
         selectFiles() {
             this.$refs.fileInput.click();
         },

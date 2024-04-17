@@ -16,26 +16,28 @@
           <v-divider></v-divider>
   
           <v-list density="compact" nav>
-            <router-link to="/dashboard"><v-list-item prepend-icon="mdi-chart-bar" title="Dashboard" value="dashboard"></v-list-item></router-link>
-            <router-link to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
-            <router-link to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
+            <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/dashboard"><v-list-item prepend-icon="mdi-chart-bar" title="Dashboard" value="dashboard"></v-list-item></router-link>
+            <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
+            <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
             <router-link to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
-          </v-list>
+            <div v-if="currentUser"><v-list-item prepend-icon="mdi-logout" @click.prevent="logOut" title="Logout" value="logout"></v-list-item></div>
+        </v-list>
         </v-navigation-drawer>
   
-        <v-main style="height: auto"><v-data-table
+        <v-main style="height: auto">
+          <v-data-table
       :headers="headers"
       :items="properties"
       :sort-by="[{ key: 'id', order: 'asc' }]"
       class="my-data-table no-space"
     >
-   
-      <template v-slot:[`item.image`]="{ item }">
+    <template v-slot:[`item.image`]="{ item }">
         <v-img v-for="(file, index) in item.files" :key="index" :src="'data:' + file.contentType + ';base64,' + file.fileData" ></v-img>
       </template>
       <template v-slot:[`item.facilities`]="{ item }">
-        {{ item.facilities.map(facility => facility.name).join(', ') }}
+        {{ item.facilities.map(facility => facility.name || '').join(', ') }}
       </template>
+
       <template v-slot:top>
         <v-toolbar
           flat
@@ -47,23 +49,23 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialogProperty" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">Approve?</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-darken-1" variant="text" @click="close">Cancel</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="Approve">OK</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="Approve123">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDeleteProperty" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">Reject?</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="closeDeleteProperty">Cancel</v-btn>
                 <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -74,13 +76,13 @@
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon
           size="small"
-          @click="editItem(item)"
+          @click="editItem1(item)"
         >
         <font-awesome-icon :icon="['far', 'thumbs-up']" />
         </v-icon>
         <v-icon
           size="small"
-          @click="deleteItem(item)"
+          @click="deleteItem1(item)"
         >
         <font-awesome-icon :icon="['far', 'thumbs-down']" />
         </v-icon>
@@ -111,7 +113,7 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialogUser" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">Approve?</v-card-title>
               <v-card-actions>
@@ -122,7 +124,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDeleteUser" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">Reject?</v-card-title>
               <v-card-actions>
@@ -176,8 +178,10 @@
           this.$root.showNavBar = true;      
       },
       data: () => ({
-      dialog: false,
-      dialogDelete: false,
+        dialogProperty: false,
+        dialogDeleteProperty: false,
+        dialogUser: false,
+        dialogDeleteUser: false,
       headers: [
       { title: 'ID', key: 'id', align: 'start' },
       { title: 'Image ', key: 'image', align: 'start' },
@@ -211,6 +215,9 @@
     }),
   
     computed: {
+      currentUser(){
+        return this.$store.state.auth.user;
+      },
       usersWithRoleNames() {
         return this.users.map(user => ({
           ...user,
@@ -220,10 +227,16 @@
     },
   
     watch: {
-      dialog (val) {
+      dialogProperty (val) {
         val || this.close()
       },
-      dialogDelete (val) {
+      dialogUser (val) {
+        val || this.close()
+      },
+      dialogDeletUser (val) {
+        val || this.closeDelete()
+      },
+      dialogDeleteProperty (val) {
         val || this.closeDelete()
       },
     },
@@ -233,10 +246,21 @@
     },
   
     methods: {
+      checkUserRole() {
+            console.log(this.currentUser); 
+            if (!this.currentUser['roles'].includes('ROLE_ADMIN')) {
+                this.$router.push('/login');
+          }
+      },
+      logOut() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
+      },
       async initialize () {
         try {
           const propertiesResponse = await axios.get('http://localhost:8080/api/properties/pending');
           this.properties = propertiesResponse.data;
+          console.log(this.properties)
 
           const usersResponse = await axios.get('http://localhost:8080/api/users/pending'); // replace with your API endpoint
           this.users = usersResponse.data;
@@ -247,24 +271,16 @@
   
       editItem (item) {
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.dialogUser = true
       },
   
       deleteItem (item) {
         this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
+        this.dialogDeleteUser = true
       },
-      async Approve () {
+      async ApproveUser() {
         try {
-            await axios.put(`http://localhost:8080/api/approve/${this.editedItem.id}`);
-            this.closeDelete();
-            this.initialize();
-        } catch (error) {
-            console.error(error);
-        }
-      },
-      async ApproveUser () {
-        try {
+          console.log('ApproveUser method called');
             await axios.put(`http://localhost:8080/api/approve/user/${this.editedItem.id}`);
             this.closeDelete();
             this.initialize();
@@ -272,11 +288,29 @@
             console.error(error);
         }
       },
-      
+      async Approve123() {
+        try {
+          await axios.put(`http://localhost:8080/api/approve/${this.editedItem.id}`);
+            this.closeDeleteProperty();
+            this.initialize();
+        } catch (error) {
+            console.error(error);
+        }
+      },
+
+      editItem1 (item) {
+        this.editedItem = Object.assign({}, item)
+        this.dialogProperty = true
+      },
+  
+      deleteItem1 (item) {
+        this.editedItem = Object.assign({}, item)
+        this.dialogDeleteProperty = true
+      },
       async deleteItemConfirm () {
         try {
             await axios.put(`http://localhost:8080/api/reject/${this.editedItem.id}`);
-            this.closeDelete();
+            this.closeDeleteProperty();
             this.initialize();
         } catch (error) {
             console.error(error);
@@ -296,15 +330,26 @@
 
   
       close () {
-        this.dialog = false
+        this.dialogUser = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+        })
+        this.dialogProperty = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
         })
       },
   
       closeDelete () {
-        this.dialog = false
-        this.dialogDelete = false
+        this.dialogUser = false
+        this.dialogDeleteUser = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+        })
+      },
+      closeDeleteProperty () {
+        this.dialogProperty = false
+        this.dialogDeleteProperty = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
         })

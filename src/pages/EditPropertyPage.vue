@@ -59,6 +59,11 @@ export default {
         this.fetchProperty();
         this.checkUserRole();
     },
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
     methods: {
         checkUserRole() {
             console.log(this.currentUser); 

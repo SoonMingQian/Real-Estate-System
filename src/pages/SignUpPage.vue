@@ -9,6 +9,7 @@
                 <input type="password" v-model="user.password" placeholder="Password" required>
                 <input type="password" v-model="user.repassword" placeholder="Re-enter Password" required>
                 <label><input type="checkbox" @change="handleRoleChange" :checked="user.role.includes('agent')"> Are you an agent?</label>
+                <p class="small-text">Please submit document by email to proof you are an agent</p>
                 <button type="submit" :disabled="passwordInvalid">Sign Up</button>
             </div>
         </form><br>
@@ -211,5 +212,9 @@ form label {
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
+}
+
+.small-text {
+  font-size: 0.6em; /* Adjust as needed */
 }
 </style>

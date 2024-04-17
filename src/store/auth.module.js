@@ -42,6 +42,7 @@ export const auth = {
         loginSuccess(state, user){
             state.status.loggedIn = true;
             state.user = user;
+            state.email = user.email;
         },
         loginFailure(state){
             state.status.loggedIn = false;
@@ -50,6 +51,7 @@ export const auth = {
         logout(state){
             state.status.loggedIn = false;
             state.user = null;
+            state.email = null;
         },
         registerSuccess(state){
             state.status.loggedIn = false;

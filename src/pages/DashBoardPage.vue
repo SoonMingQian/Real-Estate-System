@@ -17,9 +17,10 @@
 
         <v-list density="compact" nav>
           <router-link to="/dashboard"><v-list-item prepend-icon="mdi-chart-bar" title="Dashboard" value="dashboard"></v-list-item></router-link>
-          <router-link to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
-          <router-link to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
-          <router-link to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
+          <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/manageUser"><v-list-item prepend-icon="mdi-account" title="Manage Account" value="account"></v-list-item></router-link>
+          <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/manageProperty"><v-list-item prepend-icon="mdi-home" title="Manage Property" value="property"></v-list-item></router-link>
+          <router-link :style="{ color: 'inherit', textDecoration: 'none' }" to="/approve"><v-list-item prepend-icon="mdi-message" title="Request" value="request"></v-list-item></router-link>
+          <div v-if="currentUser"><v-list-item prepend-icon="mdi-logout" @click.prevent="logOut" title="Logout" value="logout"></v-list-item></div>
         </v-list>
       </v-navigation-drawer>
 
@@ -89,6 +90,10 @@ export default {
             if (!this.currentUser['roles'].includes('ROLE_ADMIN')) {
                 this.$router.push('/login');
           }
+      },
+      logOut() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
       },
       async fetchSaleType() {
         try {

@@ -53,6 +53,11 @@ export default {
             updateFailed: false,
         }
     },
+    computed:{
+        currentUser(){
+            return this.$store.state.auth.user;
+        }
+    },
     created() {
         this.propertyId = this.$route.params.propertyId;
         this.checkUserRole();

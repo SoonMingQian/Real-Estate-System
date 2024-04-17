@@ -46,10 +46,11 @@ export default {
         }
     },
     created() {
-        if (this.loggedIn) {
+        if (this.loggedIn && this.$store.state.auth.user['roles'].includes('ROLE_ADMIN')) {
+            this.$router.push("/dashboard");
+        }else if(this.loggedIn){
             this.$router.push("/my-profile");
         }
-        
     },
     
     methods: {
@@ -62,7 +63,13 @@ export default {
 
             store.dispatch("auth/login", this.user).then(
                 () => {
-                    this.$router.push("/my-property");
+                    const userRole = this.$store.state.auth.user;
+                    if(userRole['roles'].includes('ROLE_ADMIN')){
+                        this.$router.push("/dashboard");
+                    }else{
+                        this.$router.push("/my-profile");
+                    }
+                    
                 },
                 (error) => {
                     this.loading = false;

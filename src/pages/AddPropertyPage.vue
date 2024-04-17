@@ -88,7 +88,7 @@ export default{
     methods:{
         checkUserRole() {
             console.log(this.currentUser); 
-            if (!this.currentUser['roles'].includes('ROLE_AGENT ')) {
+            if (!this.currentUser['roles'].includes('ROLE_AGENT')) {
                 this.$router.push('/login');
           }
         },

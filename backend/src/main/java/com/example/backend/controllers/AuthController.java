@@ -65,7 +65,7 @@ public class AuthController {
 		}
 
 		User user = optionalUser.get();
-		if (user.getStatus() == Status.PENDING && user.getStatus() == Status.REJECTED) {
+		if (user.getStatus() == Status.PENDING || user.getStatus() == Status.REJECTED) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Your account is pending approval or rejected"));

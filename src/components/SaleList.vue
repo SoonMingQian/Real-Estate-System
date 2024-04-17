@@ -273,7 +273,7 @@ export default {
 
 .sidebar h1 {
     font-size: 1.5rem;
-    padding-top: 100px;
+    padding-top: 10px;
 }
 
 .sidebar ul {
@@ -284,11 +284,13 @@ export default {
 .input {
     margin-bottom: 10px;
     height: 30px;
+    border: 2px solid #000;
 }
 
 .sidebar ul li select {
     margin-bottom: 10px;
     height: 30px;
+    border: 2px solid #000;
 }
 
 .reset {
@@ -304,7 +306,6 @@ export default {
 }
 
 .close-btn {
-    padding-top: 120px;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -346,7 +347,8 @@ export default {
     height: 30px;
     width: 300px;
     margin-right: 20px;
-    border-radius: 10px
+    border-radius: 10px;
+    border: 2px solid #000;
 }
 
 .center-content button {

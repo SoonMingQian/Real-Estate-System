@@ -2,8 +2,10 @@
     <header :class="{ 'scrolled-nav': scrolledNav }">
         <nav>
             <div class="branding">
+                <router-link class="link" to="/">
                 <img :src="logo" alt="" />
                 <h1>Estate Eagle</h1>
+            </router-link>
             </div>
             <ul v-show="!mobile" class="navigation">
                 <li><router-link class="link" to="/property-for-sale">Buy</router-link></li>
