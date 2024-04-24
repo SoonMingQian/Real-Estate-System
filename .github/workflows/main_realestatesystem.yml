@@ -22,8 +22,9 @@ jobs:
           java-version: '21'
 
       - name: Build with Maven
-        run: mvn -f Real-Estate-System/backend/pom.xml clean install
-
+        run: |
+          cd Real-Estate-System/backend/
+          mvn clean install
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
