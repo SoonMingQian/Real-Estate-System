@@ -15,6 +15,7 @@ import PropertySalePage from './pages/PropertySalePage.vue'
 import PropertyRentPage from './pages/PropertyRentPage.vue'
 import PropertyDetailPage from './pages/PropertyDetailPage.vue'
 import MyPropertyPage from './pages/MyPropertyPage.vue'
+import HelpPage from './pages/HelpPage.vue';
 import NotFoundPage from './pages/NotFoundPage.vue'
 import ProfilePage from './pages/ProfilePage.vue'
 import EditPropertyPage from './pages/EditPropertyPage.vue'
@@ -70,6 +71,9 @@ createApp(App)
     },{
         path: '/property-for-rent',
         component: PropertyRentPage,
+    },{
+        path: '/help',
+        component: HelpPage,
     },{
         path: '/property-listing/:propertyId',
         component: PropertyDetailPage,

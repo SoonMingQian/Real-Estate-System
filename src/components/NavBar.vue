@@ -12,7 +12,7 @@
                 <li><router-link class="link" to="/property-for-rent">Rent</router-link></li>
                 <li><router-link class="link" to="/apartment">Apartment</router-link></li>
                 <li><router-link class="link" to="/commercial">Commercial</router-link></li>
-                <li><router-link class="link" to="/sell-property">Sell</router-link></li>
+                <li><router-link class="link" to="/help">Help</router-link></li>
                 <div v-if="!currentUser">
                     <li><router-link class="link" to="/login">Login</router-link></li>
                 </div>
@@ -36,7 +36,7 @@
                     <li><router-link class="link" to="/property-for-rent">Rent</router-link></li>
                     <li><router-link class="link" to="/apartment">Apartment</router-link></li>
                     <li><router-link class="link" to="/commercial">Commercial</router-link></li>
-                    <li><router-link class="link" to="/sell-property">Sell</router-link></li>
+                    <li><router-link class="link" to="/help">Help</router-link></li>
                     <div v-if="!currentUser">
                         <li><router-link class="link" to="/login">Login</router-link></li>
                     </div>
