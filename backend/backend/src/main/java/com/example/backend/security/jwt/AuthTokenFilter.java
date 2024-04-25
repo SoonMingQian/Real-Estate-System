@@ -33,19 +33,24 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		try {
+			// Parse JWT token from the request
 			String jwt = parseJwt(request);
 		      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+				 // Extract username from the JWT token
 		    	  String email = jwtUtils.getUserNameFromJwtToken(jwt);
 		    	  
-		    	  UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-		          UsernamePasswordAuthenticationToken authentication =
+					// Load user details from the database using the username
+					UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+					// Create authentication token
+					UsernamePasswordAuthenticationToken authentication =
 		              new UsernamePasswordAuthenticationToken(
 		                  userDetails,
 		                  null,
 		                  userDetails.getAuthorities());
-		          authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-		          SecurityContextHolder.getContext().setAuthentication(authentication);
+					// Set authentication details
+		          	authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					// Set authentication in the security context
+		          	SecurityContextHolder.getContext().setAuthentication(authentication);
 		      }
 		}catch(Exception e) {
 			logger.error("Cannot set user authentication: {}", e);
@@ -55,6 +60,7 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 		
 	}
 	
+	// Method to parse JWT token from the request header
 	private String parseJwt(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization");
 		

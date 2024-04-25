@@ -70,6 +70,7 @@ export default {
         }
     },
     created() {
+        // Add event listener for window resize
         window.addEventListener('resize', this.checkScreen)
         this.checkScreen();
     },
@@ -77,15 +78,17 @@ export default {
         window.addEventListener('scroll', this.updateScroll)
     },
     computed: {
+         // Get the current user from the Vuex store
         currentUser() {
             return this.$store.state.auth.user;
         }
     },
     methods: {
+        // Toggle the mobile navigation
         toggleMobileNav() {
             this.mobileNav = !this.mobileNav;
         },
-
+        // Update the scroll state of the nav bar
         updateScroll() {
             const scrollPosition = window.scrollY
             if (scrollPosition > 50) {
@@ -93,6 +96,7 @@ export default {
             }
             this.scrolledNav = false
         },
+        // Check the screen size and update the mobile state
         checkScreen() {
             this.windowWidth = window.innerWidth;
             if (this.windowWidth <= 750) {

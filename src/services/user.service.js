@@ -105,17 +105,6 @@ class UserService{
         return axios.get(`http://localhost:8080/api/property/${propertyId}/userEmail`, { headers: authHeader() });
     }
 
-    getUserBoard(){
-        return axios.get(API_URL + "user", { headers: authHeader() });
-    }
-
-    getAgentBoard(){
-        return axios.get(API_URL + "agent", { headers: authHeader() });
-    }
-
-    getAdminBoard(){
-        return axios.get(API_URL + "admin", { headers: authHeader() });
-    }
 }
 
 export default new UserService();

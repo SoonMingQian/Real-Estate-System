@@ -36,6 +36,11 @@ import com.example.backend.security.services.UserDetailsImpl;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+/**
+ * AuthController is a class responsible for handling authentication-related operations.
+ * This includes operations such as login, registration, and password reset.
+ * It interacts with the authentication manager and user service to perform these operations.
+ */
 public class AuthController {
 
 	@Autowired
@@ -55,11 +60,13 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+		//Authentication process
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
 		UserDetailsImpl userDetailss = (UserDetailsImpl) authentication.getPrincipal();
 
+		//Check user status
 		Optional<User> optionalUser = userRepository.findOptionalByEmail(userDetailss.getEmail());
 		if (!optionalUser.isPresent()) {
 			throw new RuntimeException("Error: User not found.");
@@ -71,14 +78,17 @@ public class AuthController {
 					.badRequest()
 					.body(new MessageResponse("Error: Your account is pending approval or rejected"));
 		}
+		//Set authentication in SecurityContextHolder
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
+		//Get user details and roles
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
+		//Respond with JWT and user details
 		return ResponseEntity.ok(new JwtResponse(jwt,
 				userDetails.getId(),
 				userDetails.getEmail(),
@@ -88,12 +98,14 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+		//Check if email already exists
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Username is already taken!"));
 		}
 
+		//Create new user's account
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
@@ -110,6 +122,7 @@ public class AuthController {
 		System.out.println(strRoles);
 		Set<Role> roles = new HashSet<>();
 
+		//Assign roles baseed on signup request
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));

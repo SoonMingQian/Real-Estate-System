@@ -10,6 +10,7 @@ const store = createStore({
         email: '',
     },
     mutations: {
+      // Mutation to set the email in the state
         setEmail(state, email) {
           state.email = email;
         },

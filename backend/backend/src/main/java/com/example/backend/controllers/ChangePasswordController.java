@@ -44,22 +44,26 @@ public class ChangePasswordController {
 
     @PostMapping("/user/savePassword")
     public ResponseEntity<?> savePassword(@RequestBody PasswordDto passwordDto) {
-    	PasswordResetToken token = tokenRepository.findByToken(passwordDto.getToken());
+    	// Retrieve token from database based on token string
+        PasswordResetToken token = tokenRepository.findByToken(passwordDto.getToken());
         if (token == null) {
             return new ResponseEntity<>("Error: Invalid token", HttpStatus.BAD_REQUEST);
         }
 
+        // Retrieve user associated with the token
         User user = token.getUser();
         if (user == null || !user.getEmail().equals(passwordDto.getEmail())) {
             return new ResponseEntity<>("Error: No user found with email " + passwordDto.getEmail(), HttpStatus.NOT_FOUND);
         }
 
+        // Validate the password reset token
         String result = securityUserService.validatePasswordResetToken(user.getId(), passwordDto.getToken());
         if (result != null) {
             return new ResponseEntity<>("Error: " + messages.getMessage("auth.message." + result, null, Locale.getDefault()), HttpStatus.BAD_REQUEST);
         }
 
         try {
+            // Attempt to change user's password
             userService.changeUserPassword(user, passwordDto.getNewPassword());
             return ResponseEntity.ok("Password successfully updated");
         } catch (Exception e) {

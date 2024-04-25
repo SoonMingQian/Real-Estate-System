@@ -173,7 +173,7 @@ export default {
                     delete params[key];
                 }
             });
-
+            // It uses axios's paramsSerializer option to format the parameters in the URL query string.
             axios.get('http://localhost:8080/api/filter', {
                 params,
                 paramsSerializer: params => {

@@ -27,9 +27,12 @@ public class FileController {
 	@Autowired
 	private PropertyRepository propertyRepository;
 	
+	// Logger for logging file upload information
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+	// Counter to keep track of file uploads
 	private static int fileUploadCount = 0;
 
+	// Endpoint to retrieve the first file by property ID
 	@GetMapping("/properties/{propertyId}/file")
 	public ResponseEntity<byte[]> getFirstFileByPropertyId(@PathVariable Long propertyId) {
 	    File file = fileService.getFirstFileByPropertyId(propertyId);
@@ -38,6 +41,7 @@ public class FileController {
 	            .body(file.getFileData());
 	}
 	
+	// Endpoint to delete a file by file ID, accessible only to users with 'AGENT' role
 	@DeleteMapping("/file/{fileId}")
 	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> deleteFile(@PathVariable Long fileId){
@@ -49,6 +53,7 @@ public class FileController {
 		}
 	}
 
+	// Endpoint to upload files for a property, accessible only to users with 'AGENT' role
 	@PostMapping("/add-property/{propertyId}/upload")
 	@PreAuthorize("hasRole('AGENT')")
 	public ResponseEntity<String> uploadFiles(@PathVariable("propertyId") Long propertyId, @RequestParam("files") MultipartFile[] files){

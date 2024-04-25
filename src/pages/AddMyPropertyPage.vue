@@ -69,9 +69,13 @@ export default {
                 this.$router.push('/login');
           }
         },
+        // Method to trigger the file input click event, opening the file selection dialog
         selectFiles() {
             this.$refs.fileInput.click();
         },
+        // It checks if any files were selected and if not, it returns without doing anything
+        // It then loops through the selected files, checking if each file is an image and if it's not already in the images array
+        // If both checks pass, the file is added to the images array
         onFileSelect(event) {
             const files = event.target.files;
             if (files.length === 0) {
@@ -85,18 +89,25 @@ export default {
                 }
             }
         },
+        // Method to delete an image from the images array based on its index
         deleteImage(index) {
             this.images.splice(index, 1);
         },
+        // It prevents the default behavior, sets isDragging to true, and sets the dropEffect to 'copy'
         onDragover(event) {
             event.preventDefault();
             this.isDragging = true
             event.dataTransfer.dropEffect = "copy"
         },
+        // It prevents the default behavior and sets isDragging to false
         onDragleave(event) {
             event.preventDefault();
             this.isDragging = false;
         },
+        // Method to handle the drop event
+        // It prevents the default behavior, sets isDragging to false, and gets the files from the event dataTransfer
+        // It then loops through the files, checking if each file is an image and if it's not already in the images array
+        // If both checks pass, the file is added to the images array
         onDrop(event) {
             event.preventDefault();
             this.isDragging = false;
@@ -109,9 +120,11 @@ export default {
                 }
             }
         },
+        // Method to create a URL for a file using the URL.createObjectURL method
         createObjectURL(file) {
             return URL.createObjectURL(file);
         },
+        // It calls the addPropertyImg method of the UserService, passing the propertyId and the images array
         submitFiles() {
             UserService.addPropertyImg(this.propertyId, this.images)
                 .then(response => {

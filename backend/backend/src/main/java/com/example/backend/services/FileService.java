@@ -35,6 +35,7 @@ public class FileService {
 		return fileRepository.save(file);
 	}
 	
+	// Get the first file associated with a property by its ID
 	public File getFirstFileByPropertyId(Long propertyId) {
 	    List<File> files = fileRepository.findFilesByPropertyId(propertyId);
 	    if (files.isEmpty()) {
@@ -43,12 +44,13 @@ public class FileService {
 	    return files.get(0);
 	}
 	
+	// Delete a file by its ID
 	public void deleteFile(Long fileId) {
 		Optional<File> fileOptional = fileRepository.findById(fileId);
 		if(!fileOptional.isPresent()) {
 			throw new IllegalArgumentException("File not found" + fileId);
 		}
-		
+		// Delete the file from the database
 		fileRepository.delete(fileOptional.get());
 	}
 

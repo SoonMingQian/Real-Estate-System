@@ -91,6 +91,7 @@ public class PropertyService {
 		return propertyRepository.save(property);
 	}
 	
+	// Delete facilities associated with a property by its ID
 	public void deleteFacilitiesByPropertyId(Long propertyId) {
 		Optional<Property> property = propertyRepository.findById(propertyId);
         if (property.isPresent()) {
@@ -110,11 +111,13 @@ public class PropertyService {
 	    propertyRepository.deleteById(propertyId);
 	}
 
+	// Delete files associated with a property by its ID
 	public void deleteFilesByPropertyId(Long propertyId) {
 		List<File> files = fileRepository.findByPropertyId(propertyId);
 		fileRepository.deleteAll(files);
 	}
 	
+	// Get filtered properties based on various criteria
 	public List<Property> getFilteredProperties(String propertyType, Integer minPrice, Integer maxPrice, Integer minNumOfBed, Integer maxNumOfBed, Integer minNumOfBath, Integer maxNumOfBath, String saleType, Long facilityId){
 		return propertyRepository.findWithFilters(propertyType, minPrice, maxPrice, minNumOfBed, maxNumOfBed, minNumOfBath, maxNumOfBath, saleType, facilityId);
 	}

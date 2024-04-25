@@ -25,7 +25,8 @@ public class JwtUtils {
 	 @Value("${realestate.app.jwtExpirationMs}")
 	  private int jwtExpirationMs;
 
-	  public String generateJwtToken(Authentication authentication) {
+	// Generate JWT token for the authenticated user
+	public String generateJwtToken(Authentication authentication) {
 
 	    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -37,15 +38,18 @@ public class JwtUtils {
 	            .compact();
 	  }
 	  
+	  // Generate cryptographic key for JWT signing and validation
 	  private Key key() {
 		  return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 	  }
 	  
+	  // Extract username from JWT token
 	  public String getUserNameFromJwtToken(String token) {
 		    return Jwts.parserBuilder().setSigningKey(key()).build()
 		               .parseClaimsJws(token).getBody().getSubject();
 	  }
 	  
+	  // Validate JWT token
 	  public boolean validateJwtToken(String authToken) {
 		    try {
 		      Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);

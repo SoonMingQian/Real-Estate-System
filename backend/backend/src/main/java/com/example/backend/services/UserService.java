@@ -53,6 +53,7 @@ public class UserService {
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id" + id));
 	}
 
+	// Add a property to user's shortlist
 	public User shortlistProperty(Long userId, Long propertyId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id" + userId));
@@ -63,12 +64,14 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	// Get user's shortlisted properties
 	public Set<Property> getShortlistedProperties(Long userId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
 		return user.getShortlistedProperties();
 	}
 
+	// Remove a property from user's shortlist
 	public void removeShortlistedProperty(Long userId, Long propertyId) {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
@@ -82,6 +85,7 @@ public class UserService {
 
 	}
 
+	 // Remove a property from all users' shortlists
 	public void removePropertyFromShortlist(Long proprtyId) {
 		List<User> users = userRepository.findAll();
 		for (User user : users) {

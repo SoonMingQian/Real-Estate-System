@@ -32,13 +32,16 @@ public class PasswordResetController {
 
 	@PostMapping("/user/resetPassword")
 	public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
+		// Find user by email
 		User user = userService.findUserByEmail(userEmail);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
 
+		// Generate a unique token
 		String token = UUID.randomUUID().toString();
 		passwordResetService.createPasswordResetTokenForUser(user, token);
+		// Get the application URL
 		String appUrl = getAppUrl(request);
 		passwordResetService.sendPasswordResetEmail(appUrl, request.getLocale(), token, user);
 

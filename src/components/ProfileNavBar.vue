@@ -22,6 +22,7 @@ export default{
         }
     },
     methods:{
+        // This method checks if the current user is an agent and returns a boolean accordingly
         showSaleRentList(){
             if(this.currentUser && this.currentUser['roles']){
                 return this.currentUser['roles'].includes('ROLE_AGENT');
