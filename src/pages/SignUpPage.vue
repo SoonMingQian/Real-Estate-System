@@ -71,7 +71,7 @@ export default {
             return "";
         },
         nameValid() {
-            const nameRegex = /^[A-Za-z]+$/;
+            const nameRegex = /^[A-Za-z\s]+$/;
             return nameRegex.test(this.user.firstName) && nameRegex.test(this.user.lastName);
         },
         nameError() {
@@ -93,7 +93,7 @@ export default {
             this.successful = false;
             this.loading = true;
 
-            const nameRegex = /^[A-Za-z]+$/;
+            const nameRegex = /^[A-Za-z\s]+$/;
             if (!nameRegex.test(this.user.firstName) || !nameRegex.test(this.user.lastName)) {
                 this.message = "First name and last name must only contain alphabets.";
                 this.loading = false;

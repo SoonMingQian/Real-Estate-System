@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,13 @@ public class PropertyService {
 		property.setSqft(propertyDetails.getSqft());
 		property.setDescription(propertyDetails.getDescription());
 		property.setFiles(propertyDetails.getFiles());
-		property.setFacilities(propertyDetails.getFacilities());
+		// Fetch the corresponding facilities from the database
+		Set<Facility> facilities = propertyDetails.getFacilities().stream()
+        .map(facility -> facilityRepository.findById(facility.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Facility not found for this id: " + facility.getId())))
+        .collect(Collectors.toSet());
+
+	property.setFacilities(facilities);
 		
 		return propertyRepository.save(property);
 	}
