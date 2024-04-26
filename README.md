@@ -9,6 +9,23 @@ The Estate Eagle web application is a comprehensive solution designed to streaml
 2. Navigate to the project directory: `cd estate-eagle`
 3. Install dependencies:
    - Backend: Dependencies are managed via Maven and should be resolved automatically.
+4. Install Vue.js
+5. Insert below query into database
+   INSERT INTO facility (name) VALUES
+   ('Air-Conditioning'),
+   ('Balcony'),
+   ('WIFI'),
+   ('Washing Machine / Dryer'),
+   ('Oven / Microwave'),
+   ('Water Heater'),
+   ('Fridge'),
+   ('Furnished');
+
+   &&
+
+   INSERT INTO roles(name) VALUES('ROLE_USER');
+   INSERT INTO roles(name) VALUES('ROLE_AGENT');
+   INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 
 ## Configuration
 
@@ -19,6 +36,5 @@ The Estate Eagle web application is a comprehensive solution designed to streaml
 ## Usage
 
 1. Start the backend server: `mvn spring-boot:run` (or deploy the WAR file to a servlet container).
-2. Access the deployed frontend:
-   - Frontend is already deployed to Azure Static Web Apps.
-   - [Visit your Azure Static Web Apps URL in your web browser.](https://calm-bay-00e795510.5.azurestaticapps.net)
+2. Start the frontend: npm run serve
+
