@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: estate_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: real_estate_app
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    networks:
+      - estate_network
+
+  springboot:
+    image: estateimage
+    container_name: estatecontainer
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: estate_mysql
+      MYSQL_PORT: 3306
+      MYSQL_DB_NAME: real_estate_app
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "8080:8080"
+    networks:
+      - estate_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  estate_network:
+    driver: bridge
