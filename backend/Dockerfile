@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy the pom.xml and source code
 COPY pom.xml /app/pom.xml
+COPY src /app/src
 
 # Build the JAR file
 RUN mvn clean package
