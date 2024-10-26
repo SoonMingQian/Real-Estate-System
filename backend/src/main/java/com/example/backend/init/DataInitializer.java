@@ -20,6 +20,8 @@ public class DataInitializer implements CommandLineRunner{
 			roleRepository.save(new Role(ERole.ROLE_USER));
             roleRepository.save(new Role(ERole.ROLE_AGENT));
             roleRepository.save(new Role(ERole.ROLE_ADMIN));
+		}else {
+			System.out.println("Data already exists, skipping insertion.");
 		}
 		
 	}
