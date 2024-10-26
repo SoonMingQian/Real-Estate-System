@@ -98,7 +98,7 @@ export default {
       async fetchSaleType() {
         try {
           // Fetch data from your API
-          const response = await axios.get('http://localhost:8080/api/counts/saletype')
+          const response = await axios.get('https://real-estate-system-q28g.onrender.com/api/counts/saletype')
           const data = response.data
           // Assuming your API response is an object with 'sale' and 'rent' properties
           const saleData = data.sale
@@ -126,7 +126,7 @@ export default {
         }
         try {
           // Fetch data from your API
-          const response = await axios.get('http://localhost:8080/api/counts/propertytype')
+          const response = await axios.get('https://real-estate-system-q28g.onrender.com/api/counts/propertytype')
           const data = response.data
           console.log(data)
           // Assuming your API response is an object with 'sale' and 'rent' properties

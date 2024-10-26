@@ -159,7 +159,7 @@
       },
       async initialize () {
         try {
-          const response = await axios.get('http://localhost:8080/api/properties')
+          const response = await axios.get('https://real-estate-system-q28g.onrender.com/api/properties')
           this.properties = response.data
           console.log(this.users)
         } catch (error) {
@@ -179,7 +179,7 @@
   
       async deleteItemConfirm () {
       try {
-        await axios.delete(`http://localhost:8080/api/deleteproperty/${this.editedItem.id}`);
+        await axios.delete(`https://real-estate-system-q28g.onrender.com/api/deleteproperty/${this.editedItem.id}`);
         this.closeDelete();
       } catch (error) {
         console.error(error);

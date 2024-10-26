@@ -62,7 +62,7 @@
             const token = urlParams.get('token');
             const email = this.$store.state.email;
 
-            axios.post('http://localhost:8080/api/user/savePassword', {
+            axios.post('https://real-estate-system-q28g.onrender.com/api/user/savePassword', {
             email: email,
             newPassword: this.password,
             token: token

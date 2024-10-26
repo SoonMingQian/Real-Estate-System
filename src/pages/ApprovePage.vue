@@ -258,11 +258,11 @@
       },
       async initialize () {
         try {
-          const propertiesResponse = await axios.get('http://localhost:8080/api/properties/pending');
+          const propertiesResponse = await axios.get('https://real-estate-system-q28g.onrender.com/api/properties/pending');
           this.properties = propertiesResponse.data;
           console.log(this.properties)
 
-          const usersResponse = await axios.get('http://localhost:8080/api/users/pending'); // replace with your API endpoint
+          const usersResponse = await axios.get('https://real-estate-system-q28g.onrender.com/api/users/pending'); // replace with your API endpoint
           this.users = usersResponse.data;
         } catch (error) {
           console.error(error);
@@ -281,7 +281,7 @@
       async ApproveUser() {
         try {
           console.log('ApproveUser method called');
-            await axios.put(`http://localhost:8080/api/approve/user/${this.editedItem.id}`);
+            await axios.put(`https://real-estate-system-q28g.onrender.com/api/approve/user/${this.editedItem.id}`);
             this.closeDelete();
             this.initialize();
         } catch (error) {
@@ -290,7 +290,7 @@
       },
       async Approve123() {
         try {
-          await axios.put(`http://localhost:8080/api/approve/${this.editedItem.id}`);
+          await axios.put(`https://real-estate-system-q28g.onrender.com:8080/api/approve/${this.editedItem.id}`);
             this.closeDeleteProperty();
             this.initialize();
         } catch (error) {
@@ -309,7 +309,7 @@
       },
       async deleteItemConfirm () {
         try {
-            await axios.put(`http://localhost:8080/api/reject/${this.editedItem.id}`);
+            await axios.put(`https://real-estate-system-q28g.onrender.com/api/reject/${this.editedItem.id}`);
             this.closeDeleteProperty();
             this.initialize();
         } catch (error) {
@@ -319,7 +319,7 @@
 
       async deleteItemConfirmUser () {
         try {
-            await axios.put(`http://localhost:8080/api/reject/user/${this.editedItem.id}`);
+            await axios.put(`https://real-estate-system-q28g.onrender.com/api/reject/user/${this.editedItem.id}`);
             this.closeDelete();
             this.initialize();
         } catch (error) {

@@ -24,7 +24,7 @@ export default {
     methods: {
         submitForm() {
         this.$store.commit('setEmail', this.email);
-        axios.post(`http://localhost:8080/api/user/resetPassword?email=${this.email}`)
+        axios.post(`https://real-estate-system-q28g.onrender.com/api/user/resetPassword?email=${this.email}`)
             .then(response => {
             console.log('Response:', response.data);
             this.showNotification = true;

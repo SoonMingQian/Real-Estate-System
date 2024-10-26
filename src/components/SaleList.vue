@@ -174,7 +174,7 @@ export default {
                 }
             });
             // It uses axios's paramsSerializer option to format the parameters in the URL query string.
-            axios.get('http://localhost:8080/api/filter', {
+            axios.get('https://real-estate-system-q28g.onrender.com/api/filter', {
                 params,
                 paramsSerializer: params => {
                     return Object.keys(params).map(key => {

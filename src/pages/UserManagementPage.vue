@@ -325,7 +325,7 @@ export default{
           return;
       }
       try {
-        const response = await axios.get('http://localhost:8080/api/users')
+        const response = await axios.get('https://real-estate-system-q28g.onrender.com/api/users')
         this.users = response.data
         console.log(this.users)
       } catch (error) {
@@ -347,9 +347,9 @@ export default{
   const propertyIds = this.editedItem.properties.map(property => property.id);
   try {
     for (const propertyId of propertyIds) {
-      await axios.delete(`http://localhost:8080/api/deleteproperty/${propertyId}`);
+      await axios.delete(`https://real-estate-system-q28g.onrender.com/api/deleteproperty/${propertyId}`);
     }
-    await axios.delete(`http://localhost:8080/api/deleteuser/${this.editedItem.id}`);
+    await axios.delete(`https://real-estate-system-q28g.onrender.com/api/deleteuser/${this.editedItem.id}`);
     this.users = this.users.filter(user => user.id !== this.editedItem.id);
     this.closeDelete();
   } catch (error) {
@@ -385,7 +385,7 @@ export default{
           address: this.editedItem.address,
           eircode: this.editedItem.eircode
         }
-      const response = await axios.put(`http://localhost:8080/api/updateuser/${this.editedItem.id}`, userToUpdate)
+      const response = await axios.put(`https://real-estate-system-q28g.onrender.com/api/updateuser/${this.editedItem.id}`, userToUpdate)
       this.users = this.users.map(user => user.id === this.editedItem.id ? response.data : user)
     } catch (error) {
       console.error(error)
@@ -399,7 +399,7 @@ export default{
           password: this.editedItem.password,
           role: this.editedItem.role,
           }
-          const response = await axios.post('http://localhost:8080/api/auth/signup', userToAdd)
+          const response = await axios.post('https://real-estate-system-q28g.onrender.com/api/auth/signup', userToAdd)
           this.users.push(response.data)
         } catch (error) {
           console.error(error)
