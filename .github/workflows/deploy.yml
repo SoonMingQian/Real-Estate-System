@@ -24,6 +24,12 @@ jobs:
         working-directory: ./backend
         run: mvn clean package
 
+      - name: Upload target folder as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: target-folder
+          path: ./backend/target
+
       # Docker build
       - name: Docker build
         working-directory: ./backend
