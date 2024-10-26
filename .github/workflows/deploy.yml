@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
 
 jobs:
   build:
@@ -21,11 +17,18 @@ jobs:
         uses: actions/setup-java@v4.5.0
         with: 
           java-version: '21'
+          distribution: temurin
 
       # Build with maven
       - name: Build with Maven
         working-directory: ./backend
-        run: ./mvnw clean package
+        run: mvn clean package
+
+      - name: Upload target folder as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: target-folder
+          path: ./backend/target
 
       # Docker build
       - name: Docker build
